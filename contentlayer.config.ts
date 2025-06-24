@@ -1,6 +1,30 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import { format, parseISO } from "date-fns";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import rehypeToc from "rehype-toc";
+import type { Options } from "rehype-pretty-code";
+
+/** @type {import('rehype-pretty-code').Options} */
+const options: Partial<Options> = {
+  theme: "github-dark",
+  keepBackground: true,
+  onVisitLine(node) {
+    if (node.children.length === 0) {
+      node.children = [{ type: "text", value: " " }];
+    }
+  },
+  onVisitHighlightedLine(node) {
+    if (node.properties) {
+      node.properties.className = ["highlighted"];
+    }
+  },
+  onVisitHighlightedChars(node) {
+    if (node.properties) {
+      node.properties.className = ["word"];
+    }
+  },
+};
 
 const Post = defineDocumentType(() => ({
   name: "Post",
@@ -36,7 +60,7 @@ const Post = defineDocumentType(() => ({
     },
     formattedDate: {
       type: "string",
-      resolve: (post) => format(parseISO(post.date), "yyyy년 MM월 dd일"),
+      resolve: (post) => format(parseISO(post.date), "MMMM dd, yyyy"),
     },
   },
 }));
@@ -45,7 +69,21 @@ export default makeSource({
   contentDirPath: "posts",
   documentTypes: [Post],
   mdx: {
-    rehypePlugins: [[rehypePrettyCode, { theme: "github-dark" }]],
+    rehypePlugins: [
+      [rehypePrettyCode, options],
+      rehypeSlug,
+      [
+        rehypeToc,
+        {
+          headings: ["h2", "h3"],
+          position: "before-content",
+          cssClasses: {
+            toc: "toc-content",
+            link: "toc-link",
+          },
+        },
+      ],
+    ],
   },
   disableImportAliasWarning: true,
 });

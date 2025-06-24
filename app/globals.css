@@ -183,3 +183,28 @@ code {
 [data-code-theme="nord"] pre {
   @apply bg-[#2e3440];
 }
+
+.toc-content {
+  @apply mb-8 p-4 bg-secondary/50 rounded-lg;
+}
+
+.toc-content ul {
+  @apply list-none pl-4;
+}
+
+.toc-content li {
+  @apply my-2;
+}
+
+.toc-link {
+  @apply text-foreground/80 hover:text-primary transition-colors duration-200;
+  @apply no-underline;
+}
+
+.highlighted {
+  @apply bg-secondary/50 border-l-2 border-primary;
+}
+
+.word {
+  @apply bg-primary/20 rounded px-1;
+}

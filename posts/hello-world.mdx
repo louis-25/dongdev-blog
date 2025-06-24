@@ -1,93 +1,46 @@
 ---
 title: Hello World
-date: 2024-03-19
-description: This is my first blog post
-tags: ["blog", "coding"]
+date: 2024-03-15
+description: 첫 번째 블로그 포스트입니다.
+tags: ["blog", "nextjs", "react"]
 published: true
 ---
 
-# Welcome to my blog!
+## 소개
 
-This is my first blog post using **MDX** with Next.js. Here's a code example:
+Next.js와 Contentlayer를 사용하여 만든 첫 번째 블로그 포스트입니다.
+이 블로그는 다음과 같은 기능들을 포함하고 있습니다.
 
-```typescript showLineNumbers {3-4}
-function greet(name: string) {
-  // Say hello to the user
-  const message = `Hello, ${name}!`;
-  console.log(message);
-  return message;
-}
-```
+## 주요 기능
 
-And here's another example with a different theme:
+### 다크 모드
 
-```python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    else:
-        return fibonacci(n-1) + fibonacci(n-2)
+사용자의 시스템 설정에 따라 자동으로 테마가 변경되며, 수동으로도 선택할 수 있습니다.
 
-# Print first 10 Fibonacci numbers
-for i in range(10):
-    print(fibonacci(i))
-```
+### 애니메이션
 
-You can now:
+Framer Motion을 사용하여 부드러운 페이지 전환과 요소 등장 애니메이션을 구현했습니다.
 
-1. Switch between different themes
-2. Copy code blocks
-3. See line numbers
-4. Highlight specific lines
+### 마크다운 지원
 
-```typescript
-// 타입스크립트 코드 예제
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-function greet(user: User) {
-  console.log(`Hello, ${user.name}!`);
-}
-
-const user: User = {
-  id: 1,
-  name: "John Doe",
-  email: "john@example.com",
-};
-
-greet(user);
-```
-
-일반 텍스트에서 `인라인 코드`를 사용할 수도 있습니다.
-
-```javascript
-// 자바스크립트 코드 예제
-const numbers = [1, 2, 3, 4, 5];
-const doubled = numbers.map((n) => n * 2);
-console.log(doubled); // [2, 4, 6, 8, 10]
-```
-
-## 기술 스택
-
-- Next.js
-- TypeScript
-- Contentlayer
-- Tailwind CSS
-- shadcn/ui
-
-## 코드 예제
+MDX를 통해 마크다운으로 글을 작성할 수 있으며, 코드 하이라이팅도 지원합니다.
 
 ```typescript
 const greeting = "Hello, World!";
 console.log(greeting);
 ```
 
-## 다음 단계
+### 태그 시스템
 
-1. MDX 지원 추가
-2. 블로그 포스트 레이아웃 구현
-3. 태그 시스템 구현
-4. 검색 기능 추가
+포스트에 태그를 추가하고, 태그별로 글을 모아볼 수 있습니다.
+
+## 향후 계획
+
+1. 댓글 기능 추가
+2. 검색 기능 구현
+3. RSS 피드 지원
+
+## 마무리
+
+이상으로 첫 번째 블로그 포스트를 마치겠습니다.
+앞으로 더 많은 기술 관련 글들을 작성할 예정입니다.

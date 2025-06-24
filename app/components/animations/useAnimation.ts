@@ -1,3 +1,4 @@
+"use client";
 import { useAnimation as useFramerAnimation } from "framer-motion";
 import type { TargetAndTransition } from "framer-motion";
 import { useEffect } from "react";
