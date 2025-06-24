@@ -680,7 +680,7 @@
         "id": 11,
         "title": "Framer Motion 설정",
         "description": "고급 애니메이션과 전환을 위한 Framer Motion을 통합합니다.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           4
         ],
@@ -694,7 +694,7 @@
             "description": "프로젝트에 Framer Motion을 설치하고, 개발 환경에서 정상적으로 동작하는지 확인합니다.",
             "dependencies": [],
             "details": "npm 또는 yarn을 사용하여 framer-motion 패키지를 설치합니다. 설치 후, 프로젝트의 주요 진입점에서 import가 정상적으로 동작하는지 확인합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "패키지 설치 후, 간단한 motion.div 컴포넌트를 렌더링하여 에러 없이 동작하는지 확인합니다.[1][2][3][4][5]"
           },
           {
@@ -705,7 +705,7 @@
               1
             ],
             "details": "motion.div 등 Framer Motion의 motion 요소를 활용하여, opacity, scale 등 기본 애니메이션 효과를 가진 컴포넌트를 생성합니다. children을 props로 받아 내부에 렌더링하도록 구현합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "생성한 컴포넌트에 다양한 children을 전달하여 애니메이션이 정상적으로 적용되는지 확인합니다.[2][5]"
           },
           {
@@ -716,7 +716,7 @@
               2
             ],
             "details": "initial, animate, exit 등 상태를 관리할 수 있는 variants 오브젝트를 정의하고, 필요시 커스텀 훅(useAnimation 등)을 만들어 애니메이션 제어를 추상화합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "variants와 훅을 적용한 컴포넌트에서 다양한 상태 전환이 정상적으로 동작하는지 테스트합니다.[2]"
           },
           {
@@ -727,7 +727,7 @@
               3
             ],
             "details": "React Router 등 라우팅 라이브러리와 연동하여, AnimatePresence와 motion 컴포넌트를 활용해 페이지 전환 시 fade-in/out, slide 등 효과를 적용합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "여러 페이지 간 이동 시 애니메이션이 자연스럽게 동작하는지, exit/enter 효과가 정상적으로 적용되는지 확인합니다.[5]"
           },
           {
@@ -738,7 +738,7 @@
               4
             ],
             "details": "variants, custom prop, transition 설정 등 Framer Motion의 고급 기능을 활용하여, 프로젝트에 특화된 애니메이션을 추가합니다. styled(motion.div) 형태로 스타일링과 애니메이션을 결합할 수 있도록 구현합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "고급 애니메이션이 정상적으로 동작하는지, 스타일과 애니메이션이 충돌 없이 적용되는지 확인합니다.[2]"
           }
         ]
@@ -840,7 +840,7 @@
         "id": 15,
         "title": "Vercel 배포 설정",
         "description": "프로젝트를 Vercel에 배포하도록 설정합니다.",
-        "status": "in-progress",
+        "status": "done",
         "dependencies": [
           1,
           2,
@@ -856,7 +856,7 @@
         "id": 16,
         "title": "PR 미리보기 워크플로우 구현",
         "description": "풀 리퀘스트에 대한 자동 미리보기 배포를 설정합니다.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           15
         ],
@@ -1059,7 +1059,7 @@
     ],
     "metadata": {
       "created": "2025-06-23T01:44:28.635Z",
-      "updated": "2025-06-24T01:52:14.378Z",
+      "updated": "2025-06-24T04:06:55.986Z",
       "description": "Tasks for korean context"
     }
   }
