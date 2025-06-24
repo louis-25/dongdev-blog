@@ -401,7 +401,7 @@
         "id": 7,
         "title": "코드 하이라이팅 구현",
         "description": "블로그 포스트 내 코드 블록에 대한 문법 하이라이팅을 추가합니다.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           6
         ],
@@ -415,7 +415,7 @@
             "description": "블로그 프로젝트에 Prism.js의 JavaScript 및 CSS 파일을 추가합니다.",
             "dependencies": [],
             "details": "공식 Prism.js 사이트에서 필요한 언어와 플러그인을 선택해 minified JS와 CSS 파일을 다운로드합니다. 프로젝트의 정적 파일 디렉터리에 추가하고, HTML 템플릿의 <head>에 CSS, <body> 하단에 JS를 import합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "브라우저 개발자 도구에서 Prism.js와 CSS가 정상적으로 로드되는지 확인합니다."
           },
           {
@@ -426,7 +426,7 @@
               1
             ],
             "details": "마크다운 렌더러 또는 에디터에서 생성되는 코드 블록이 <pre><code class=\"language-xxx\">...</code></pre> 형태로 출력되도록 설정합니다. 기존 포스트의 코드 블록도 일괄 변환합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "샘플 포스트에 여러 언어의 코드 블록을 삽입해 구조가 올바른지 확인합니다."
           },
           {
@@ -437,7 +437,7 @@
               1
             ],
             "details": "Prism.js에서 제공하는 여러 테마 중 하나를 선택해 CSS를 적용하고, 줄 번호 등 필요한 플러그인을 추가로 import합니다. 플러그인 사용법에 따라 마크업이나 JS 초기화 코드를 추가합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "여러 테마와 플러그인을 적용해 시각적으로 정상 동작하는지 확인합니다."
           },
           {
@@ -448,7 +448,7 @@
               3
             ],
             "details": "CSS를 활용해 코드 블록의 폰트, 색상, 패딩, 테두리 등 세부 스타일을 조정합니다. 다크모드 등 블로그의 전반적 스타일과 일관성을 유지합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "여러 브라우저와 해상도에서 코드 블록이 일관되게 보이는지 확인합니다."
           },
           {
@@ -461,7 +461,7 @@
               4
             ],
             "details": "여러 언어, 긴 코드, 특수문자 등 다양한 케이스로 하이라이팅이 잘 적용되는지 확인합니다. 블로그 운영자나 작성자를 위한 코드 블록 작성법과 문제 해결법을 문서로 남깁니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "실제 포스트에 다양한 코드 예시를 삽입해 하이라이팅, 플러그인, 스타일이 모두 정상 동작하는지 확인합니다."
           }
         ]
@@ -470,7 +470,7 @@
         "id": 8,
         "title": "코드 복사 기능 추가",
         "description": "코드 블록에 복사 버튼을 추가합니다.",
-        "status": "pending",
+        "status": "done",
         "dependencies": [
           7
         ],
@@ -484,7 +484,7 @@
             "description": "코드 블록 옆에 표시될 복사 버튼 컴포넌트를 생성합니다.",
             "dependencies": [],
             "details": "React 컴포넌트로 복사 버튼을 생성합니다. 버튼에는 복사 아이콘을 포함시키고, 스타일링을 적용하여 코드 블록과 어울리도록 합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "컴포넌트 렌더링 테스트 및 스타일 검증"
           },
           {
@@ -495,7 +495,7 @@
               1
             ],
             "details": "navigator.clipboard.writeText() 메서드를 사용하여 코드 블록의 내용을 클립보드에 복사합니다. 비동기 처리를 위해 async/await를 사용합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "Clipboard API 호출 및 복사 기능 단위 테스트"
           },
           {
@@ -506,7 +506,7 @@
               2
             ],
             "details": "복사 성공 시 버튼의 아이콘을 변경하거나 툴팁을 표시합니다. 상태 관리를 통해 일정 시간 후 원래 상태로 돌아가도록 구현합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "상태 변화 및 타이머 동작 테스트"
           },
           {
@@ -519,7 +519,7 @@
               3
             ],
             "details": "코드 블록 컴포넌트를 수정하여 복사 버튼을 포함시킵니다. 레이아웃 조정 및 반응형 디자인을 고려하여 구현합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "통합된 컴포넌트의 렌더링 및 기능 테스트"
           },
           {
@@ -530,7 +530,7 @@
               4
             ],
             "details": "ARIA 속성을 추가하여 스크린 리더 지원을 개선합니다. 키보드 단축키(예: Ctrl+C)를 통한 복사 기능을 구현하고, 포커스 관리를 개선합니다.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": "접근성 검사 도구를 사용한 테스트 및 키보드 조작 시나리오 테스트"
           }
         ]
@@ -1059,7 +1059,7 @@
     ],
     "metadata": {
       "created": "2025-06-23T01:44:28.635Z",
-      "updated": "2025-06-23T02:23:05.185Z",
+      "updated": "2025-06-24T01:52:14.378Z",
       "description": "Tasks for korean context"
     }
   }

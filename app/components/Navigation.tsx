@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import ThemeSwitch from "./ThemeSwitch";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -20,6 +21,10 @@ export default function Navigation() {
           <Link href="/" className="text-xl font-bold">
             DongDev
           </Link>
+
+          <div className="flex items-center">
+            <ThemeSwitch />
+          </div>
 
           {/* 모바일 메뉴 버튼 */}
           <button

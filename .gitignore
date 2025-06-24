@@ -63,4 +63,5 @@ node_modules/
 # tasks.json
 # tasks/ 
 
-/.contentlayer/
+# .gitignore
+.contentlayer/

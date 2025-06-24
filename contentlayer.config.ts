@@ -1,15 +1,6 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import { format, parseISO } from "date-fns";
 import rehypePrettyCode from "rehype-pretty-code";
-import { type Options } from "rehype-pretty-code";
-import { type Node } from "unist";
-
-interface NodeWithChildren extends Node {
-  children: Array<{ type: string; value: string }>;
-  properties?: {
-    className: string[];
-  };
-}
 
 const Post = defineDocumentType(() => ({
   name: "Post",
@@ -50,39 +41,11 @@ const Post = defineDocumentType(() => ({
   },
 }));
 
-/** @type {import('rehype-pretty-code').Options} */
-const options: Options = {
-  theme: "github-dark",
-  keepBackground: true,
-  onVisitLine(node: NodeWithChildren) {
-    if (node.children.length === 0) {
-      node.children = [{ type: "text", value: " " }];
-    }
-  },
-  onVisitHighlightedLine(node: NodeWithChildren) {
-    if (node.properties) {
-      node.properties.className = ["highlighted"];
-    }
-  },
-  onVisitHighlightedWord(node: NodeWithChildren) {
-    if (node.properties) {
-      node.properties.className = ["word"];
-    }
-  },
-};
-
 export default makeSource({
   contentDirPath: "posts",
   documentTypes: [Post],
   mdx: {
-    rehypePlugins: [
-      [
-        rehypePrettyCode,
-        {
-          theme: "github-dark",
-        },
-      ],
-    ],
+    rehypePlugins: [[rehypePrettyCode, { theme: "github-dark" }]],
   },
   disableImportAliasWarning: true,
 });
