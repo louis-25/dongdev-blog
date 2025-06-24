@@ -76,7 +76,7 @@ export default makeSource({
         rehypeToc,
         {
           headings: ["h2", "h3"],
-          position: "before-content",
+          position: "after-start",
           cssClasses: {
             toc: "toc-content",
             link: "toc-link",

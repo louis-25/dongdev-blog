@@ -1,22 +1,25 @@
 "use client";
 
 import { useMDXComponent } from "next-contentlayer/hooks";
-import CopyButton from "./CopyButton";
+import { CopyButton } from "./CopyButton";
 import ThemeSelector from "./ThemeSelector";
+import type { ComponentProps, ReactNode } from "react";
 
 interface MdxProps {
   code: string;
 }
 
-const components = {
-  pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
-    const codeString = children?.toString() || "";
+type MDXComponents = {
+  pre: (props: ComponentProps<"pre">) => JSX.Element;
+};
+
+export const MDXComponents: MDXComponents = {
+  pre: ({ children, ...props }) => {
     return (
-      <div className="group relative">
-        <ThemeSelector />
-        <pre {...props}>{children}</pre>
-        <CopyButton code={codeString} />
-      </div>
+      <pre className="relative" {...props}>
+        <CopyButton>{children}</CopyButton>
+        {children}
+      </pre>
     );
   },
 };
@@ -26,7 +29,7 @@ export function Mdx({ code }: MdxProps) {
 
   return (
     <div className="mdx prose prose-gray dark:prose-invert max-w-none">
-      <Component components={components} />
+      <Component components={MDXComponents} />
     </div>
   );
 }

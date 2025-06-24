@@ -1,42 +1,47 @@
 import { allPosts } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
 import Link from "next/link";
-import {
-  FadeIn,
-  SlideIn,
-  StaggerContainer,
-  StaggerItem,
-} from "./components/animations";
+import { ScrollReveal } from "./components/animations/ScrollReveal";
 
 export default function Home() {
-  const posts = allPosts.sort((a, b) =>
-    compareDesc(new Date(a.date), new Date(b.date))
-  );
+  const posts = allPosts
+    .filter((post) => post.published)
+    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
   return (
     <div className="prose dark:prose-invert">
-      <FadeIn>
-        <h1>DongDev Blog</h1>
-        <p>
-          안녕하세요! 프론트엔드 개발자 DongDev의 블로그입니다. 개발 경험과
-          지식을 공유합니다.
-        </p>
-      </FadeIn>
+      <ScrollReveal>
+        <h1 className="mb-8">블로그</h1>
+      </ScrollReveal>
 
-      <SlideIn delay={0.2}>
-        <h2>최근 포스트</h2>
-        <StaggerContainer>
-          <ul>
-            {posts.map((post) => (
-              <StaggerItem key={post._id}>
-                <li>
-                  <Link href={post.url}>{post.title}</Link>
-                </li>
-              </StaggerItem>
-            ))}
-          </ul>
-        </StaggerContainer>
-      </SlideIn>
+      <div className="space-y-6">
+        {posts.map((post, idx) => (
+          <ScrollReveal key={post._id} delay={idx * 0.1}>
+            <article className="flex flex-col space-y-2">
+              <Link href={post.url} className="no-underline">
+                <h2 className="mb-2">{post.title}</h2>
+              </Link>
+              <p className="text-gray-600 dark:text-gray-400">
+                {post.description}
+              </p>
+              <div className="flex gap-2">
+                {post.tags.map((tag) => (
+                  <Link
+                    key={tag}
+                    href={`/tags/${tag}`}
+                    className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 no-underline"
+                  >
+                    #{tag}
+                  </Link>
+                ))}
+              </div>
+              <time className="text-sm text-gray-500">
+                {post.formattedDate}
+              </time>
+            </article>
+          </ScrollReveal>
+        ))}
+      </div>
     </div>
   );
 }
