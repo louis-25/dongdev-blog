@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,4 +120,37 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Code block styles */
+pre {
+  @apply overflow-x-auto p-4 rounded-lg my-4;
+}
+
+pre > code {
+  @apply grid;
+  counter-reset: line;
+}
+
+pre > code > .line {
+  @apply px-4;
+  counter-increment: line;
+}
+
+pre > code > .line::before {
+  @apply text-gray-500 mr-4;
+  content: counter(line);
+}
+
+pre [data-line-numbers] > .line::before {
+  @apply text-gray-500 mr-4;
+  content: counter(line);
+}
+
+code {
+  @apply text-sm;
+}
+
+:not(pre) > code {
+  @apply text-pink-500 px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-gray-800;
 }

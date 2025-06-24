@@ -1,9 +1,16 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import { format, parseISO } from "date-fns";
+import rehypePrettyCode from "rehype-pretty-code";
+
+/** @type {import('rehype-pretty-code').Options} */
+const options = {
+  theme: "github-dark",
+  keepBackground: true,
+};
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
-  filePathPattern: `*.mdx`,
+  filePathPattern: `**/*.mdx`,
   contentType: "mdx",
   fields: {
     title: {
@@ -25,13 +32,13 @@ export const Post = defineDocumentType(() => ({
     },
     published: {
       type: "boolean",
-      default: true,
+      required: true,
     },
   },
   computedFields: {
     url: {
       type: "string",
-      resolve: (post) => `/posts/${post._raw.flattenedPath}`,
+      resolve: (post) => `/blog/${post._raw.flattenedPath}`,
     },
     formattedDate: {
       type: "string",
@@ -43,4 +50,8 @@ export const Post = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: "posts",
   documentTypes: [Post],
+  mdx: {
+    rehypePlugins: [[rehypePrettyCode, options]],
+  },
+  disableImportAliasWarning: true,
 });

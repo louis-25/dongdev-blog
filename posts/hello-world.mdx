@@ -1,14 +1,46 @@
 ---
-title: "Next.js 블로그 시작하기"
-description: "Next.js와 Contentlayer를 사용하여 개발 블로그를 만들어봅시다."
-date: "2024-03-19"
-tags: ["next.js", "react", "contentlayer"]
+title: Hello World
+description: 첫 번째 블로그 포스트입니다.
+date: 2024-03-19
+tags:
+  - blog
+  - test
 published: true
 ---
 
-# Next.js 블로그 시작하기
+# Hello World
 
-Next.js와 Contentlayer를 사용하여 개발 블로그를 만들어보겠습니다.
+이것은 첫 번째 블로그 포스트입니다.
+
+```typescript
+// 타입스크립트 코드 예제
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+function greet(user: User) {
+  console.log(`Hello, ${user.name}!`);
+}
+
+const user: User = {
+  id: 1,
+  name: "John Doe",
+  email: "john@example.com",
+};
+
+greet(user);
+```
+
+일반 텍스트에서 `인라인 코드`를 사용할 수도 있습니다.
+
+```javascript
+// 자바스크립트 코드 예제
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map((n) => n * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+```
 
 ## 기술 스택
 
