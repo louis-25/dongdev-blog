@@ -1,16 +1,44 @@
 ---
 title: Hello World
-description: 첫 번째 블로그 포스트입니다.
 date: 2024-03-19
-tags:
-  - blog
-  - test
+description: This is my first blog post
+tags: ["blog", "coding"]
 published: true
 ---
 
-# Hello World
+# Welcome to my blog!
 
-이것은 첫 번째 블로그 포스트입니다.
+This is my first blog post using **MDX** with Next.js. Here's a code example:
+
+```typescript showLineNumbers {3-4}
+function greet(name: string) {
+  // Say hello to the user
+  const message = `Hello, ${name}!`;
+  console.log(message);
+  return message;
+}
+```
+
+And here's another example with a different theme:
+
+```python
+def fibonacci(n):
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+
+# Print first 10 Fibonacci numbers
+for i in range(10):
+    print(fibonacci(i))
+```
+
+You can now:
+
+1. Switch between different themes
+2. Copy code blocks
+3. See line numbers
+4. Highlight specific lines
 
 ```typescript
 // 타입스크립트 코드 예제

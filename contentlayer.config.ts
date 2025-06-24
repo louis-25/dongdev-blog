@@ -1,14 +1,17 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import { format, parseISO } from "date-fns";
 import rehypePrettyCode from "rehype-pretty-code";
+import { type Options } from "rehype-pretty-code";
+import { type Node } from "unist";
 
-/** @type {import('rehype-pretty-code').Options} */
-const options = {
-  theme: "github-dark",
-  keepBackground: true,
-};
+interface NodeWithChildren extends Node {
+  children: Array<{ type: string; value: string }>;
+  properties?: {
+    className: string[];
+  };
+}
 
-export const Post = defineDocumentType(() => ({
+const Post = defineDocumentType(() => ({
   name: "Post",
   filePathPattern: `**/*.mdx`,
   contentType: "mdx",
@@ -17,12 +20,12 @@ export const Post = defineDocumentType(() => ({
       type: "string",
       required: true,
     },
-    description: {
-      type: "string",
-      required: true,
-    },
     date: {
       type: "date",
+      required: true,
+    },
+    description: {
+      type: "string",
       required: true,
     },
     tags: {
@@ -47,11 +50,39 @@ export const Post = defineDocumentType(() => ({
   },
 }));
 
+/** @type {import('rehype-pretty-code').Options} */
+const options: Options = {
+  theme: "github-dark",
+  keepBackground: true,
+  onVisitLine(node: NodeWithChildren) {
+    if (node.children.length === 0) {
+      node.children = [{ type: "text", value: " " }];
+    }
+  },
+  onVisitHighlightedLine(node: NodeWithChildren) {
+    if (node.properties) {
+      node.properties.className = ["highlighted"];
+    }
+  },
+  onVisitHighlightedWord(node: NodeWithChildren) {
+    if (node.properties) {
+      node.properties.className = ["word"];
+    }
+  },
+};
+
 export default makeSource({
   contentDirPath: "posts",
   documentTypes: [Post],
   mdx: {
-    rehypePlugins: [[rehypePrettyCode, options]],
+    rehypePlugins: [
+      [
+        rehypePrettyCode,
+        {
+          theme: "github-dark",
+        },
+      ],
+    ],
   },
   disableImportAliasWarning: true,
 });
