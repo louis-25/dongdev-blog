@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { allPosts } from "contentlayer/generated";
-import { Mdx } from "@/app/components/MDXComponents";
+import { useMDXComponent } from "next-contentlayer/hooks";
+import { MDXComponents } from "@/app/components/MDXComponents";
 import { ScrollReveal } from "@/app/components/animations/ScrollReveal";
+import { TagList } from "@/app/components/TagList";
 
 interface PostProps {
   params: {
@@ -22,25 +24,25 @@ export default function Post({ params }: PostProps) {
     notFound();
   }
 
+  const MDXContent = useMDXComponent(post.body.code);
+
   return (
     <article className="prose dark:prose-invert">
       <ScrollReveal>
         <h1 className="mb-2">{post.title}</h1>
-        <div className="flex gap-2 mb-8">
-          {post.tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-sm text-blue-500 dark:text-blue-400"
-            >
-              #{tag}
-            </span>
-          ))}
+        <div className="flex flex-col gap-4 mb-8">
+          <div className="text-sm text-gray-500 dark:text-gray-400">
+            {new Date(post.date).toLocaleDateString("ko-KR", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </div>
+          {post.tags && post.tags.length > 0 && <TagList tags={post.tags} />}
         </div>
-        <time className="text-gray-500">{post.formattedDate}</time>
       </ScrollReveal>
-
-      <ScrollReveal delay={0.2}>
-        <Mdx code={post.body.code} />
+      <ScrollReveal>
+        <MDXContent components={MDXComponents} />
       </ScrollReveal>
     </article>
   );
