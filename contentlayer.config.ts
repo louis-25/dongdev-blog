@@ -46,7 +46,7 @@ const Post = defineDocumentType(() => ({
     tags: {
       type: "list",
       of: { type: "string" },
-      required: true,
+      required: false,
     },
     published: {
       type: "boolean",
@@ -62,6 +62,10 @@ const Post = defineDocumentType(() => ({
       type: "string",
       resolve: (post) => format(parseISO(post.date), "MMMM dd, yyyy"),
     },
+    slugAsParams: {
+      type: "string",
+      resolve: (post) => post._raw.flattenedPath,
+    },
   },
 }));
 
@@ -76,7 +80,7 @@ export default makeSource({
         rehypeToc,
         {
           headings: ["h2", "h3"],
-          position: "after-start",
+          position: "afterbegin",
           cssClasses: {
             toc: "toc-content",
             link: "toc-link",

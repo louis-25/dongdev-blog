@@ -1,35 +1,37 @@
 "use client";
 
+import { Alert, CodeBlock } from "./mdx";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import { CopyButton } from "./CopyButton";
-import ThemeSelector from "./ThemeSelector";
-import type { ComponentProps, ReactNode } from "react";
 
-interface MdxProps {
-  code: string;
-}
+const components = {
+  Alert,
+  pre: ({ children, ...props }: any) => {
+    const child = children as any;
+    const code = child?.props?.children;
+    const language = child?.props?.className?.replace("language-", "");
+    const filename = child?.props?.filename;
 
-type MDXComponents = {
-  pre: (props: ComponentProps<"pre">) => JSX.Element;
-};
+    if (typeof code !== "string") {
+      return <pre {...props}>{children}</pre>;
+    }
 
-export const MDXComponents: MDXComponents = {
-  pre: ({ children, ...props }) => {
     return (
-      <pre className="relative" {...props}>
-        <CopyButton>{children}</CopyButton>
-        {children}
-      </pre>
+      <CodeBlock language={language} filename={filename}>
+        {code}
+      </CodeBlock>
     );
   },
 };
 
-export function Mdx({ code }: MdxProps) {
-  const Component = useMDXComponent(code);
+interface MDXContentProps {
+  code: string;
+}
 
+export function MDXContent({ code }: MDXContentProps) {
+  const Component = useMDXComponent(code);
   return (
     <div className="mdx prose prose-gray dark:prose-invert max-w-none">
-      <Component components={MDXComponents} />
+      <Component components={components} />
     </div>
   );
 }

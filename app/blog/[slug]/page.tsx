@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 import { allPosts } from "contentlayer/generated";
-import { useMDXComponent } from "next-contentlayer/hooks";
-import { MDXComponents } from "@/app/components/MDXComponents";
-import { ScrollReveal } from "@/app/components/animations/ScrollReveal";
-import { TagList } from "@/app/components/TagList";
+import { MDXContent } from "../../components/MDXComponents";
+import { TagList } from "../../components/TagList";
+import { Metadata } from "next";
 
 interface PostProps {
   params: {
@@ -11,39 +10,75 @@ interface PostProps {
   };
 }
 
-export function generateStaticParams() {
+export async function generateMetadata({
+  params,
+}: PostProps): Promise<Metadata> {
+  const post = allPosts.find((post) => post.slugAsParams === params.slug);
+
+  if (!post) {
+    return {};
+  }
+
+  const ogUrl = new URL("/api/og", "https://dongdev-blog.vercel.app");
+  ogUrl.searchParams.set("title", post.title);
+  ogUrl.searchParams.set("description", post.description);
+
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: "article",
+      url: `https://dongdev-blog.vercel.app/blog/${params.slug}`,
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [ogUrl.toString()],
+    },
+  };
+}
+
+export async function generateStaticParams() {
   return allPosts.map((post) => ({
-    slug: post._raw.flattenedPath,
+    slug: post.slugAsParams,
   }));
 }
 
-export default function Post({ params }: PostProps) {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
+export default function PostPage({ params }: PostProps) {
+  const post = allPosts.find((post) => post.slugAsParams === params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const MDXContent = useMDXComponent(post.body.code);
-
   return (
-    <article className="prose dark:prose-invert">
-      <ScrollReveal>
-        <h1 className="mb-2">{post.title}</h1>
-        <div className="flex flex-col gap-4 mb-8">
-          <div className="text-sm text-gray-500 dark:text-gray-400">
+    <article className="py-8 mx-auto max-w-4xl px-4">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+        <div className="text-muted-foreground mb-4">{post.description}</div>
+        <div className="flex items-center justify-between">
+          <TagList tags={post.tags || []} />
+          <time className="text-muted-foreground" dateTime={post.date}>
             {new Date(post.date).toLocaleDateString("ko-KR", {
               year: "numeric",
               month: "long",
               day: "numeric",
             })}
-          </div>
-          {post.tags && post.tags.length > 0 && <TagList tags={post.tags} />}
+          </time>
         </div>
-      </ScrollReveal>
-      <ScrollReveal>
-        <MDXContent components={MDXComponents} />
-      </ScrollReveal>
+      </div>
+      <MDXContent code={post.body.code} />
     </article>
   );
 }
