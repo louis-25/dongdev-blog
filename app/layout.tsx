@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Navigation } from "./components/Navigation";
 import classNames from "classnames";
+import Profile from "./components/Profile";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +33,14 @@ export default function RootLayout({
           <main className="w-fullm-auto px-4">
             {/* <main style={{ maxWidth: "576px", margin: "auto" }}> */}
             <Navigation />
-            {children}
+            <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+              <div className="lg:col-span-3 order-2 lg:order-1">
+                <div className="lg:sticky lg:top-20">
+                  <Profile />
+                </div>
+              </div>
+              <div className="lg:col-span-7 order-1 lg:order-2">{children}</div>
+            </div>
           </main>
         </ThemeProvider>
       </body>
