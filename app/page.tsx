@@ -25,7 +25,7 @@ export default function Home() {
                 {post.description}
               </p>
               <div className="flex gap-2">
-                {post.tags.map((tag) => (
+                {post.tags?.map((tag) => (
                   <Link
                     key={tag}
                     href={`/tags/${tag}`}

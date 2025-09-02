@@ -1,8 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+}
 
 @theme inline {
   --color-background: var(--background);
@@ -42,6 +50,24 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
 :root {
@@ -147,7 +173,7 @@ pre > code > .line.highlighted {
 }
 
 pre > code > .line .word {
-  @apply bg-blue-500/10 p-1 rounded;
+  @apply bg-blue-500/10 p-1 rounded-sm;
 }
 
 code {
@@ -206,5 +232,5 @@ code {
 }
 
 .word {
-  @apply bg-primary/20 rounded px-1;
+  @apply bg-primary/20 rounded-sm px-1;
 }

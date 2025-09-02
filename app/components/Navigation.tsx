@@ -1,37 +1,93 @@
 "use client";
 
 import Link from "next/link";
-import { Rss } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Home, FileText, Tag, Search } from "lucide-react";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { SearchBar } from "./SearchBar";
 
+const navItems = [
+  { href: "/", label: "홈", icon: Home },
+  { href: "/blog", label: "블로그", icon: FileText },
+  { href: "/tags", label: "태그", icon: Tag },
+];
+
 export function Navigation() {
+  const pathname = usePathname();
+
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center">
-        <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="hidden font-bold sm:inline-block">
-              DongDev Blog
-            </span>
-          </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
-            <Link href="/about">About</Link>
-            <Link href="/blog">Blog</Link>
-            <Link href="/tags">Tags</Link>
-            <Link href="/api/feed" className="flex items-center space-x-1">
-              <span>RSS</span>
-              <Rss className="w-4 h-4" />
-            </Link>
-          </nav>
-        </div>
-        <div className="flex flex-1 items-center justify-between space-x-4 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
+    <aside className="-ml-[8px] mb-16 tracking-tight">
+      <div className="lg:sticky lg:top-20">
+        <nav
+          className="flex flex-row items-center justify-between relative px-0 pb-0 fade overflow-hidden md:relative"
+          id="nav"
+        >
+          <div className="flex flex-row space-x-0 pr-10">
+            {navItems.map(({ href, label, icon }) => {
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1 break-keep"
+                >
+                  {label}
+                </Link>
+              );
+            })}
+          </div>
+          {/* 검색바 */}
+          <div className="flex items-center mr-4">
             <SearchBar />
           </div>
           <ThemeSwitch />
-        </div>
+        </nav>
       </div>
-    </nav>
+    </aside>
+    // <nav className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/50">
+    //   <div className="max-w-xl mx-auto px-4 py-3">
+    //     {/* 로고/브랜드 */}
+    //     <div className="flex items-center justify-between mb-4">
+    //       <Link
+    //         href="/"
+    //         className="text-xl font-bold text-foreground hover:text-primary transition-colors"
+    //       >
+    //         DongDev
+    //       </Link>
+    //       <div className="flex items-center gap-2">
+    //         <ThemeSwitch />
+    //       </div>
+    //     </div>
+
+    //     {/* 검색바 */}
+    //     <div className="mb-4">
+    //       <SearchBar />
+    //     </div>
+
+    //     {/* 네비게이션 링크 */}
+    //     <div className="flex items-center justify-center gap-1">
+    //       {navItems.map((item) => {
+    //         const Icon = item.icon;
+    //         const isActive =
+    //           pathname === item.href ||
+    //           (item.href !== "/" && pathname.startsWith(item.href));
+
+    //         return (
+    //           <Link
+    //             key={item.href}
+    //             href={item.href}
+    //             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+    //               isActive
+    //                 ? "bg-primary text-primary-foreground shadow-xs"
+    //                 : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+    //             }`}
+    //           >
+    //             <Icon className="w-4 h-4" />
+    //             <span>{item.label}</span>
+    //           </Link>
+    //         );
+    //       })}
+    //     </div>
+    //   </div>
+    // </nav>
   );
 }

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Navigation } from "./components/Navigation";
+import classNames from "classnames";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +19,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body
+        className={classNames(
+          inter.className,
+          "antialiased max-w-4xl mx-4 mt-8 mx-auto"
+        )}
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navigation />
-          <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <main className="w-fullm-auto px-4">
+            {/* <main style={{ maxWidth: "576px", margin: "auto" }}> */}
+            <Navigation />
             {children}
           </main>
         </ThemeProvider>
