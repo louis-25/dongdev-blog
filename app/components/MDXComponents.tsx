@@ -10,7 +10,6 @@ const components = {
     const code = child?.props?.children;
     const language = child?.props?.className?.replace("language-", "");
     const filename = child?.props?.filename;
-
     if (typeof code !== "string") {
       return <pre {...props}>{children}</pre>;
     }

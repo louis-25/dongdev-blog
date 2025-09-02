@@ -76,17 +76,18 @@ export default makeSource({
     rehypePlugins: [
       [rehypePrettyCode, options],
       rehypeSlug,
-      [
-        rehypeToc,
-        {
-          headings: ["h2", "h3"],
-          position: "afterbegin",
-          cssClasses: {
-            toc: "toc-content",
-            link: "toc-link",
-          },
-        },
-      ],
+      // contentlayer에서 제공하는 rehypeToc
+      // [
+      //   rehypeToc,
+      //   {
+      //     headings: ["h2", "h3"],
+      //     position: "afterbegin",
+      //     cssClasses: {
+      //       toc: "toc-content",
+      //       link: "toc-link",
+      //     },
+      //   },
+      // ],
     ],
   },
   disableImportAliasWarning: true,
