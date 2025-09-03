@@ -150,7 +150,8 @@
 
 /* Code block styles */
 pre {
-  @apply overflow-x-auto p-4 rounded-lg my-4 relative;
+  /* @apply overflow-x-auto p-4 rounded-lg my-4 relative; */
+  @apply rounded-xl border bg-neutral-900 p-4 text-sm leading-relaxed overflow-x-auto;
 }
 
 pre > code {

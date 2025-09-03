@@ -21,6 +21,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@/ui/*": ["./app/components/ui/*"],
       "contentlayer/generated": ["./.contentlayer/generated"]
     }
   },

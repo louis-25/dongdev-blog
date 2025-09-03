@@ -5,8 +5,8 @@ import { ScrollReveal } from "./components/animations/ScrollReveal";
 
 export default function Home() {
   const posts = allPosts
-    .filter((post) => post.published)
-    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+    ?.filter((post) => post.published)
+    ?.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
   return (
     <div className="prose dark:prose-invert">
@@ -15,7 +15,7 @@ export default function Home() {
       </ScrollReveal>
 
       <div className="space-y-6">
-        {posts.map((post, idx) => (
+        {posts?.map((post, idx) => (
           <ScrollReveal key={post._id} delay={idx * 0.1}>
             <article className="flex flex-col space-y-2">
               <Link href={post.url} className="no-underline">

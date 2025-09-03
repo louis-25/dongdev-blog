@@ -56,7 +56,11 @@ const Post = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: "string",
-      resolve: (post) => `/blog/${post._raw.flattenedPath}`,
+      resolve: (post) => {
+        const url = post._raw.flattenedPath.split("/").pop();
+        return `/blog/${url}`;
+      },
+      // resolve: (post) => `/blog/${post._raw.flattenedPath}`,
     },
     formattedDate: {
       type: "string",
@@ -64,7 +68,12 @@ const Post = defineDocumentType(() => ({
     },
     slugAsParams: {
       type: "string",
-      resolve: (post) => post._raw.flattenedPath,
+      // resolve: (post) => post.title,
+      resolve: (post) => {
+        const url = post._raw.flattenedPath.split("/").pop();
+        return url; // 문서명
+        // return post._raw.flattenedPath; // 폴더명 포함 슬러그
+      },
     },
   },
 }));

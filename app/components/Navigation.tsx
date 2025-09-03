@@ -7,9 +7,10 @@ import { ThemeSwitch } from "./ThemeSwitch";
 import { SearchBar } from "./SearchBar";
 
 const navItems = [
-  { href: "/", label: "홈", icon: Home },
-  { href: "/blog", label: "블로그", icon: FileText },
-  { href: "/tags", label: "태그", icon: Tag },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/blog", label: "Blog", icon: FileText },
+  { href: "/about", label: "About", icon: Tag },
+  // { href: "/tags", label: "태그", icon: Tag },
 ];
 
 export function Navigation() {

@@ -49,14 +49,37 @@ export async function generateMetadata({
   };
 }
 
+// 블로그 글 목록 페이지에서 사용
 export async function generateStaticParams() {
-  return allPosts.map((post) => ({
-    slug: post.slugAsParams,
-  }));
+  // console.log("allPosts", allPosts);
+  return allPosts.map((post) => {
+    // console.log("post", post);
+    const {
+      title,
+      slugAsParams,
+      formattedDate,
+      date,
+      tags,
+      description,
+      url,
+      body,
+    } = post;
+    return {
+      slug: url,
+    };
+  });
 }
 
 export default function PostPage({ params }: PostProps) {
-  const post = allPosts.find((post) => post.slugAsParams === params.slug);
+  // const post = allPosts.find((post) => post.slugAsParams === params.slug);
+  const { slug } = params;
+  const text = decodeURIComponent(slug);
+  console.log(
+    "slug",
+    text,
+    allPosts.map((post) => post.slugAsParams)
+  );
+  const post = allPosts.find((post) => post.slugAsParams === text);
 
   if (!post) {
     notFound();

@@ -30,7 +30,7 @@ export default function ThemeSelector() {
       {themes.map((theme) => (
         <Button
           key={theme.value}
-          variant={currentTheme === theme.value ? "default" : "outline-solid"}
+          variant={currentTheme === theme.value ? "default" : "outline"}
           size="sm"
           onClick={() => handleThemeChange(theme.value)}
         >
