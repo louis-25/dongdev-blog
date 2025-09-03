@@ -1,9 +1,14 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
 import { format, parseISO } from "date-fns";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
-import rehypeToc from "rehype-toc";
 import type { Options } from "rehype-pretty-code";
+import rehypeHighlight from "rehype-highlight";
+import rehypeToc from "rehype-toc";
+import rehypeAccessibleEmojis from "rehype-accessible-emojis";
+import remarkGfm from "remark-gfm";
+import { highlight as remarkSugarHigh } from "remark-sugar-high"; // ← 핵심
 
 /** @type {import('rehype-pretty-code').Options} */
 const options: Partial<Options> = {
@@ -42,6 +47,10 @@ const Post = defineDocumentType(() => ({
     description: {
       type: "string",
       required: true,
+    },
+    thumbnail: {
+      type: "string",
+      required: false,
     },
     tags: {
       type: "list",
@@ -82,9 +91,18 @@ export default makeSource({
   contentDirPath: "posts",
   documentTypes: [Post],
   mdx: {
+    // remarkPlugins: [remarkGfm, remarkSugarHigh], // ← sugar-high 적용
     rehypePlugins: [
       [rehypePrettyCode, options],
       rehypeSlug,
+      [
+        rehypeAutolinkHeadings,
+        {
+          properties: {
+            className: ["anchor"],
+          },
+        },
+      ],
       // contentlayer에서 제공하는 rehypeToc
       // [
       //   rehypeToc,

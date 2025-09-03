@@ -34,7 +34,7 @@ const Profile = () => {
         </div>
 
         {/* 메뉴 섹션 */}
-        <nav className="mb-5">
+        {/* <nav className="mb-5">
           <ul className="space-y-1 text-sm">
             <li>
               <Link
@@ -61,13 +61,13 @@ const Profile = () => {
               </Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         {/* 태그 섹션 */}
-        <div>
+        {/* <div>
           <div className="mb-2 text-sm font-medium">태그</div>
           <TagList tags={tags} showCount tagCounts={tagCounts} />
-        </div>
+        </div> */}
       </div>
     </aside>
   );

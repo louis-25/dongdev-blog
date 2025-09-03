@@ -11,7 +11,10 @@
     var(--tw-gradient-stops)
   );
 }
-
+::selection {
+  background-color: #47a3f3;
+  color: #fefefe;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -150,12 +153,13 @@
 
 /* Code block styles */
 pre {
-  /* @apply overflow-x-auto p-4 rounded-lg my-4 relative; */
-  @apply rounded-xl border bg-neutral-900 p-4 text-sm leading-relaxed overflow-x-auto;
+  @apply overflow-x-auto p-4 rounded-lg my-4 relative;
+  /* @apply rounded-xl border bg-neutral-900 p-4 text-sm leading-relaxed overflow-x-auto; */
 }
 
 pre > code {
   @apply grid;
+  /* counter-reset: sh-line-number; */
   counter-reset: line;
 }
 
@@ -172,7 +176,9 @@ pre > code > .line::before {
 pre > code > .line.highlighted {
   @apply bg-blue-500/10 border-l-blue-500;
 }
-
+.anchor {
+  @apply ml-2 text-gray-400 no-underline hover:text-gray-600;
+}
 pre > code > .line .word {
   @apply bg-blue-500/10 p-1 rounded-sm;
 }
@@ -234,4 +240,120 @@ code {
 
 .word {
   @apply bg-primary/20 rounded-sm px-1;
+}
+
+.mdx .anchor {
+  @apply absolute invisible no-underline;
+
+  margin-left: -1em;
+  padding-right: 0.5em;
+  width: 80%;
+  max-width: 700px;
+  cursor: pointer;
+}
+
+.anchor:hover {
+  @apply visible;
+}
+
+.mdx a {
+  @apply underline transition-all decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+}
+
+.mdx .anchor:after {
+  @apply text-neutral-300 dark:text-neutral-700;
+  content: "#";
+}
+
+.mdx *:hover > .anchor {
+  @apply visible;
+}
+
+.mdx pre {
+  @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+}
+
+.mdx code {
+  @apply px-1 py-0.5 rounded-lg;
+}
+
+.mdx pre code {
+  @apply p-0;
+  border: initial;
+  line-height: 1.5;
+}
+
+.mdx code span {
+  @apply font-medium;
+}
+
+.mdx img {
+  /* Don't apply styles to next/image */
+  @apply m-0;
+}
+
+.mdx p {
+  @apply my-4 text-neutral-800 dark:text-neutral-200;
+}
+
+.mdx h1 {
+  @apply text-4xl font-medium tracking-tight mt-6 mb-2;
+}
+
+.mdx h2 {
+  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+}
+
+.mdx h3 {
+  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+}
+
+.mdx h4 {
+  @apply text-lg font-medium tracking-tight mt-6 mb-2;
+}
+
+.mdx strong {
+  @apply font-medium;
+}
+
+.mdx ul {
+  @apply list-disc pl-6;
+}
+
+.mdx ol {
+  @apply list-decimal pl-6;
+}
+
+.mdx > :first-child {
+  /* Override removing top margin, causing layout shift */
+  margin-top: 1.25em !important;
+  margin-bottom: 1.25em !important;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+}
+
+pre {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Remove Safari input shadow on mobile */
+input[type="text"],
+input[type="email"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+table {
+  display: block;
+  max-width: fit-content;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.title {
+  text-wrap: balance;
 }

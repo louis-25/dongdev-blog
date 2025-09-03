@@ -2,6 +2,7 @@
 
 import { Alert, CodeBlock } from "./mdx";
 import { useMDXComponent } from "next-contentlayer/hooks";
+import { highlight } from "sugar-high";
 
 const components = {
   Alert,

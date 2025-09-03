@@ -38,7 +38,7 @@ export default function RootLayout({
               <div className="lg:col-span-3 order-2 lg:order-1">
                 <div className="flex flex-col gap-4">
                   <Profile />
-                  <div className="lg:sticky lg:top-20">
+                  <div className="lg:sticky lg:top-0">
                     <Toc />
                   </div>
                 </div>

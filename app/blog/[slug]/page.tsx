@@ -3,6 +3,7 @@ import { allPosts } from "contentlayer/generated";
 import { MDXContent } from "../../components/MDXComponents";
 import { TagList } from "../../components/TagList";
 import { Metadata } from "next";
+import { MdxImage } from "@/app/components/mdx/MdxImage";
 
 interface PostProps {
   params: {
@@ -102,6 +103,14 @@ export default function PostPage({ params }: PostProps) {
           </time>
         </div>
       </div>
+      {post.thumbnail ? (
+        <MdxImage
+          src={post.thumbnail}
+          alt={post.title}
+          width={1000}
+          height={1000}
+        />
+      ) : null}
       <MDXContent code={post.body.code} />
     </article>
   );
