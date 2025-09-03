@@ -4,6 +4,7 @@ import { MDXContent } from "../../components/MDXComponents";
 import { TagList } from "../../components/TagList";
 import { Metadata } from "next";
 import { MdxImage } from "@/app/components/mdx/MdxImage";
+import CommentWidget from "@/app/components/CommentWidget";
 
 interface PostProps {
   params: {
@@ -107,11 +108,12 @@ export default function PostPage({ params }: PostProps) {
         <MdxImage
           src={post.thumbnail}
           alt={post.title}
-          width={1000}
-          height={1000}
+          width={576}
+          height={300}
         />
       ) : null}
       <MDXContent code={post.body.code} />
+      <CommentWidget />
     </article>
   );
 }
