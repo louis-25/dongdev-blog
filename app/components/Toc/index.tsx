@@ -9,15 +9,17 @@ type TocHeading = {
   text: string;
   level: number; // 2 | 3
 };
-
+// TODO - 스크롤 위치에 맞게 메뉴 매핑하기!
 function useHeadings() {
   const [headings, setHeadings] = useState<TocHeading[]>([]);
   const pathname = usePathname();
 
   useEffect(() => {
     const scan = () => {
+      const container = document.querySelector(".mdx") as HTMLElement | null;
+      const scope: Document | HTMLElement = container ?? document;
       const nodes = Array.from(
-        document.querySelectorAll("h2, h3")
+        scope.querySelectorAll("h2, h3")
       ) as HTMLHeadingElement[];
       const mapped = nodes
         .filter((el) => !!el.id)
@@ -40,7 +42,18 @@ function useActiveId(headings: TocHeading[]) {
   const [activeId, setActiveId] = useState<string>("");
 
   const ids = useMemo(() => headings.map((h) => h.id), [headings]);
-
+  // 활성 항목이 변경될 때, TOC 내에서 보이도록 스크롤
+  useEffect(() => {
+    if (!activeId) return;
+    const link = document.querySelector(
+      `nav[aria-label="Table of contents"] a[href="#${activeId}"]`
+    ) as HTMLAnchorElement | null;
+    link?.scrollIntoView({
+      block: "nearest",
+      inline: "nearest",
+      behavior: "smooth",
+    });
+  }, [activeId]);
   useEffect(() => {
     if (ids.length === 0) return;
     const observer = new IntersectionObserver(

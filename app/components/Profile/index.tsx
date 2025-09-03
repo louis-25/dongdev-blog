@@ -64,10 +64,10 @@ const Profile = () => {
         </nav> */}
 
         {/* 태그 섹션 */}
-        {/* <div>
+        <div>
           <div className="mb-2 text-sm font-medium">태그</div>
           <TagList tags={tags} showCount tagCounts={tagCounts} />
-        </div> */}
+        </div>
       </div>
     </aside>
   );

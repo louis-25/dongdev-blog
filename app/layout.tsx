@@ -38,9 +38,9 @@ export default function RootLayout({
               <div className="lg:col-span-3 order-2 lg:order-1">
                 <div className="flex flex-col gap-4">
                   <Profile />
-                  <div className="lg:sticky lg:top-0">
+                  {/* <div className="lg:sticky lg:top-0">
                     <Toc />
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="lg:col-span-7 order-1 lg:order-2">{children}</div>

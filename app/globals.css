@@ -217,8 +217,40 @@ code {
   @apply bg-[#2e3440];
 }
 
+/* toc 스타일링 */
 .toc-content {
   @apply mb-8 p-4 bg-secondary/50 rounded-lg;
+}
+
+.toc-collapsible {
+  margin: 1rem 0;
+}
+
+.toc-summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+.toc-summary-open-label {
+  display: inline;
+}
+.toc-summary-close-label {
+  display: none;
+}
+
+.toc-collapsible[open] .toc-summary-open-label {
+  display: none;
+}
+.toc-collapsible[open] .toc-summary-close-label {
+  display: inline;
+}
+
+.toc-container {
+  margin-top: 0.5rem;
 }
 
 .toc-content ul {
@@ -231,7 +263,8 @@ code {
 
 .toc-link {
   @apply text-foreground/80 hover:text-primary transition-colors duration-200;
-  @apply no-underline;
+  /* @apply no-underline; */
+  text-decoration: none !important;
 }
 
 .highlighted {

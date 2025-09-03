@@ -30,7 +30,7 @@ interface MDXContentProps {
 export function MDXContent({ code }: MDXContentProps) {
   const Component = useMDXComponent(code);
   return (
-    <div className="mdx prose prose-gray dark:prose-invert max-w-none">
+    <div className="mdx mdx-gray dark:mdx-invert max-w-none">
       <Component components={components} />
     </div>
   );

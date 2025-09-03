@@ -10,6 +10,85 @@ import rehypeAccessibleEmojis from "rehype-accessible-emojis";
 import remarkGfm from "remark-gfm";
 import { highlight as remarkSugarHigh } from "remark-sugar-high"; // ← 핵심
 
+// rehype-toc로 생성된 TOC를 <details><summary>로 감싸 토글 가능하게 만드는 플러그인
+function rehypeWrapTocWithDetails() {
+  return function transformer(tree: any) {
+    const visitNode = (node: any, parent: any) => {
+      if (!node || typeof node !== "object") return;
+      if (node.type === "element") {
+        const classProp = node.properties?.className;
+        const classList = Array.isArray(classProp)
+          ? classProp
+          : typeof classProp === "string"
+          ? classProp.split(/\s+/)
+          : [];
+
+        if (classList.includes("toc-content")) {
+          const summaryNode = {
+            type: "element",
+            tagName: "summary",
+            properties: { className: ["toc-summary"] },
+            children: [
+              {
+                type: "element",
+                tagName: "span",
+                properties: { className: ["toc-summary-open-label"] },
+                children: [{ type: "text", value: "목록 보기" }],
+              },
+              {
+                type: "element",
+                tagName: "span",
+                properties: { className: ["toc-summary-close-label"] },
+                children: [{ type: "text", value: "숨기기" }],
+              },
+            ],
+          } as const;
+
+          const mergedClassName = Array.from(
+            new Set(["toc-collapsible", ...classList])
+          );
+
+          const wrappedNode = {
+            type: "element",
+            tagName: "details",
+            properties: {
+              ...(node.properties || {}),
+              className: mergedClassName,
+            },
+            children: [
+              summaryNode as any,
+              {
+                type: "element",
+                tagName: "div",
+                properties: { className: ["toc-container"] },
+                children: node.children || [],
+              },
+            ],
+          };
+
+          if (parent && Array.isArray(parent.children)) {
+            const index = parent.children.indexOf(node);
+            if (index !== -1) parent.children.splice(index, 1, wrappedNode);
+          } else {
+            // 부모가 없으면 노드 자체를 변환
+            node.tagName = wrappedNode.tagName;
+            node.properties = wrappedNode.properties;
+            node.children = wrappedNode.children;
+          }
+          return; // 현재 노드는 대체되었으므로 하위 방문 중단
+        }
+      }
+
+      if (Array.isArray(node.children)) {
+        // 복사본을 순회하여 안전하게 수정
+        [...node.children].forEach((child) => visitNode(child, node));
+      }
+    };
+
+    visitNode(tree, null);
+  };
+}
+
 /** @type {import('rehype-pretty-code').Options} */
 const options: Partial<Options> = {
   theme: "github-dark",
@@ -104,17 +183,20 @@ export default makeSource({
         },
       ],
       // contentlayer에서 제공하는 rehypeToc
-      // [
-      //   rehypeToc,
-      //   {
-      //     headings: ["h2", "h3"],
-      //     position: "afterbegin",
-      //     cssClasses: {
-      //       toc: "toc-content",
-      //       link: "toc-link",
-      //     },
-      //   },
-      // ],
+      [
+        rehypeToc,
+        {
+          headings: ["h2", "h3"],
+          position: "afterbegin",
+          cssClasses: {
+            toc: "toc-content",
+            list: "toc-list",
+            listItem: "toc-item",
+            link: "toc-link",
+          },
+        },
+      ],
+      rehypeWrapTocWithDetails,
     ],
   },
   disableImportAliasWarning: true,

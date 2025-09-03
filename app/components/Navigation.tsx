@@ -37,9 +37,9 @@ export function Navigation() {
             })}
           </div>
           {/* 검색바 */}
-          <div className="flex items-center mr-4">
+          {/* <div className="flex items-center mr-4">
             <SearchBar />
-          </div>
+          </div> */}
           <ThemeSwitch />
         </nav>
       </div>
