@@ -25,7 +25,7 @@ import {
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 import { Timeline } from "../components/Timeline";
-import { about } from "../data/about";
+import useAbout from "../data/useAbout";
 
 type CareerPoint = { year: number; title: string; value: number };
 type Project = {
@@ -74,6 +74,7 @@ const projects: Project[] = [
 
 function CareerBarGraph({ data }: { data: CareerPoint[] }) {
   const max = useMemo(() => Math.max(...data.map((d) => d.value)), [data]);
+
   return (
     <div className="space-y-3">
       {data.map((d) => {
@@ -105,7 +106,7 @@ function CareerBarGraph({ data }: { data: CareerPoint[] }) {
 export default function AboutPage() {
   const [active, setActive] = useState<string | null>(null);
   const selected = projects.find((p) => p.id === active) ?? null;
-
+  const about = useAbout();
   return (
     <main className="flex min-h-screen flex-col items-center ">
       <article className="w-full max-w-4xl">
@@ -168,20 +169,7 @@ export default function AboutPage() {
                 title: c.title,
                 description: c.description,
                 icon: "milestone",
-                details: (
-                  <>
-                    <p>
-                      Our flagship product combines cutting-edge technology with
-                      sleek design. Built with premium materials, it offers
-                      unparalleled performance and reliability.
-                    </p>
-                    <p>
-                      Key features include advanced processing capabilities, and
-                      an intuitive user interface designed for both beginners
-                      and experts.
-                    </p>
-                  </>
-                ),
+                details: c.details,
               }))}
               className="mt-8"
             />
