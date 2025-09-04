@@ -1,0 +1,205 @@
+---
+date: "2022-05-21"
+title: "React에서 Form태그 사용법"
+tags: ["React", "TypeScript"]
+description: "React에서 Form태그 사용하는법을 정리하는곳"
+published: true
+thumbnail: "/posts/images/react_logo.png"
+---
+
+React에서 Form태그를 사용하는
+
+방법을 정리하는 공간입니다
+
+모든 예제코드는 TypeScript를 기반으로 작성하였습니다
+
+# form태그 예전 사용방식
+
+form태그의 onSubmit 옵션을 사용하여
+
+input에서 전송한 데이터를 전달받을 수 있다
+
+onChange나 onSubmit의 event파라미터의 경우 귀찮지만
+
+아래와 같이 타입을 지정해줘야한다
+
+```typescript
+import React, { FunctionComponent, useState } from "react";
+
+interface TodoListProps {}
+
+const TodoList: FunctionComponent<TodoListProps> = ({}) => {
+  const [toDo, setTodo] = useState("");
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value },
+    } = event;
+    setTodo(value);
+  };
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(toDo);
+  };
+
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <input onChange={onChange} value={toDo} placeholder="값을 입력하세요" />
+        <button>전송</button>
+      </form>
+    </div>
+  );
+};
+
+export default TodoList;
+```
+
+# react-hook-form이란?
+
+react-hook-form은 리액트에서 form으로 작업하기 쉽게 hook들을 만들어놓은 라이브러리로
+
+위와같이 귀찮은 작업들을 간편하게 처리할 수 있게해주므로 애용하도록 하자
+
+리액트의 모든 form작업은 이거 하나면 충분하다
+
+아래의 코드로 설치하여 사용해보자
+
+```typescript
+yarn add react-hook-form
+```
+
+# useForm
+
+useForm훅을 사용하여 form작업을 할 수 있다
+
+아래의 다양한 함수를 통해 확인해보자
+
+## register
+
+register는 input의 옵션으로 등록하여 사용하며
+
+onChange, onBlur, ref 등등 input의 대부분의 이벤트를 처리할 수 있게 해준다
+
+```typescript
+import React, { FunctionComponent } from "react";
+import { useForm } from "react-hook-form";
+
+interface TodoListProps {}
+
+const TodoList: FunctionComponent<TodoListProps> = ({}) => {
+  const { register } = useForm();
+
+  return (
+    <div>
+      <form>
+        <input {...register("toDo")} placeholder="Write" />
+        <button>Add</button>
+      </form>
+    </div>
+  );
+};
+
+export default TodoList;
+```
+
+### register의 다양한 옵션들
+
+required : 필수로 값이 입력되어야한다
+
+pattern : 정규식을 비교하여 에러메세지를 반환해준다
+
+message : 설정된 조건에 맞지않으면 반환하는 에러메세지
+
+## watch
+
+watch는 form의 입력값의 변화를 관측할 수 있게 해주는 함수이다
+
+## handleSubmit
+
+handleSubmit은 유효성검사를 담당하는 함수이다
+
+## formState
+
+form의 상태를 담고있는 함수로 모든 input태그의 데이터의 에러 정보를 보여준다
+
+```typescript
+import React, { FunctionComponent } from "react";
+import { useForm } from "react-hook-form";
+
+interface TodoListProps {}
+
+interface IForm {
+  email: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  password1: string;
+}
+
+const TodoList: FunctionComponent<TodoListProps> = ({}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IForm>({
+    defaultValues: {
+      email: "@naver.com",
+    },
+  });
+  const onValid = (data: any) => {
+    console.log(data);
+  };
+  return (
+    <div>
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={handleSubmit(onValid)}
+      >
+        <input
+          {...register("email", {
+            required: "Email is required", // 값이 비어있으면 안된다
+            pattern: {
+              // 정규식 검사
+              value: /^[A-Za-z0-9._%+-]+@naver.com$/,
+              message: "Only naver.com emails allowed",
+            },
+          })}
+          placeholder="Email"
+        />
+        <span>{errors?.email?.message}</span>
+        <input
+          {...register("firstName", { required: "write here" })}
+          placeholder="First Name"
+        />
+        <span>{errors?.firstName?.message}</span>
+        <input
+          {...register("lastName", { required: "write here" })}
+          placeholder="Last Name"
+        />
+        <span>{errors?.lastName?.message}</span>
+        <input
+          {...register("username", { required: "write here", minLength: 10 })}
+          placeholder="Username"
+        />
+        <span>{errors?.username?.message}</span>
+        <input
+          {...register("password", { required: "write here", minLength: 5 })}
+          placeholder="Password"
+        />
+        <span>{errors?.password?.message}</span>
+        <input
+          {...register("password1", {
+            required: "Password is required",
+          })}
+          placeholder="Password1"
+        />
+        <span>{errors?.password1?.message}</span>
+        <button>Add</button>
+      </form>
+    </div>
+  );
+};
+
+export default TodoList;
+```

@@ -1,0 +1,183 @@
+---
+date: "2022-05-05"
+title: "styled-components"
+tags: ["CSS"]
+description: "styled-components를 사용해보자"
+thumbnail: "/posts/images/styled-components.png"
+published: true
+---
+
+css를 작성하는 방식은 여러가지가 있다
+
+Sass , BEM , CSS Module , CSS in JS 등등 ...
+
+그 중 styled-components는 CSS in JS 라이브러리중 하나로
+
+React로 웹개발 시 스타일링하기 상당히 편한 부분이 있다
+
+왜냐하면 css props 기능이 제공되어 복잡한 스타일링을
+
+보다 간편하게 할 수 있기 때문이다.
+
+# css컴포넌트에 props값 전달해보기
+
+```typescript
+import styled from "styled-components";
+
+const Father = styled.div`
+  display: flex;
+`;
+
+const Box = styled.div`
+  background: ${(props) => props.bgColor}; // props값을 가져와 사용할 수 있다
+  width: 100px;
+  height: 100px;
+`;
+
+const Circle = styled(Box)`
+  // 만들어 놓은 Box컴포넌트를 재사용 할 수 있다
+  border-radius: 50px;
+`;
+
+function App() {
+  return (
+    <Father>
+      <Box bgColor="teal"></Box>
+      <Circle bgColor="tomato"></Circle>
+    </Father>
+  );
+}
+
+export default App;
+```
+
+# as 속성
+
+컴포넌트에 **as** 속성을 부여하면
+
+원하는 태그로 변경이 가능하다
+
+```typescript
+import styled from "styled-components";
+
+const Father = styled.div`
+  display: flex;
+`;
+
+const Btn = styled.button`
+  color: white;
+  background-color: tomato;
+  border: 0;
+  border-radius: 15px;
+`;
+
+function App() {
+  return (
+    <Father>
+      <Btn>Log in</Btn>
+      <Btn as="a" href="/">
+        Log in
+      </Btn>
+    </Father>
+  );
+}
+
+export default App;
+```
+
+# attrs 속성
+
+```typescript
+import styled from "styled-components";
+
+const Father = styled.div`
+  display: flex;
+`;
+
+// attrs속성을 사용하면
+// 모든 Input 컴포넌트에 속성값이 적용된다
+const Input = styled.input.attrs({ required: true, minLength: 10 })`
+  background-color: tomato;
+`;
+
+function App() {
+  return (
+    <Father>
+      <Input></Input>
+      <Input></Input>
+      <Input></Input>
+      <Input></Input>
+    </Father>
+  );
+}
+
+export default App;
+```
+
+# keyframes 애니메이션
+
+styled-components의 keyframes를 사용해보자
+
+```typescript
+import styled, { keyframes } from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const rotationAnimation = keyframes`
+  0% { // 처음
+    transform: rotate(0deg);
+    border-radius: 0px;
+  }
+  50% { // 중간
+    border-radius: 100px;
+  }
+  100% { // 끝
+    transform: rotate(360deg);
+    border-radius: 0px;
+  }
+`;
+
+const Box = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: tomato;
+  animation: ${rotationAnimation} 1s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 36px;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      // 마우스 올린상태
+      font-size: 80px;
+    }
+    &:active {
+      // 클릭한 상태
+      opacity: 0;
+    }
+  }
+`;
+
+function App() {
+  return (
+    <Wrapper>
+      <Box>
+        <span>😀</span>
+      </Box>
+    </Wrapper>
+  );
+}
+
+export default App;
+```
+
+![keyframes.gif](/posts/images/keyframes.gif)
+
+# styled-components 자동완성
+
+vscode 익스텐션에서
+
+vscode-styled-components 를 받으면 적용된다

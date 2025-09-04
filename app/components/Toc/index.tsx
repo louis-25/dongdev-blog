@@ -19,7 +19,7 @@ function useHeadings() {
       const container = document.querySelector(".mdx") as HTMLElement | null;
       const scope: Document | HTMLElement = container ?? document;
       const nodes = Array.from(
-        scope.querySelectorAll("h2, h3")
+        scope.querySelectorAll("h1, h2, h3")
       ) as HTMLHeadingElement[];
       const mapped = nodes
         .filter((el) => !!el.id)

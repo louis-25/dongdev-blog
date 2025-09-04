@@ -1,0 +1,77 @@
+---
+date: "2022-05-15"
+title: "ApexCharts.js로 차트 그려보기"
+tags: ["React"]
+description: "ApexCharts.js라이브러리를 사용하여 React에서 차트를 그려보자"
+published: true
+thumbnail: "/posts/images/apexcharts-react.png"
+---
+
+# ApexCharts.js란?
+
+ApexCharts.js는 차트를 그려주는 자바스크립트 라이브러리다
+
+이것을 사용하여 리액트에서 차트를 그려보자
+
+# 사용법
+
+우선은 아래의 코드로 apexcharts를 설치해주자
+
+```typescript
+npm install --save react-apexcharts apexcharts
+```
+
+아래와같이 간단하게 사용해볼 수 있다
+
+```typescript
+import React, { FunctionComponent } from "react";
+import ApexCharts from "react-apexcharts";
+
+interface ChartsProps {
+  coinId: string;
+}
+
+const Chart: FunctionComponent<ChartsProps> = ({ coinId }) => {
+  return (
+    <div>
+      <ApexCharts
+        type="line"
+        series={[
+          {
+            name: "hello",
+            data: [1, 2, 3, 4, 5, 6],
+          },
+          {
+            name: "sales",
+            data: [15, 16, 17, 15, 10, 2],
+          },
+        ]}
+        options={{
+          chart: {
+            height: 500,
+            width: 500,
+          },
+        }}
+      ></ApexCharts>
+    </div>
+  );
+};
+
+export default Chart;
+```
+
+<img
+  src="/posts/images/charts-example.PNG"
+  alt="charts-example"
+  class="rounded-xl shadow-lg mx-auto w-full"
+/>
+
+다양한 옵션이 존재하고
+
+커스터마이징이 가능하니
+
+자세한 정보는
+
+아래의 사이트를 참조하자
+
+https://apexcharts.com/

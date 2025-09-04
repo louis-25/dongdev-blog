@@ -1,0 +1,114 @@
+---
+date: "2022-05-18"
+title: "Recoil로 상태관리하기"
+tags: ["React"]
+description: "Recoil을 사용하여 상태관리를 해보자"
+published: true
+thumbnail: "/posts/images/recoil_title.png"
+---
+
+# Recoil이란?
+
+Recoil은 Facebook에서 만든 상태관리 라이브러리로
+
+Redux보다 상대적으로 사용하기 간편하다
+
+# 사용법
+
+우선 아래의 코드를 실행하여 Recoil을 설치하자
+
+```typescript
+yarn add recoil
+```
+
+# RecoilRoot
+
+상위 컴포넌트에서 RecoilRoot로 한번 감싸줘야
+
+하위 모든 컴포넌트에서 리코일을 사용하여 상태관리를 할 수 있다
+
+```typescript
+/* index.tsx */
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { RecoilRoot } from "recoil";
+import App from "./App";
+
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+root.render(
+  <React.StrictMode>
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
+  </React.StrictMode>
+);
+```
+
+# atoms.ts
+
+Recoil의 atom은 React의 state를 저장하는 단위라고 생각하면 된다
+
+atoms.ts는 하나 만들어두면 아래와 같이 여러가지
+
+atom을 관리하는 저장소로 사용하기 좋다
+
+```typescript
+/* atoms.ts */
+import { atom } from "recoil";
+
+export const isDarkAtom = atom({
+  key: "isDark", // state에 부여할 key값
+  default: true, // state의 초기값
+});
+```
+
+아래 Recoil의 다양한 Hook을 사용하여 atoms.ts의 atom에 접근하고
+
+값을 얻거나 수정하며 상태관리를 할 수 있다.
+
+# useRecoilValue
+
+저장소에서 값을 가져오는 역할
+
+```typescript
+import { useRecoilValue } from "recoil";
+
+const isDark = useRecoilValue(isDarkAtom); // atoms.ts에 저장된 값을 가져온다
+```
+
+# useSetRecoilState
+
+저장소의 값을 세팅해주는 역할
+
+useState의 setState함수처럼 사용하면 된다
+
+```typescript
+import { useSetRecoilState } from "recoil";
+
+const setterFn = useSetRecoilState(isDarkAtom); // 값을 세팅해주는 함수를 가져온다
+const toggleDarkAtom = () => setDarkAtom((prev) => !prev); // 현재 상태와 반대되는 값으로 세팅
+<button onClick={toggleDarkAtom}>Toggle Dark Mode</button>;
+```
+
+# useRecoilState
+
+useRecoilState는 위의 두 함수 useRecoilValue와 useSetRecoilState를 한번에 세팅하고 싶을때 사용하면 된다
+
+두가지 방식중 편한거로 사용하자
+
+```typescript
+const toDoState = atom({
+  key: "toDo",
+  default: [],
+});
+
+// 1. 한번에 호출하는 방식
+const [value, modFn] = useRecoilState(toDoState);
+
+// 2. 따로따로 호출하는 방식
+const value = useRecoilValue(toDoState);
+const modFn = useSetRecoilState(toDoState);
+```

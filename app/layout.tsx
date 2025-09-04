@@ -27,7 +27,7 @@ export default function RootLayout({
       <body
         className={classNames(
           inter.className,
-          "antialiased max-w-4xl mx-4 mt-8 mx-auto"
+          "antialiased max-w-4xl mx-4 mt-8 mb-8 mx-auto"
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -36,14 +36,16 @@ export default function RootLayout({
             <Navigation />
             <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
               <div className="lg:col-span-3 order-2 lg:order-1">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 caret-none">
                   <Profile />
                   {/* <div className="lg:sticky lg:top-0">
                     <Toc />
                   </div> */}
                 </div>
               </div>
-              <div className="lg:col-span-7 order-1 lg:order-2">{children}</div>
+              <div className="lg:col-span-7 order-1 lg:order-2 caret-none">
+                {children}
+              </div>
             </div>
           </main>
         </ThemeProvider>

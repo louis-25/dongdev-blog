@@ -1,0 +1,94 @@
+---
+date: "2022-05-10"
+title: "URL로 탭기능 구현하기"
+tags: ["React"]
+description: "react-router의 Link와 Route를 사용하여 탭기능을 구현해보자"
+published: true
+thumbnail: "/posts/images/react-router-v6.jpg"
+---
+
+react-route 의 Link와 Route를 사용하여
+
+각 URL별로 원하는 컴포넌트를 보여주는
+
+탭을 만들어줄 수 있다
+
+아래의 코드를 확인해보자
+
+```typescript
+/* Router.tsx */
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Mart from "./routes/Mart";
+
+function Router() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Mart />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+export default Router;
+```
+
+```typescript
+/* App.tsx */
+import React from "react";
+import Router from "./Router";
+
+function App() {
+  return (
+    <>
+      <Router></Router>
+    </>
+  );
+}
+
+export default App;
+```
+
+```typescript
+/* Mart.tsx */
+import React, { FunctionComponet } from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import Apple from "./Apple";
+import Banana from "./Banana";
+
+const Mart: FunctionComponent = () => {
+  return (
+    <>
+      <Link to="/apple">Chart</Link>
+      <Link to="/banana">Price</Link>
+      <Routes>
+        <Route path="/price" element={<Apple />}></Route>
+        <Route path="/chart" element={<Banana />}></Route>
+      </Routes>
+    </>
+  );
+};
+
+export default Mart;
+```
+
+```typescript
+/* Apple.tsx */
+import React, { FunctionComponent } from "react";
+
+const Apple: FunctionComponent = () => {
+  return <h1>Price</h1>;
+};
+
+export default Apple;
+```
+
+```typescript
+/* Banana.tsx */
+import React, { FunctionComponent } from "react";
+
+const Price: FunctionComponent = () => {
+  return <h1>Banana</h1>;
+};
+
+export default Banana;
+```
