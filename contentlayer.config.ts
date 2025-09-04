@@ -87,7 +87,7 @@ function rehypeWrapTocWithDetails() {
 
 /** @type {import('rehype-pretty-code').Options} */
 const options: Partial<Options> = {
-  theme: "github-dark",
+  theme: "dark-plus",
   keepBackground: true,
   onVisitLine(node) {
     if (node.children.length === 0) {
