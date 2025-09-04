@@ -4,11 +4,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import type { Options } from "rehype-pretty-code";
-import rehypeHighlight from "rehype-highlight";
 import rehypeToc from "rehype-toc";
-import rehypeAccessibleEmojis from "rehype-accessible-emojis";
-import remarkGfm from "remark-gfm";
-import { highlight as remarkSugarHigh } from "remark-sugar-high"; // ← 핵심
 
 // rehype-toc로 생성된 TOC를 <details><summary>로 감싸 토글 가능하게 만드는 플러그인
 function rehypeWrapTocWithDetails() {
