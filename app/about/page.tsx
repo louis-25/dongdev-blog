@@ -24,7 +24,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/app/components/ui/dialog";
-import { Timeline } from "../components/ui/timeline";
+import { Timeline } from "../components/Timeline";
+import { about } from "../data/about";
 
 type CareerPoint = { year: number; title: string; value: number };
 type Project = {
@@ -142,17 +143,7 @@ export default function AboutPage() {
                 <CardDescription>주요 기술 스택</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-2">
-                {[
-                  "React",
-                  "Next.js",
-                  "TypeScript",
-                  "Tailwind CSS",
-                  "Node.js",
-                  "Express",
-                  "MongoDB",
-                  "PostgreSQL",
-                  "Docker",
-                ].map((t) => (
+                {about.skills.list.map((t) => (
                   <Badge key={t} variant="secondary">
                     {t}
                   </Badge>
@@ -162,7 +153,7 @@ export default function AboutPage() {
           </TabsContent>
 
           <TabsContent value="career">
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Career</CardTitle>
                 <CardDescription>연도별 이력 그래프</CardDescription>
@@ -170,15 +161,29 @@ export default function AboutPage() {
               <CardContent>
                 <CareerBarGraph data={career} />
               </CardContent>
-            </Card>
+            </Card> */}
             <Timeline
-              items={career.map((c) => ({
-                date: c.year.toString(),
+              items={about.career.details.map((c) => ({
+                date: c.date,
                 title: c.title,
-                description: c.value.toString(),
+                description: c.description,
                 icon: "milestone",
-                details: c.value.toString(),
+                details: (
+                  <>
+                    <p>
+                      Our flagship product combines cutting-edge technology with
+                      sleek design. Built with premium materials, it offers
+                      unparalleled performance and reliability.
+                    </p>
+                    <p>
+                      Key features include advanced processing capabilities, and
+                      an intuitive user interface designed for both beginners
+                      and experts.
+                    </p>
+                  </>
+                ),
               }))}
+              className="mt-8"
             />
           </TabsContent>
 

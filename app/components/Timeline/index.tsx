@@ -15,6 +15,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/ui/accordion";
+import { cn } from "@/app/lib/utils";
 
 export type TimelineIconType =
   | "info"
@@ -35,6 +36,7 @@ export interface TimelineItemProps {
 
 export interface TimelineProps {
   items: TimelineItemProps[];
+  className?: string; // 컨테이너 css 클래스
   /** 마지막 아이템 아래 라인을 끊을지 여부 (기본값: true) */
   cutLineAtEnd?: boolean;
 }
@@ -166,7 +168,7 @@ function TimelineItem({
                 <AccordionTrigger className="text-sm sm:text-base pt-0 hover:no-underline items-center cursor-pointer">
                   {defaultInfo()}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-gray-600 dark:text-gray-400">
+                <AccordionContent className="text-sm text-gray-600 dark:text-gray-400 text-balance">
                   {details}
                 </AccordionContent>
               </AccordionItem>
@@ -180,9 +182,13 @@ function TimelineItem({
   );
 }
 
-export function Timeline({ items, cutLineAtEnd = true }: TimelineProps) {
+export function Timeline({
+  items,
+  cutLineAtEnd = true,
+  className,
+}: TimelineProps) {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className={cn("container mx-auto", className)}>
       <div className="relative">
         {items.map((item, idx) => (
           <TimelineItem
