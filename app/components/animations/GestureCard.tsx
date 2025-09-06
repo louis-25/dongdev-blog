@@ -21,8 +21,10 @@ export const GestureCard = ({
 
   return (
     <motion.div
-      className={`relative cursor-grab active:cursor-grabbing touch-none ${className}`}
+      className={`relative cursor-grab active:cursor-grabbing touch-none transform-gpu will-change-transform ${className}`}
       animate={controls}
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20, mass: 0.2 }}
       {...gestureProps}
     >
       {children}

@@ -12,7 +12,7 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/ui/pagination";
-import { TechKey } from "../utils/SkillPicker";
+import { TechKey } from "@/app/utils/SkillPicker";
 
 export default async function BlogPage({
   searchParams,
@@ -40,7 +40,7 @@ export default async function BlogPage({
     <div className="dark:prose-invert">
       <h1 className="text-3xl font-bold mb-8">Blog Posts</h1>
 
-      <div className="space-y-4">
+      <div className="space-y-4 transition-colors ">
         {paginatedPosts?.map((post, idx) => (
           <GestureCard
             key={post._id}

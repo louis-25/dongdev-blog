@@ -1,14 +1,21 @@
 import Link from "next/link";
+import Hero from "./components/Hero";
+import ParticlesBanner from "./components/ParticlesBanner";
 
 export default function Home() {
   return (
     <>
       <main className="mx-auto max-w-3xl">
-        <h1 className="text-3xl font-bold tracking-tight">Dongdev 블로그</h1>
-        <p className="mt-4 text-muted-foreground">
-          프론트엔드, 웹 애니메이션, 성능 최적화, 개발 생산성에 관한 글을
-          기록하는 공간입니다. 실무에서 얻은 인사이트와 시행착오를 바탕으로,
-          다시 찾고 싶어지는 문서를 지향합니다.
+        {/* <Hero /> */}
+
+        <ParticlesBanner />
+
+        <p className="mt-4 text-muted-foreground text-center">
+          웹개발에 관한 글을 기록하는 공간입니다.
+          <br />
+          실무에서 얻은 인사이트와 시행착오를 바탕으로, 글을 작성하며
+          <br />
+          매번 새로운 지식을 습득하고 있습니다.
         </p>
 
         <section className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -16,7 +23,7 @@ export default function Home() {
             <div>
               <h2 className="text-lg font-semibold">최신 글 모아보기</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                가장 최근에 발행된 글을 한눈에 확인해 보세요.
+                최근에 발행된 글을 한눈에 확인해 보세요.
               </p>
             </div>
             <Link
