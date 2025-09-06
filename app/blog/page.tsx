@@ -48,7 +48,7 @@ export default async function BlogPage({
             <article>
               <Link
                 href={post.url}
-                className="flex justify-between flex-row items-center w-full"
+                className="flex justify-between flex-row items-center w-full gap-10"
               >
                 <div>
                   <h2 className="font-semibold mb-2">{post.title}</h2>

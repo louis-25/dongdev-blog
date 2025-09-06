@@ -6,6 +6,8 @@ import { Navigation } from "./components/Navigation";
 import classNames from "classnames";
 import Profile from "./components/Profile";
 import Toc from "./components/Toc";
+import ScrollToTop from "./utils/scrollToTop";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +32,9 @@ export default function RootLayout({
           "antialiased max-w-4xl mx-4 mt-8 mb-8 mx-auto"
         )}
       >
+        <Suspense fallback={null}>
+          <ScrollToTop />
+        </Suspense>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <main className="w-fullm-auto px-4">
             {/* <main style={{ maxWidth: "576px", margin: "auto" }}> */}

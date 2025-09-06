@@ -1,5 +1,6 @@
 import { allPosts } from "contentlayer/generated";
 import { TagList } from "../components/TagList";
+import { TechKey } from "../utils/SkillPicker";
 
 export default function TagsPage() {
   const tagCounts = allPosts
@@ -10,7 +11,7 @@ export default function TagsPage() {
       return acc;
     }, {} as Record<string, number>);
 
-  const tags = Object.keys(tagCounts).sort();
+  const tags = Object.keys(tagCounts).sort() as TechKey[];
 
   return (
     <div className="prose dark:prose-invert">

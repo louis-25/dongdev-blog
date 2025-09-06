@@ -3,6 +3,7 @@ import { compareDesc } from "date-fns";
 import { notFound } from "next/navigation";
 import { TagList } from "@/app/components/TagList";
 import { InteractiveLink } from "@/app/components/ui/interactive";
+import { TechKey } from "@/app/utils/SkillPicker";
 
 interface TagPageProps {
   params: {
@@ -20,7 +21,7 @@ export function generateStaticParams() {
 
 export default function TagPage({ params }: TagPageProps) {
   const { tag } = params;
-  const decodedTag = decodeURIComponent(tag);
+  const decodedTag = decodeURIComponent(tag) as TechKey;
 
   const posts = allPosts
     .filter((post) => post.published && post.tags?.includes(decodedTag))
@@ -32,12 +33,26 @@ export default function TagPage({ params }: TagPageProps) {
 
   const allTags = Array.from(
     new Set(allPosts.flatMap((post) => post.tags || []))
-  ).sort();
-
+  ).sort() as TechKey[];
+  const tagCounts: Record<string, number> = {};
+  for (const post of allPosts) {
+    const tags = (post.tags as TechKey[] | undefined) ?? [];
+    for (const tag of tags) {
+      tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
+    }
+  }
   return (
     <div className="prose dark:prose-invert">
-      <h1 className="mb-4">태그: {decodedTag}</h1>
-      <TagList tags={allTags} selectedTag={decodedTag} className="mb-8" />
+      {/* <h1 className="mb-4">태그: {decodedTag}</h1> */}
+      <h1 className="text-3xl font-bold mb-4">Tags</h1>
+      {/* <TechTags tags={allTags} size="sm" selectedTag={decodedTag} /> */}
+      <TagList
+        tags={allTags}
+        selectedTag={decodedTag}
+        className="mb-8"
+        showCount
+        tagCounts={tagCounts}
+      />
       <div className="space-y-6">
         {posts.map((post) => (
           <InteractiveLink

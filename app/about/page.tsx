@@ -170,6 +170,7 @@ export default function AboutPage() {
                 description: c.description,
                 icon: "milestone",
                 details: c.details,
+                skills: c.skills,
               }))}
               className="mt-8"
             />

@@ -16,6 +16,8 @@ import {
   AccordionTrigger,
 } from "@/ui/accordion";
 import { cn } from "@/app/lib/utils";
+import { TechKey } from "@/app/utils/SkillPicker";
+import { TagList } from "../TagList";
 
 export type TimelineIconType =
   | "info"
@@ -29,7 +31,7 @@ export interface TimelineItemProps {
   title: string;
   description: string;
   icon?: TimelineIconType;
-
+  skills?: TechKey[];
   /** 우측에 렌더될 세부 항목(아코디언). 없으면 표시하지 않음 */
   details?: React.ReactNode;
 }
@@ -92,6 +94,7 @@ function TimelineItem({
   title,
   description,
   icon = "info",
+  skills,
   isFirst,
   isLast,
   cutLineAtEnd,
@@ -122,9 +125,10 @@ function TimelineItem({
         >
           {title}
         </h3>
-        <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-400">
+        <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-400 break-keep">
           {description}
         </p>
+        {skills && <TagList tags={skills} isClickable={false} />}
       </div>
     );
   };
@@ -188,7 +192,7 @@ export function Timeline({
   className,
 }: TimelineProps) {
   return (
-    <div className={cn("container mx-auto", className)}>
+    <div className={cn("", className)}>
       <div className="relative">
         {items.map((item, idx) => (
           <TimelineItem

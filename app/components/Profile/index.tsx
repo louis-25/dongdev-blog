@@ -1,16 +1,18 @@
-import Link from "next/link";
 import { allPosts } from "contentlayer/generated";
 import { TagList } from "../TagList";
+import { TechKey } from "@/app/utils/SkillPicker";
 
 function getTagsWithCounts() {
   const tagCounts: Record<string, number> = {};
   for (const post of allPosts) {
-    const tags = (post.tags as string[] | undefined) ?? [];
+    const tags = (post.tags as TechKey[] | undefined) ?? [];
     for (const tag of tags) {
       tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
     }
   }
-  const tags = Object.keys(tagCounts).sort((a, b) => a.localeCompare(b));
+  const tags = Object.keys(tagCounts).sort((a, b) =>
+    a.localeCompare(b)
+  ) as TechKey[];
   return { tags, tagCounts };
 }
 
@@ -65,7 +67,7 @@ const Profile = () => {
 
         {/* 태그 섹션 */}
         <div>
-          <div className="mb-2 text-sm font-medium">태그</div>
+          <div className="mb-2 text-sm font-medium">Tags</div>
           <TagList tags={tags} showCount tagCounts={tagCounts} />
         </div>
       </div>
