@@ -337,12 +337,6 @@ export const TECHS = {
     Icon: NextLogo,
     href: "https://nextjs.org",
   },
-  // vite: {
-  //   label: "Vite",
-  //   className: "bg-[#F0F7FF] text-[#3178C6] border border-[#CFE2FF]",
-  //   Icon: ViteLogo,
-  //   href: "https://www.vite.dev",
-  // },
   html: {
     label: "HTML",
     className: "bg-[#F0F7FF] text-[#3178C6] border border-[#CFE2FF]",

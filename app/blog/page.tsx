@@ -12,6 +12,7 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/ui/pagination";
+import { TechKey } from "../utils/SkillPicker";
 
 export default async function BlogPage({
   searchParams,
@@ -56,7 +57,7 @@ export default async function BlogPage({
                     {post.description}
                   </p>
                   <div className="flex gap-2 mt-2">
-                    <TagList tags={post?.tags || []} />
+                    <TagList tags={post?.tags as TechKey[]} />
                     {/* {post.tags?.map((tag) => (
                   <Link
                     key={tag}

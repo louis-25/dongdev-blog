@@ -5,6 +5,7 @@ import { TagList } from "../../components/TagList";
 import { Metadata } from "next";
 import { MdxImage } from "@/app/components/mdx/MdxImage";
 import CommentWidget from "@/app/components/CommentWidget";
+import { TechKey } from "@/app/utils/SkillPicker";
 
 interface PostProps {
   params: {
@@ -89,12 +90,12 @@ export default function PostPage({ params }: PostProps) {
 
   return (
     // <article className="py-8 mx-auto max-w-4xl px-4">
-    <article className="w-xl m-auto">
+    <article className="w-full m-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
         <div className="text-muted-foreground mb-4">{post.description}</div>
         <div className="flex items-center justify-between">
-          <TagList tags={post.tags || []} />
+          <TagList tags={(post.tags as TechKey[]) || []} />
           <time className="text-muted-foreground" dateTime={post.date}>
             {new Date(post.date).toLocaleDateString("ko-KR", {
               year: "numeric",
