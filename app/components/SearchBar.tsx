@@ -5,6 +5,7 @@ import { allPosts } from "contentlayer/generated";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TagList } from "./TagList";
+import { TechKey } from "../utils/SkillPicker";
 
 interface SearchResult {
   title: string;
@@ -111,7 +112,7 @@ export function SearchBar() {
                   <p className="text-muted-foreground text-sm mb-2">
                     {result.description}
                   </p>
-                  {result.tags && <TagList tags={result.tags} />}
+                  {result.tags && <TagList tags={result?.tags as TechKey[]} />}
                 </Link>
               ))}
             </div>
