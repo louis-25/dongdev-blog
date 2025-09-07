@@ -21,10 +21,9 @@ export function Tag({
   isClickable = true,
 }: TagProps) {
   const router = useRouter();
-  const lowerName = name.toLowerCase();
+  const lowerName = name.toLowerCase().replace(".", "");
   const tech = TECHS[lowerName as TechKey];
   return (
-    // <Link href={`/tags/${name}`}>
     <motion.span
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -43,11 +42,11 @@ export function Tag({
       } hover:bg-opacity-90 transition-colors ${className}`}
     >
       {tech?.Icon && <tech.Icon className="w-4 h-4 mr-2" />}
-      {name}
+      {/* {name} */}
+      {tech?.label || name}
       {count !== undefined && (
         <span className="ml-2 text-xs opacity-70">({count})</span>
       )}
     </motion.span>
-    // </Link>
   );
 }

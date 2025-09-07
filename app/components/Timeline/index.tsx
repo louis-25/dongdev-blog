@@ -128,7 +128,11 @@ function TimelineItem({
         <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-400 break-keep">
           {description}
         </p>
-        {skills && <TagList tags={skills} isClickable={false} />}
+        {skills && (
+          <div className="mt-2">
+            <TagList tags={skills} isClickable={false} />
+          </div>
+        )}
       </div>
     );
   };
