@@ -9,6 +9,7 @@ const Fasoo2024 = (): TimelineItemProps[] => [
     title: "다국어 관리",
     description: "GoogleSheet API를 연동한 다국어 관리 개발",
     icon: "milestone",
+    skills: ["googlesheets"],
     details: (
       <div className="flex flex-col gap-4">
         <Image

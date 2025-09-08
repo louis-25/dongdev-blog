@@ -1,6 +1,7 @@
 "use client";
 
 import { Globe, MailIcon, NotepadText, Play } from "lucide-react";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 
 export type IconType =
@@ -27,6 +28,7 @@ export const IconPicker = ({
   height = 24,
 }: IconProps) => {
   const props = { className };
+  const { theme } = useTheme();
   switch (icon) {
     case "post":
       return <NotepadText {...props} />;
@@ -36,13 +38,18 @@ export const IconPicker = ({
       return <Play {...props} />;
     case "github":
       return (
-        <Image
-          src="/icons/github.svg"
-          alt="GitHub"
-          {...props}
-          width={width}
-          height={height}
-        />
+        <div
+          style={{ width, height }}
+          className="relative rounded-full bg-white"
+        >
+          <Image
+            src="/icons/github.svg"
+            alt="GitHub"
+            {...props}
+            fill
+            style={{ objectFit: "contain" }}
+          />
+        </div>
       );
     case "googlePlay":
       return (

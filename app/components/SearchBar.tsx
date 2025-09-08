@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
 import { allPosts } from "contentlayer/generated";
@@ -20,6 +22,7 @@ export function SearchBar() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const search = useCallback((searchQuery: string) => {
     if (!searchQuery.trim()) {
@@ -64,6 +67,21 @@ export function SearchBar() {
     search(query);
   }, [query, search]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && results.length > 0) {
       router.push(results[0].url);
@@ -73,7 +91,7 @@ export function SearchBar() {
   };
 
   return (
-    <div className="relative w-full max-w-xl items-center">
+    <div ref={containerRef} className="relative w-full max-w-xl items-center">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
@@ -83,6 +101,7 @@ export function SearchBar() {
             setQuery(e.target.value);
             setIsOpen(true);
           }}
+          onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder="Search posts..."
           className="w-full pl-10 pr-4 py-2 rounded-lg bg-background border focus:outline-hidden focus:ring-2 focus:ring-primary"
@@ -90,31 +109,41 @@ export function SearchBar() {
       </div>
 
       <AnimatePresence>
-        {isOpen && results.length > 0 && (
+        {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full left-0 right-0 mt-2 bg-card rounded-lg shadow-lg overflow-hidden z-50"
+            className="absolute top-full left-0 right-0 mt-2 bg-card rounded-lg shadow-lg z-[9999] border"
           >
-            <div className="max-h-96 overflow-y-auto">
-              {results.map((result, index) => (
-                <Link
-                  key={result.url}
-                  href={result.url}
-                  onClick={() => {
-                    setIsOpen(false);
-                    setQuery("");
-                  }}
-                  className="block p-4 hover:bg-muted transition-colors"
-                >
-                  <h3 className="text-lg font-semibold mb-1">{result.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-2">
-                    {result.description}
-                  </p>
-                  {result.tags && <TagList tags={result?.tags as TechKey[]} />}
-                </Link>
-              ))}
+            <div className="max-h-96 overflow-y-auto z-[9999]">
+              {results.length === 0 ? (
+                <div className="p-4 text-sm text-muted-foreground">
+                  검색 결과가 없습니다
+                </div>
+              ) : (
+                results.map((result) => (
+                  <Link
+                    key={result.url}
+                    href={result.url}
+                    onClick={() => {
+                      setIsOpen(false);
+                      setQuery("");
+                    }}
+                    className="block p-4 hover:bg-muted transition-colors"
+                  >
+                    <h3 className="text-lg font-semibold mb-1">
+                      {result.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-2">
+                      {result.description}
+                    </p>
+                    {result.tags && (
+                      <TagList tags={result?.tags as TechKey[]} />
+                    )}
+                  </Link>
+                ))
+              )}
             </div>
           </motion.div>
         )}

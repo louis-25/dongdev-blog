@@ -18,12 +18,9 @@ export function Navigation() {
 
   return (
     <aside className="-ml-[8px] mb-16 tracking-tight">
-      <div className="lg:sticky lg:top-20">
-        <nav
-          className="flex flex-row items-center justify-between relative px-0 pb-0 fade overflow-hidden md:relative"
-          id="nav"
-        >
-          <div className="flex flex-row space-x-0 pr-10">
+      <div className="lg:top-20">
+        <nav className="grid grid-cols-1 lg:grid-cols-10 gap-6" id="nav">
+          <div className="lg:col-span-3 order-2 lg:order-1 flex">
             {navItems.map(({ href, label, icon }) => {
               return (
                 <Link
@@ -41,10 +38,12 @@ export function Navigation() {
             })}
           </div>
           {/* 검색바 */}
-          {/* <div className="flex items-center mr-4">
-            <SearchBar />
-          </div> */}
-          <ThemeSwitch />
+          <div className="lg:col-span-7 order-1 lg:order-2 caret-none flex justify-between">
+            <div className="max-w-[350px] w-full">
+              <SearchBar />
+            </div>
+            <ThemeSwitch />
+          </div>
         </nav>
       </div>
     </aside>

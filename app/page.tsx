@@ -1,5 +1,3 @@
-import Link from "next/link";
-import Hero from "./components/Hero";
 import ParticlesBanner from "./components/ParticlesBanner";
 
 export default function Home() {
@@ -13,12 +11,12 @@ export default function Home() {
         <p className="mt-4 text-muted-foreground text-center">
           웹개발에 관한 글을 기록하는 공간입니다.
           <br />
-          실무에서 얻은 인사이트와 시행착오를 바탕으로, 글을 작성하며
+          실무에서 얻은 인사이트와 시행착오를 바탕으로
           <br />
-          매번 새로운 지식을 습득하고 있습니다.
+          만들어가는 메모장 겸 블로그
         </p>
 
-        <section className="mt-10 grid gap-4 sm:grid-cols-2">
+        {/* <section className="mt-10 grid gap-4 sm:grid-cols-2">
           <article className="rounded-lg border p-5 flex justify-between flex-col">
             <div>
               <h2 className="text-lg font-semibold">최신 글 모아보기</h2>
@@ -48,7 +46,7 @@ export default function Home() {
               소개 페이지 →
             </Link>
           </article>
-        </section>
+        </section> */}
       </main>
     </>
   );

@@ -4,7 +4,7 @@ import { type Container } from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { useTheme } from "next-themes";
-
+import type { ISourceOptions } from "@tsparticles/engine";
 const ParticlesBanner = () => {
   const [init, setInit] = useState(false);
   const { theme } = useTheme();
@@ -18,15 +18,15 @@ const ParticlesBanner = () => {
     console.log(container);
   };
 
-  const options = useMemo(
+  const options: ISourceOptions = useMemo(
     () => ({
       fullScreen: { enable: false }, // 전체화면 끄기
       fpsLimit: 120,
       interactivity: {
         events: {
-          // onClick: { enable: true, mode: "push" },
+          onClick: { enable: true, mode: "push" },
           onHover: { enable: true, mode: "repulse" },
-          resize: true,
+          // resize: true,
         },
         modes: {
           push: { quantity: 4 },
@@ -48,7 +48,7 @@ const ParticlesBanner = () => {
           enable: true,
           outModes: { default: "bounce" },
           random: false,
-          speed: 4,
+          speed: 2,
           straight: false,
         },
         number: {

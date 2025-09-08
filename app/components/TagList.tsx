@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { TechKey, TECHS } from "../utils/SkillPicker";
 import { Tag } from "./ui/Tag";
 
@@ -20,6 +21,9 @@ export function TagList({
   tagCounts,
   isClickable = true,
 }: TagListProps) {
+  const pathname = usePathname();
+  const currentTag = pathname.split("/").pop();
+  // const isSelected = tag === selectedTag;
   return (
     <div className={`flex flex-wrap gap-2 ${className}`}>
       {tags?.map((tag) => {
@@ -27,7 +31,7 @@ export function TagList({
           <Tag
             key={tag}
             name={`${tag}`}
-            isSelected={tag === selectedTag}
+            isSelected={tag === currentTag}
             count={showCount && tagCounts ? tagCounts[tag] : undefined}
             isClickable={isClickable}
           ></Tag>

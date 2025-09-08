@@ -68,7 +68,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
     description:
       "Fasoo의 클라우드 제품 마이크로사이트(Wrapsody, Wrapsody eCo, Mind-SAT 등) 개발 및 운영",
     icon: "milestone",
-    skills: ["wordpress"],
+    skills: ["wordpress", "html", "css", "javascript"],
     details: (
       <div className="flex flex-col gap-4">
         <svg
