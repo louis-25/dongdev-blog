@@ -36,7 +36,7 @@ export default function RootLayout({
           <ScrollToTop />
         </Suspense>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className="w-fullm-auto px-4">
+          <main className="w-full m-auto px-4">
             {/* <main style={{ maxWidth: "576px", margin: "auto" }}> */}
             <Navigation />
             <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
