@@ -1,5 +1,7 @@
 import ParticlesBanner from "./components/ParticlesBanner";
-
+import Link from "next/link";
+import { allPosts } from "contentlayer/generated";
+import dayjs from "dayjs";
 export default function Home() {
   return (
     <>
@@ -16,37 +18,118 @@ export default function Home() {
           만들어가는 메모장 겸 블로그
         </p>
 
-        {/* <section className="mt-10 grid gap-4 sm:grid-cols-2">
+        <section className="mt-10 grid gap-4 sm:grid-cols-2">
+          {/* 최신 글 */}
           <article className="rounded-lg border p-5 flex justify-between flex-col">
             <div>
-              <h2 className="text-lg font-semibold">최신 글 모아보기</h2>
+              <h2 className="text-lg font-semibold">최신 글</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                최근에 발행된 글을 한눈에 확인해 보세요.
+                최근에 발행된 글을 간단히 둘러보세요.
               </p>
+              <ul className="mt-4 space-y-3">
+                {[...allPosts]
+                  .sort((a, b) => {
+                    const ad = new Date((a as any).date ?? 0).getTime();
+                    const bd = new Date((b as any).date ?? 0).getTime();
+                    return bd - ad;
+                  })
+                  .slice(0, 4)
+                  .map((post) => (
+                    <li key={post.url}>
+                      <Link
+                        href={post.url}
+                        className="block rounded-md border hover:bg-muted/40 transition-colors p-3"
+                      >
+                        <div className="font-medium">{post.title}</div>
+                        {post.description && (
+                          <div>
+                            <div className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                              {post.description}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {dayjs(post.date).format("YYYY-MM-DD")}
+                            </div>
+                          </div>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+              </ul>
             </div>
             <Link
               href="/blog"
-              className="mt-3 inline-flex items-center text-primary hover:underline"
+              className="mt-4 inline-flex items-center text-primary hover:underline"
             >
               블로그 보러가기 →
             </Link>
           </article>
 
+          {/* 웹개발에 유용한 사이트 */}
           <article className="rounded-lg border p-5 flex justify-between flex-col">
             <div>
-              <h2 className="text-lg font-semibold">이 블로그는요</h2>
+              <h2 className="text-lg font-semibold">유용한 사이트</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                작성자 소개와 운영 철학을 담았습니다.
+                웹 개발에 유용한 사이트를 모았습니다.
               </p>
+              <ul className="mt-4 space-y-3">
+                {[
+                  {
+                    name: "MDN Web Docs",
+                    url: "https://developer.mozilla.org/",
+                    desc: "웹 표준/브라우저 API 참고서",
+                  },
+                  {
+                    name: "Next.js Docs",
+                    url: "https://nextjs.org/docs",
+                    desc: "Next.js 공식 문서",
+                  },
+                  {
+                    name: "React Docs",
+                    url: "https://react.dev",
+                    desc: "React 공식 문서",
+                  },
+                  {
+                    name: "Tailwind CSS",
+                    url: "https://tailwindcss.com/docs",
+                    desc: "유틸리티-우선 CSS 프레임워크",
+                  },
+                  {
+                    name: "Framer Motion",
+                    url: "https://www.framer.com/motion/",
+                    desc: "React 애니메이션 라이브러리",
+                  },
+                  {
+                    name: "Can I use",
+                    url: "https://caniuse.com/",
+                    desc: "브라우저 지원 현황",
+                  },
+                ].map((site) => (
+                  <li key={site.url}>
+                    <a
+                      href={site.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block rounded-md border hover:bg-muted/40 transition-colors p-3"
+                    >
+                      <div className="font-medium">{site.name}</div>
+                      <div className="text-sm text-muted-foreground mt-1">
+                        {site.desc}
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <Link
-              href="/about"
-              className="mt-3 inline-flex items-center text-primary hover:underline"
+            <a
+              href="https://developer.mozilla.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center text-primary hover:underline"
             >
-              소개 페이지 →
-            </Link>
+              MDN 바로가기 →
+            </a>
           </article>
-        </section> */}
+        </section>
       </main>
     </>
   );
