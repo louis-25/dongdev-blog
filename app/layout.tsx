@@ -40,7 +40,7 @@ export default function RootLayout({
             {/* <main style={{ maxWidth: "576px", margin: "auto" }}> */}
             <Navigation />
             <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
-              <div className="lg:col-span-3 order-2 lg:order-1">
+              <div className="lg:col-span-3 order-2 lg:order-1 md:hidden lg:block">
                 <div className="flex flex-col gap-4 caret-none">
                   <Profile />
                   {/* <div className="lg:sticky lg:top-0">
