@@ -11,7 +11,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
     description:
       "React 12버전으로 제작된 레거시 프로젝트를 18버전으로 리팩토링",
     icon: "milestone",
-    skills: ["react", "typescript", "vite"],
+    skills: ["react", "typescript", "vite", "react-query", "scss"],
     details: (
       <div className="flex flex-col gap-4">
         <Image
@@ -43,7 +43,15 @@ const Fasoo2023 = (): TimelineItemProps[] => [
     description:
       "클라우드 제품 관리를 위한 BackOffice 시스템인 Lumos를 기획하고 프론트엔드 전반을 개발",
     icon: "milestone",
-    skills: ["nextjs", "yup", "react-hook-form"],
+    skills: [
+      "nextjs",
+      "typescript",
+      "antd",
+      "react-query",
+      "yup",
+      "react-hook-form",
+      "emotion",
+    ],
     details: (
       <div className="flex flex-col gap-4">
         <LumosLogo />
