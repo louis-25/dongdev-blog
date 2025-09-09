@@ -42,14 +42,14 @@ export default async function BlogPage({
 
       <div className="space-y-4 transition-colors ">
         {paginatedPosts?.map((post, idx) => (
-          <GestureCard
+          <div
             key={post._id}
             className="bg-card hover:bg-card/80 rounded-lg p-6 transition-colors "
           >
             <article>
               <Link
                 href={post.url}
-                className="flex justify-between flex-row items-center w-full gap-10"
+                className="flex flex-col md:flex-row items-start md:items-center w-full gap-4 md:gap-10"
               >
                 <div>
                   <h2 className="font-semibold mb-2">{post.title}</h2>
@@ -76,15 +76,15 @@ export default async function BlogPage({
                   <Image
                     src={post?.thumbnail}
                     alt={post?.title}
-                    width={200} // 고정
-                    height={0} // height를 0으로 주면 자동 비율 유지됨
-                    sizes="100vw" // 반응형일 경우
-                    className="rounded-xl shadow-lg"
+                    width={200}
+                    height={200}
+                    sizes="(max-width: 768px) 100vw, 200px"
+                    className="rounded-xl shadow-lg w-full h-auto md:w-[200px] md:h-auto md:ml-auto"
                   />
                 )}
               </Link>
             </article>
-          </GestureCard>
+          </div>
         ))}
       </div>
       {totalPages > 1 && (

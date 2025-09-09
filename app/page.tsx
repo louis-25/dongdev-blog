@@ -2,6 +2,7 @@ import ParticlesBanner from "./components/ParticlesBanner";
 import Link from "next/link";
 import { allPosts } from "contentlayer/generated";
 import dayjs from "dayjs";
+import { Separator } from "./components/ui/separator";
 export default function Home() {
   return (
     <>
@@ -17,12 +18,20 @@ export default function Home() {
           <br />
           만들어가는 메모장 겸 블로그
         </p>
-
-        <section className="mt-10 grid gap-4 sm:grid-cols-2">
+        <Separator className="mt-4" />
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_1fr]">
           {/* 최신 글 */}
-          <article className="rounded-lg border p-5 flex justify-between flex-col">
+          <article className="py-4 flex justify-between flex-col">
             <div>
-              <h2 className="text-lg font-semibold">최신 글</h2>
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold">최신 글</h2>
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center text-primary text-sm hover:underline"
+                >
+                  블로그 보러가기
+                </Link>
+              </div>
               <p className="mt-2 text-sm text-muted-foreground">
                 최근에 발행된 글을 간단히 둘러보세요.
               </p>
@@ -56,16 +65,10 @@ export default function Home() {
                   ))}
               </ul>
             </div>
-            <Link
-              href="/blog"
-              className="mt-4 inline-flex items-center text-primary hover:underline"
-            >
-              블로그 보러가기 →
-            </Link>
           </article>
-
+          <Separator orientation="vertical" className="hidden sm:block" />
           {/* 웹개발에 유용한 사이트 */}
-          <article className="rounded-lg border p-5 flex justify-between flex-col">
+          <article className="py-4 flex justify-between flex-col">
             <div>
               <h2 className="text-lg font-semibold">유용한 사이트</h2>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -84,18 +87,13 @@ export default function Home() {
                     desc: "Next.js 공식 문서",
                   },
                   {
-                    name: "React Docs",
-                    url: "https://react.dev",
-                    desc: "React 공식 문서",
-                  },
-                  {
                     name: "Tailwind CSS",
                     url: "https://tailwindcss.com/docs",
                     desc: "유틸리티-우선 CSS 프레임워크",
                   },
                   {
-                    name: "Framer Motion",
-                    url: "https://www.framer.com/motion/",
+                    name: "Framer Motion Examples",
+                    url: "https://framermotionexamples.com/",
                     desc: "React 애니메이션 라이브러리",
                   },
                   {
@@ -120,16 +118,9 @@ export default function Home() {
                 ))}
               </ul>
             </div>
-            <a
-              href="https://developer.mozilla.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center text-primary hover:underline"
-            >
-              MDN 바로가기 →
-            </a>
           </article>
         </section>
+        <Separator />
       </main>
     </>
   );

@@ -14,7 +14,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/ui/accordion";
+} from "@/app/components/ui/accordion";
 import { cn } from "@/app/lib/utils";
 import { TechKey } from "@/app/utils/SkillPicker";
 import { TagList } from "../TagList";
@@ -176,9 +176,7 @@ function TimelineItem({
                 <AccordionTrigger className="text-sm sm:text-base pt-0 hover:no-underline items-center cursor-pointer">
                   {defaultInfo()}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-gray-600 dark:text-gray-400 text-balance">
-                  {details}
-                </AccordionContent>
+                <AccordionContent>{details}</AccordionContent>
               </AccordionItem>
             </Accordion>
           ) : (
