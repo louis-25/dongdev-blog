@@ -18,8 +18,8 @@ export default function Home() {
           <br />
           만들어가는 메모장 겸 블로그
         </p>
-        <Separator className="mt-4" />
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_1fr]">
+        {/* <Separator className="mt-4" /> */}
+        <section className="rounded-lg border border-border grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_1fr] mt-4 px-4">
           {/* 최신 글 */}
           <article className="py-4 flex justify-between flex-col">
             <div>
@@ -120,7 +120,6 @@ export default function Home() {
             </div>
           </article>
         </section>
-        <Separator />
       </main>
     </>
   );

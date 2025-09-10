@@ -9,7 +9,7 @@ const Fasoo2021 = (): TimelineItemProps[] => [
     title: "Fireside 랜딩페이지 개발",
     description: "",
     icon: "milestone",
-    skills: ["react"],
+    skills: ["react", "javascript"],
     details: (
       <div className="flex flex-col gap-4">
         <Image

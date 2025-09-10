@@ -54,7 +54,10 @@ const Fasoo2024 = (): TimelineItemProps[] => [
         </div>
 
         <div>
-          <p>1. Nodemailer와 Google API를 활용하여 이메일 전송 서버 구축</p>
+          <p>
+            1. Nodemailer, Google API를 활용하여 Express기반 이메일 전송 서버
+            구축
+          </p>
           <p>2. Outlook, Gmail, Naver 환경에서의 호환성 검토하며 템플릿 개발</p>
           <p>3. 기존 정적 이메일 디자인을 개선해 일관된 브랜드 경험 제공</p>
         </div>

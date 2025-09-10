@@ -50,6 +50,9 @@ const useAbout = () => {
         "MySQL",
       ],
     },
+    tools: {
+      list: ["Figma", "Cursor", "Jira", "Slack", "Confluence"],
+    },
     career,
     projects,
   };
