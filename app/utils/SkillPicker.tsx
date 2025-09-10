@@ -621,7 +621,7 @@ const SCSSLogo = (props: React.SVGProps<SVGSVGElement>) => (
 const FramerMotionLogo = (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
   <div className="w-[1em] h-[1em] mr-2 relative">
     <Image
-      src="/about/career/FramerMotionLogo.png"
+      src="/about/career/framerMotionLogo.png"
       alt="FramerMotion"
       fill
       className="object-contain"
