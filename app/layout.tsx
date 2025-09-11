@@ -9,6 +9,7 @@ import Toc from "./components/Toc";
 import ScrollToTop from "./utils/scrollToTop";
 import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default function RootLayout({
             <ScrollToTop />
           </Suspense>
           <Analytics />
+          <SpeedInsights />
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <main className="w-full m-auto px-4">
               {/* <main style={{ maxWidth: "576px", margin: "auto" }}> */}
