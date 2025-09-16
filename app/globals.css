@@ -353,7 +353,8 @@ code {
 
 .mdx img {
   /* Don't apply styles to next/image */
-  @apply m-0;
+  /* @apply m-0; */
+  @apply my-12;
 }
 
 .mdx p {
@@ -377,11 +378,16 @@ code {
 }
 
 .mdx strong {
-  @apply font-medium;
+  @apply font-bold;
+  color: #47a3f3;
 }
 
 .mdx ul {
   @apply list-disc pl-6;
+}
+
+.mdx hr {
+  @apply my-4;
 }
 
 .mdx ol {
