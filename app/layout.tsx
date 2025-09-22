@@ -14,7 +14,23 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "DongDev Blog",
-  description: "Next.js와 React로 만드는 개발 블로그",
+  description: "웹개발에 관한 글을 기록하는 공간입니다.",
+  openGraph: {
+    title: "DongDev Blog",
+    description: "웹개발에 관한 전문적인 블로그가 되기 위해 노력하겠습니다.",
+    url: "https://dongdev-blog.vercel.app",
+    siteName: "DongDev Blog",
+    images: [
+      {
+        url: "https://dongdev-blog.vercel.app/rakun.png",
+        width: 1200,
+        height: 630,
+        alt: "블로그 대표 이미지",
+      },
+    ],
+    locale: "ko_KR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

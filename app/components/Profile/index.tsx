@@ -143,6 +143,7 @@ const Profile = () => {
                         tags={tags}
                         showCount
                         tagCounts={tagCounts as Record<TechKey, number>}
+                        category={category}
                       />
                     </div>
                   </AccordionContent>

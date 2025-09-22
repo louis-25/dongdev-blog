@@ -11,6 +11,7 @@ interface TagProps {
   className?: string;
   isSelected?: boolean;
   isClickable?: boolean;
+  href?: string;
 }
 
 export function Tag({
@@ -19,6 +20,7 @@ export function Tag({
   className = "",
   isSelected = false,
   isClickable = true,
+  href,
 }: TagProps) {
   const router = useRouter();
   const lowerName = name.toLowerCase().replace(".", "");
@@ -31,7 +33,7 @@ export function Tag({
         if (!isClickable) return;
         e.preventDefault();
         e.stopPropagation();
-        router.push(`/tags/${name}`);
+        router.push(href ?? `/tags/${name}`);
       }}
       className={`inline-flex items-center px-3 py-1 ${
         isClickable ? "cursor-pointer" : "cursor-default"

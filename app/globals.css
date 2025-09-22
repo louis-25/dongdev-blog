@@ -387,7 +387,7 @@ code {
 }
 
 .mdx hr {
-  @apply my-4;
+  @apply my-[2.5rem];
 }
 
 .mdx ol {

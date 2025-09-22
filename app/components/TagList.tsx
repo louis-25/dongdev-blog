@@ -11,6 +11,7 @@ interface TagListProps {
   showCount?: boolean;
   tagCounts?: Record<TechKey, number>;
   isClickable?: boolean;
+  category?: string;
 }
 
 export function TagList({
@@ -20,6 +21,7 @@ export function TagList({
   showCount = false,
   tagCounts,
   isClickable = true,
+  category,
 }: TagListProps) {
   const pathname = usePathname();
   const currentTag = pathname.split("/").pop();
@@ -34,6 +36,11 @@ export function TagList({
             isSelected={tag === currentTag}
             count={showCount && tagCounts ? tagCounts[tag] : undefined}
             isClickable={isClickable}
+            href={
+              category
+                ? `/category/${category}?tag=${encodeURIComponent(tag)}`
+                : `/tags/${tag}`
+            }
           ></Tag>
         );
       })}
