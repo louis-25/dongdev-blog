@@ -1,9 +1,9 @@
 ---
 date: "2022-05-21"
-title: "React에서 Form태그 사용법"
-category: "language"
-tags: ["React", "TypeScript"]
-description: "React에서 Form태그 사용하는법을 정리하는곳"
+title: "React Hook Form 사용법"
+category: "library"
+tags: ["React", "typescript"]
+description: "React Hook Form을 사용하여 Form을 쉽게 다뤄보자"
 published: true
 thumbnail: "/posts/images/react_logo.png"
 ---
@@ -14,7 +14,9 @@ React에서 Form태그를 사용하는
 
 모든 예제코드는 TypeScript를 기반으로 작성하였습니다
 
-# form태그 예전 사용방식
+---
+
+## form태그 예전 사용방식
 
 form태그의 onSubmit 옵션을 사용하여
 
@@ -55,7 +57,9 @@ const TodoList: FunctionComponent<TodoListProps> = ({}) => {
 export default TodoList;
 ```
 
-# react-hook-form이란?
+---
+
+## react-hook-form이란?
 
 react-hook-form은 리액트에서 form으로 작업하기 쉽게 hook들을 만들어놓은 라이브러리로
 
@@ -65,17 +69,19 @@ react-hook-form은 리액트에서 form으로 작업하기 쉽게 hook들을 만
 
 아래의 코드로 설치하여 사용해보자
 
-```typescript
+```bash
 yarn add react-hook-form
 ```
 
-# useForm
+---
+
+## useForm
 
 useForm훅을 사용하여 form작업을 할 수 있다
 
 아래의 다양한 함수를 통해 확인해보자
 
-## register
+### register
 
 register는 input의 옵션으로 등록하여 사용하며
 
@@ -105,21 +111,21 @@ export default TodoList;
 
 ### register의 다양한 옵션들
 
-required : 필수로 값이 입력되어야한다
+**required** : 필수로 값이 입력되어야한다
 
-pattern : 정규식을 비교하여 에러메세지를 반환해준다
+**pattern** : 정규식을 비교하여 에러메세지를 반환해준다
 
-message : 설정된 조건에 맞지않으면 반환하는 에러메세지
+**message** : 설정된 조건에 맞지않으면 반환하는 에러메세지
 
-## watch
+### watch
 
 watch는 form의 입력값의 변화를 관측할 수 있게 해주는 함수이다
 
-## handleSubmit
+### handleSubmit
 
 handleSubmit은 유효성검사를 담당하는 함수이다
 
-## formState
+### formState
 
 form의 상태를 담고있는 함수로 모든 input태그의 데이터의 에러 정보를 보여준다
 

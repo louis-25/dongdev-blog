@@ -138,7 +138,7 @@ const Profile = () => {
                     </span>
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-gray-600 dark:text-gray-400 text-balance">
-                    <div className="px-3 pt-3">
+                    <div className="pl-3 pt-3">
                       <TagList
                         tags={tags}
                         showCount

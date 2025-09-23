@@ -8,13 +8,20 @@ published: true
 thumbnail: "/posts/images/react-query.png"
 ---
 
-# React Query란?
+## :bulb:React Query란?
 
 React-Query는 <code>redux-saga</code>나 <code>redux-thunk</code>와 같은 서버사이드 상태 관리 라이브러리로
 
-[tanstack](https://tanstack.com/)에서 만들었으며 React앱에서 비동기 로직을 쉽게 다루게 해준다
+<p class="flex">
+  <a target="_blank" href="https://tanstack.com/">
+    tanstack
+  </a>
+  에서 만들었으며 React앱에서 비동기 로직을 쉽게 다루게 해준다
+</p>
 
-# 사용법
+---
+
+## 사용법
 
 react-query를 사용하려면 제일먼저
 
@@ -41,7 +48,9 @@ root.render(
 );
 ```
 
-# useQuery
+---
+
+## useQuery
 
 React-Query에서 제공하는 useQuery훅은
 
@@ -59,13 +68,13 @@ useQuery의 기본 구조는 아래와 같다
 const { isLoading, data, error } = useQuery(queryKey, queryFn, options);
 ```
 
-- isLoading: 캐시가 없는 상태에서 데이터를 요청 중인 상태
-- data: 서버 요청에 대한 데이터
-- error: 서버 요청 실패
+- **isLoading**: 캐시가 없는 상태에서 데이터를 요청 중인 상태
+- **data**: 서버 요청에 대한 데이터
+- **error**: 서버 요청 실패
 
-* queryKey: query의 고유 식별자로 중복되지 않을만한 값으로 지정해주자( 중복되면 안됨! )
-* queryFn: 서버에 데이터를 요청하는 함수
-* options: query에 대한 옵션을 지정
+- **queryKey**: query의 고유 식별자로 중복되지 않을만한 값으로 지정해주자( 중복되면 안됨! )
+- **queryFn**: 서버에 데이터를 요청하는 함수
+- **options**: query에 대한 옵션을 지정
 
 아래는 useQuery를 사용하는 간단한 예시이다
 
@@ -94,7 +103,7 @@ export function fetchCoins() {
 }
 ```
 
-## queryKey가 중복될 경우
+### queryKey가 중복될 경우
 
 useQuery의 queryKey인자값은 중복되면 안된다
 
@@ -116,7 +125,9 @@ const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
 );
 ```
 
-# React Query Devtools
+---
+
+## React Query Devtools
 
 React Query의 모든 내부 작동을 시각화하는 데 도움이 되며
 

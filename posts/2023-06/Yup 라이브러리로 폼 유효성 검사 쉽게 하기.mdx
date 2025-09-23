@@ -1,0 +1,174 @@
+---
+date: "2023-06-23"
+title: "Yup 라이브러리로 폼 유효성 검사 쉽게 하기"
+category: "library"
+tags: ["React", "typescript"]
+description: "React에서 Yup 라이브러리를 이용해 폼 유효성 검사를 간단히 구현해보자."
+published: true
+# thumbnail: "/posts/images/yup_logo.png"
+---
+
+React에서 폼을 다룰 때 유효성 검사는 항상 귀찮은 작업 중 하나죠. 그런데 Yup이라는 라이브러리를 사용하면, 자바스크립트로 쉽게 유효성 검사를 추가할 수 있습니다. 오늘은 Yup을 사용하여 폼 검증을 어떻게 간편하게 할 수 있는지 소개하려고 해요.
+
+---
+
+## :bulb:Yup란?
+
+Yup은 자바스크립트 객체 스키마를 기반으로 한 유효성 검사 라이브러리입니다. React에서 폼 데이터를 다룰 때, Yup을 활용하면 복잡한 유효성 검사를 간단하고 직관적으로 처리할 수 있습니다.
+
+Yup의 주요 특징은 다음과 같습니다:
+
+체이닝 방식으로 여러 검증 조건을 쉽게 설정할 수 있습니다.
+
+유효성 검사 에러 메시지를 손쉽게 커스터마이징할 수 있습니다.
+
+비동기 검증도 쉽게 할 수 있습니다.
+
+---
+
+## :wrench:설치
+
+먼저 프로젝트에 yup을 설치해야 합니다. 아래 명령어로 설치해 보세요:
+
+```bash
+yarn add yup
+```
+
+---
+
+## 간단한 사용법
+
+Yup을 사용할 때는 객체 스키마를 정의하고, 이를 통해 데이터를 검증합니다. 간단한 예제로 이메일과 비밀번호 유효성 검사를 해볼게요.
+
+```typescript
+import React, { useState } from "react";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("올바른 이메일 주소를 입력해주세요.")
+    .required("이메일을 입력해주세요."),
+  password: Yup.string()
+    .min(6, "비밀번호는 최소 6자 이상이어야 합니다.")
+    .required("비밀번호를 입력해주세요."),
+});
+
+const MyForm = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    validationSchema
+      .validate(formData, { abortEarly: false })
+      .then(() => {
+        alert("폼 제출 완료!");
+      })
+      .catch((err) => {
+        const newErrors = err.inner.reduce(
+          (acc: any, curr: any) => ({ ...acc, [curr.path]: curr.message }),
+          {}
+        );
+        setErrors(newErrors);
+      });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        placeholder="이메일"
+      />
+      <span>{errors.email}</span>
+
+      <input
+        type="password"
+        value={formData.password}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        placeholder="비밀번호"
+      />
+      <span>{errors.password}</span>
+
+      <button type="submit">제출</button>
+    </form>
+  );
+};
+
+export default MyForm;
+```
+
+---
+
+## 유효성 검사의 주요 기능
+
+required: 필수 입력값을 설정합니다.
+
+email: 이메일 형식이 맞는지 체크합니다.
+
+min, max: 문자열의 최소/최대 길이를 설정합니다.
+
+matches: 정규식 패턴을 맞는지 확인합니다.
+
+예를 들어, 이메일을 "user@example.com
+"처럼 입력받고, 비밀번호는 6자 이상이어야 한다고 설정할 수 있습니다.
+
+---
+
+## Yup과 React Hook Form 결합하기
+
+React에서는 react-hook-form과 Yup을 함께 사용하여, 폼의 유효성 검사와 상태 관리를 한 번에 처리할 수 있습니다. 아래는 두 라이브러리를 결합한 예시입니다:
+
+```bash
+yarn add react-hook-form
+```
+
+그리고 아래와 같이 사용할 수 있습니다:
+
+```typescript
+import React from "react";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("유효한 이메일 주소를 입력하세요.")
+    .required("이메일을 입력하세요."),
+  password: Yup.string()
+    .min(6, "비밀번호는 최소 6자 이상이어야 합니다.")
+    .required("비밀번호를 입력하세요."),
+});
+
+const MyForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit = (data: any) => {
+    alert("폼 제출 완료!");
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("email")} placeholder="이메일" />
+      <span>{errors.email?.message}</span>
+
+      <input {...register("password")} placeholder="비밀번호" />
+      <span>{errors.password?.message}</span>
+
+      <button type="submit">제출</button>
+    </form>
+  );
+};
+
+export default MyForm;
+```
+
+react-hook-form의 useForm 훅과 yupResolver를 통해 Yup의 검증 로직을 간단히 React 폼에 적용할 수 있습니다.

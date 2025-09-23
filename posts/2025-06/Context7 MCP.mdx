@@ -1,5 +1,5 @@
 ---
-date: "2025-09-16"
+date: "2025-06-12"
 title: "Context7 MCP 사용법"
 category: "ai"
 tags: ["MCP"]
@@ -13,18 +13,18 @@ published: true
 
 ---
 
-# 소개
+## 소개
 
-## 왜 Context7 MCP를 도입했는가?
+### 왜 Context7 MCP를 도입했는가?
 
 - **목적**: Lumos 이메일 공지 기능의 텍스트 에디터 개선
 - **이유**: 기존에는 최신 문법 반영이 어려워 코드 오류가 잦았음 → MCP로 자동 최신 문서 참조
 
 ---
 
-# 진행 과정
+## 진행 과정
 
-## 1. Context7 MCP 설치
+### 1. Context7 MCP 설치
 
 - [smithery.ai Context7 MCP 서버](https://smithery.ai/server/@upstash/context7-mcp) 접속
 - **Cursor 버튼 클릭** 후 IDE에 설치
@@ -39,7 +39,7 @@ published: true
 
 ---
 
-## 2. Cursor에서 질문할 때 활용
+### 2. Cursor에서 질문할 때 활용
 
 - 질문 시 반드시 **“context7 MCP를 참고해서 답변해줘”** 문구 포함
 - Cursor가 `resolve-library-id`, `get-library-docs` 등의 MCP 함수를 호출해 최신 문서를 불러옴
@@ -52,7 +52,7 @@ published: true
 
 ---
 
-## 3. 최신 문서 기반 코드 수정
+### 3. 최신 문서 기반 코드 수정
 
 - MCP가 최신 문서를 자동 참조하여 코드 수정
 - 오래된 문법 문제 해결, 신뢰성 높은 결과 도출
@@ -65,25 +65,25 @@ published: true
 
 ---
 
-# 결과 및 사용팁
+## 결과 및 사용팁
 
-## 개선 효과
+### 개선 효과
 
 - **Before**: 직접 문서를 찾아야 해서 오류 잦음
 - **After**: MCP가 자동으로 최신 문서 반영 → 코드 정확성과 생산성 향상
 
-## 배운 점 & 팁
+### 배운 점 & 팁
 
 1. 질문할 때 반드시 **context7 MCP 참고**라고 명시할 것
 2. MCP 함수 호출 로그(`Called resolve-library-id`, `Called get-library-docs`) 확인으로 동작 여부 점검
 3. 최신 문서 반영이 필요한 프로젝트라면 적극 활용 권장
 
-## 시행착오
+### 시행착오
 
 - 설치 후 `Cursor Settings`에서 활성화를 놓쳐 MCP가 동작하지 않은 적이 있었음
 - MCP를 언급하지 않으면 단순 GPT 답변만 반환됨
 
-## 앞으로의 계획
+### 앞으로의 계획
 
 - Lumos의 **공지 자동화**, **이메일 템플릿** 기능에도 적용 확대
 - 프롬프트 전략:
@@ -93,9 +93,9 @@ published: true
 
 ---
 
-# 참고 이미지
+## 참고 이미지
 
-## 기존 텍스트 에디터
+### 기존 텍스트 에디터
 
 <img
   src="/posts/images/mcp/before_editor.png"
@@ -103,7 +103,7 @@ published: true
   class="rounded-xl shadow-lg mx-auto w-full"
 />
 
-## 개선된 텍스트 에디터
+### 개선된 텍스트 에디터
 
 <img
   src="/posts/images/mcp/after_editor.png"

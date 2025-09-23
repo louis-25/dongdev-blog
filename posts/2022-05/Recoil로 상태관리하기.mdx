@@ -8,13 +8,13 @@ published: true
 thumbnail: "/posts/images/recoil_title.png"
 ---
 
-# Recoil이란?
+## :bulb:Recoil이란?
 
 Recoil은 Facebook에서 만든 상태관리 라이브러리로
 
 Redux보다 상대적으로 사용하기 간편하다
 
-# 사용법
+## 사용법
 
 우선 아래의 코드를 실행하여 Recoil을 설치하자
 
@@ -22,7 +22,7 @@ Redux보다 상대적으로 사용하기 간편하다
 yarn add recoil
 ```
 
-# RecoilRoot
+## RecoilRoot
 
 상위 컴포넌트에서 RecoilRoot로 한번 감싸줘야
 
@@ -48,7 +48,7 @@ root.render(
 );
 ```
 
-# atoms.ts
+## atoms.ts
 
 Recoil의 atom은 React의 state를 저장하는 단위라고 생각하면 된다
 
@@ -70,7 +70,7 @@ export const isDarkAtom = atom({
 
 값을 얻거나 수정하며 상태관리를 할 수 있다.
 
-# useRecoilValue
+## useRecoilValue
 
 저장소에서 값을 가져오는 역할
 
@@ -80,7 +80,7 @@ import { useRecoilValue } from "recoil";
 const isDark = useRecoilValue(isDarkAtom); // atoms.ts에 저장된 값을 가져온다
 ```
 
-# useSetRecoilState
+## useSetRecoilState
 
 저장소의 값을 세팅해주는 역할
 
@@ -94,7 +94,7 @@ const toggleDarkAtom = () => setDarkAtom((prev) => !prev); // 현재 상태와 �
 <button onClick={toggleDarkAtom}>Toggle Dark Mode</button>;
 ```
 
-# useRecoilState
+## useRecoilState
 
 useRecoilState는 위의 두 함수 useRecoilValue와 useSetRecoilState를 한번에 세팅하고 싶을때 사용하면 된다
 

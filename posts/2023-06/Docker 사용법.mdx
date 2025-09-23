@@ -1,5 +1,5 @@
 ---
-date: "2025-09-22"
+date: "2023-06-20"
 title: "Docker 사용법"
 category: "devops"
 tags: ["Docker"]
@@ -12,16 +12,16 @@ Docker를 처음 쓰는 분들을 위해, 설치부터 이미지 빌드/실행, 
 
 ---
 
-# 소개
+## 소개
 
 - **Docker란?** 애플리케이션을 컨테이너라는 표준 단위로 패키징/배포/실행하게 해주는 플랫폼
 - **핵심 이점**: 환경 일관성, 빠른 배포, 격리된 실행, 간단한 확장
 
 ---
 
-# 설치
+## 설치
 
-## Docker Desktop 설치 (Windows/macOS)
+### Docker Desktop 설치 (Windows/macOS)
 
 1. Docker Desktop 설치 후 실행
 2. 최초 실행 시 약관 동의 필요
@@ -48,7 +48,7 @@ docker run -d -p 8080:80 docker/welcome-to-docker
 
 ---
 
-# 첫 컨테이너 실행
+## 첫 컨테이너 실행
 
 가장 쉬운 검증 방법은 공식 예제 이미지를 띄워보는 것입니다.
 
@@ -66,22 +66,22 @@ docker restart <name-or-id>
 
 ---
 
-# 이미지 빌드 → 컨테이너 실행 (Node 예제)
+## 이미지 빌드 → 컨테이너 실행 (Node 예제)
 
-## 예제 앱 준비
+### 예제 앱 준비
 
 ```bash
 git clone https://github.com/docker/getting-started-app.git
 cd getting-started-app
 ```
 
-## 이미지 빌드
+### 이미지 빌드
 
 ```bash
 docker build -t getting-started .
 ```
 
-## 컨테이너 실행 (포트 매핑)
+### 컨테이너 실행 (포트 매핑)
 
 ```bash
 docker run -d -p 127.0.0.1:3000:3000 getting-started
@@ -90,7 +90,7 @@ docker run -d -p 127.0.0.1:3000:3000 getting-started
 
 ---
 
-# 데이터 영속화 (Volume)
+## 데이터 영속화 (Volume)
 
 컨테이너가 삭제되어도 데이터는 유지되도록 볼륨을 사용합니다.
 
@@ -102,11 +102,11 @@ docker run -dp 127.0.0.1:3000:3000 \
 
 ---
 
-# Docker Compose 빠른 시작
+## Docker Compose 빠른 시작
 
 여러 서비스를 하나의 파일로 정의/실행합니다.
 
-## 프로젝트 생성 및 실행
+### 프로젝트 생성 및 실행
 
 ```bash
 mkdir composetest && cd composetest
@@ -148,7 +148,7 @@ docker compose down
 
 ---
 
-# 자주 쓰는 관리 명령
+## 자주 쓰는 관리 명령
 
 ```bash
 docker image ls                 # 로컬 이미지 목록
@@ -165,9 +165,9 @@ docker system prune -a
 
 ---
 
-# 베스트 프랙티스 (요약)
+## 베스트 프랙티스 (요약)
 
-## 1) Dockerfile 캐시 최적화
+### 1) Dockerfile 캐시 최적화
 
 언어별 의존성 파일을 먼저 복사해 캐시 활용도를 높입니다(예: Go).
 
@@ -182,11 +182,11 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/app
 EXPOSE 8080
 ```
 
-## 2) .dockerignore 사용
+### 2) .dockerignore 사용
 
 빌드 컨텍스트에 불필요한 파일을 제외해 빌드 속도/이미지 크기를 개선합니다.
 
-## 3) 멀티 스테이지 빌드
+### 3) 멀티 스테이지 빌드
 
 빌드 의존성과 실행 이미지를 분리해 최소 크기의 러ntime 이미지를 만듭니다.
 
@@ -204,21 +204,21 @@ COPY --from=build /app/server /server
 ENTRYPOINT ["/server"]
 ```
 
-## 4) 멀티 플랫폼 빌드 (buildx)
+### 4) 멀티 플랫폼 빌드 (buildx)
 
 ```bash
 docker buildx create --use --name mybuild
 docker buildx build --platform linux/amd64,linux/arm64 -t user/app:latest .
 ```
 
-## 5) Compose 사용 시
+### 5) Compose 사용 시
 
 - `up -d`로 백그라운드 실행, `ps`로 상태 확인, `down`으로 정리
 - 변경 시 `--build` 또는 `watch` 사용으로 최신 상태 유지
 
 ---
 
-# 문제 해결 팁
+## 문제 해결 팁
 
 - **포트 충돌**: 이미 사용 중인 포트를 다른 포트로 매핑 (`-p 8081:80`)
 - **파일 변경 적용 안 됨**: 이미지 재빌드(`docker compose up --build`) 또는 `watch` 사용
@@ -226,7 +226,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -t user/app:latest .
 
 ---
 
-# 참고 링크 (공식 문서)
+## 참고 링크 (공식 문서)
 
 - 설치/시작: [Get started with Docker](https://docs.docker.com/get-started/)
 - Dockerfile 레퍼런스: [Dockerfile reference](https://docs.docker.com/reference/dockerfile/)
