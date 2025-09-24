@@ -44,7 +44,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={classNames(inter.className, "antialiased")}>
-        <div className="max-w-4xl mx-4 mt-8 mb-8 mx-auto">
+        <div className="max-w-5xl mt-8 mb-8 mx-auto">
           <Suspense fallback={null}>
             <ScrollToTop />
           </Suspense>

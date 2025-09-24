@@ -101,6 +101,11 @@ export default function Home() {
                     url: "https://caniuse.com/",
                     desc: "브라우저 지원 현황",
                   },
+                  {
+                    name: "Design Patterns",
+                    url: "https://patterns-dev-kr.github.io/",
+                    desc: "디자인 패턴 예제",
+                  },
                 ].map((site) => (
                   <li key={site.url}>
                     <a
