@@ -6,6 +6,7 @@ import rehypeSlug from "rehype-slug";
 import type { Options } from "rehype-pretty-code";
 import rehypeToc from "rehype-toc";
 import remarkGemoji from "remark-gemoji";
+import remarkGfm from "remark-gfm";
 // rehype-toc로 생성된 TOC를 <details><summary>로 감싸 토글 가능하게 만드는 플러그인
 function rehypeWrapTocWithDetails() {
   return function transformer(tree: any) {

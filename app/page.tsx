@@ -42,24 +42,24 @@ export default function Home() {
                     const bd = new Date((b as any).date ?? 0).getTime();
                     return bd - ad;
                   })
-                  .slice(0, 4)
+                  .slice(0, 6)
                   .map((post) => (
                     <li key={post.url}>
                       <Link
                         href={post.url}
                         className="block rounded-md border hover:bg-muted/40 transition-colors p-3"
                       >
-                        <div className="font-medium">{post.title}</div>
-                        {post.description && (
-                          <div>
-                            <div className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                        <div className="font-medium line-clamp-1">
+                          {post.title}
+                        </div>
+                        <div>
+                          {/* <div className="text-sm text-muted-foreground line-clamp-2 mt-1">
                               {post.description}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              {dayjs(post.date).format("YYYY-MM-DD")}
-                            </div>
+                            </div> */}
+                          <div className="text-sm text-muted-foreground">
+                            {dayjs(post.date).format("YYYY-MM-DD")}
                           </div>
-                        )}
+                        </div>
                       </Link>
                     </li>
                   ))}
