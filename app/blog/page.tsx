@@ -1,7 +1,6 @@
 import { allPosts } from "contentlayer/generated";
 import { compareDesc } from "date-fns";
 import Link from "next/link";
-import { GestureCard } from "../components/animations";
 import { TagList } from "../components/TagList";
 import Image from "next/image";
 import {

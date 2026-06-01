@@ -1,4 +1,4 @@
-import ParticlesBanner from "./components/ParticlesBanner";
+import ParticlesBanner from "./components/ParticlesBannerDynamic";
 import Link from "next/link";
 import { allPosts } from "contentlayer/generated";
 import dayjs from "dayjs";
@@ -36,14 +36,14 @@ export default function Home() {
                 최근에 발행된 글을 간단히 둘러보세요.
               </p>
               <ul className="mt-4 space-y-3">
-                {[...allPosts]
-                  .sort((a, b) => {
-                    const ad = new Date((a as any).date ?? 0).getTime();
-                    const bd = new Date((b as any).date ?? 0).getTime();
-                    return bd - ad;
-                  })
+                {allPosts
+                  .map((post) => ({
+                    post,
+                    ts: new Date((post as any).date ?? 0).getTime(),
+                  }))
+                  .toSorted((a, b) => b.ts - a.ts)
                   .slice(0, 6)
-                  .map((post) => (
+                  .map(({ post }) => (
                     <li key={post.url}>
                       <Link
                         href={post.url}

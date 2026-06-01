@@ -10,7 +10,6 @@ import {
   AccordionTrigger,
 } from "@/ui/accordion";
 import { Badge } from "@/ui/badge";
-import { useState } from "react";
 import { CATEGORY_LIST } from "@/config/post";
 import Image from "next/image";
 
@@ -51,18 +50,10 @@ function getCategoryTagsWithCounts() {
   return { categoryData };
 }
 
+// allPosts / CATEGORY_LIST는 정적이므로 렌더마다 재계산하지 않고 모듈 스코프에서 한 번만 계산한다.
+const { categoryData } = getCategoryTagsWithCounts();
+
 const Profile = () => {
-  const { categoryData } = getCategoryTagsWithCounts();
-  const [open, setOpen] = useState<Record<string, boolean>>(() => {
-    const initial: Record<string, boolean> = {};
-    for (const c of CATEGORY_LIST) initial[c] = false;
-    if (CATEGORY_LIST.length > 0) initial[CATEGORY_LIST[0]] = true;
-    return initial;
-  });
-
-  const toggle = (category: string) =>
-    setOpen((prev) => ({ ...prev, [category]: !prev[category] }));
-
   return (
     <aside className="w-full">
       <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/60 dark:bg-neutral-900/60 backdrop-blur p-4 md:p-5">
@@ -120,11 +111,10 @@ const Profile = () => {
             {categoryData
               .filter(({ tags }) => tags.length > 0)
               .map(({ category, tags, tagCounts }) => (
-                <AccordionItem value={`${category}-menu`}>
+                <AccordionItem key={`${category}-menu`} value={`${category}-menu`}>
                   <AccordionTrigger
                     type="button"
                     aria-expanded={true}
-                    onClick={() => toggle(category)}
                     className="cursor-pointer w-full flex items-center hover:no-underline justify-between px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   >
                     <span className="text-sm font-semibold capitalize">

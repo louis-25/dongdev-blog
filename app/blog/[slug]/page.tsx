@@ -77,11 +77,6 @@ export default function PostPage({ params }: PostProps) {
   // const post = allPosts.find((post) => post.slugAsParams === params.slug);
   const { slug } = params;
   const text = decodeURIComponent(slug);
-  console.log(
-    "slug",
-    text,
-    allPosts.map((post) => post.slugAsParams)
-  );
   const post = allPosts.find((post) => post.slugAsParams === text);
 
   if (!post) {

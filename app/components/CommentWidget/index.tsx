@@ -1,5 +1,5 @@
 "use client";
-import React, { createRef, FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 
 const src = "https://utteranc.es/client.js";
@@ -22,10 +22,12 @@ const UtterancesWrapper = styled.div`
 `;
 
 const CommentWidget: FunctionComponent = function () {
-  const element = createRef<HTMLDivElement>();
+  const element = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (element.current === null) return;
+    // 이미 주입된 경우 중복 주입 방지
+    if (element.current.childNodes.length > 0) return;
 
     const utterances: HTMLScriptElement = document.createElement("script");
 

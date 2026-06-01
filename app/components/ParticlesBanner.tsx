@@ -14,14 +14,12 @@ const ParticlesBanner = () => {
     }).then(() => setInit(true));
   }, []);
 
-  const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log(container);
-  };
+  const particlesLoaded = async (container?: Container): Promise<void> => {};
 
   const options: ISourceOptions = useMemo(
     () => ({
       fullScreen: { enable: false }, // 전체화면 끄기
-      fpsLimit: 120,
+      fpsLimit: 60,
       interactivity: {
         events: {
           onClick: { enable: true, mode: "push" },
@@ -42,7 +40,7 @@ const ParticlesBanner = () => {
           opacity: 0.5,
           width: 1,
         },
-        collisions: { enable: true },
+        collisions: { enable: false },
         move: {
           direction: "none",
           enable: true,
@@ -53,7 +51,7 @@ const ParticlesBanner = () => {
         },
         number: {
           density: { enable: true, area: 800 },
-          value: 150,
+          value: 60,
         },
         opacity: { value: 0.5 },
         shape: { type: "circle" },
