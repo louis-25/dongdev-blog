@@ -1,13 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
-import { allPosts } from "contentlayer/generated";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TagList } from "./TagList";
 import { TechKey } from "../utils/SkillPicker";
+import type { PostSearchItem } from "../lib/posts";
 
 interface SearchResult {
   title: string;
@@ -17,31 +23,45 @@ interface SearchResult {
   score: number;
 }
 
-export function SearchBar() {
+interface SearchBarProps {
+  posts: PostSearchItem[];
+}
+
+export function SearchBar({ posts }: SearchBarProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const search = useCallback((searchQuery: string) => {
-    if (!searchQuery.trim()) {
-      setResults([]);
-      return;
-    }
+  // 입력 응답성을 위해 비긴급 업데이트로 처리
+  const deferredQuery = useDeferredValue(query);
 
-    const searchTerms = searchQuery.toLowerCase().split(" ");
+  // 경량 인덱스를 한 번만 소문자로 전처리해 키 입력마다 재계산하지 않는다.
+  const index = useMemo(
+    () =>
+      posts.map((post) => ({
+        post,
+        title: post.title.toLowerCase(),
+        description: post.description.toLowerCase(),
+        tags: (post.tags ?? []).map((t) => t.toLowerCase()),
+      })),
+    [posts]
+  );
 
-    const searchResults = allPosts
-      .map((post) => {
-        const titleMatch = searchTerms.every((term) =>
-          post.title.toLowerCase().includes(term)
+  // 결과는 effect+setState 대신 렌더 중에 파생한다.
+  const results = useMemo<SearchResult[]>(() => {
+    const q = deferredQuery.trim().toLowerCase();
+    if (!q) return [];
+    const terms = q.split(" ").filter(Boolean);
+
+    return index
+      .map(({ post, title, description, tags }) => {
+        const titleMatch = terms.every((term) => title.includes(term));
+        const descriptionMatch = terms.every((term) =>
+          description.includes(term)
         );
-        const descriptionMatch = searchTerms.every((term) =>
-          post.description.toLowerCase().includes(term)
-        );
-        const tagMatch = post.tags?.some((tag) =>
-          searchTerms.some((term) => tag.toLowerCase().includes(term))
+        const tagMatch = tags.some((tag) =>
+          terms.some((term) => tag.includes(term))
         );
 
         let score = 0;
@@ -59,13 +79,7 @@ export function SearchBar() {
       })
       .filter((result) => result.score > 0)
       .sort((a, b) => b.score - a.score);
-
-    setResults(searchResults);
-  }, []);
-
-  useEffect(() => {
-    search(query);
-  }, [query, search]);
+  }, [deferredQuery, index]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

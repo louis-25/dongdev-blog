@@ -10,6 +10,7 @@ import ScrollToTop from "./utils/scrollToTop";
 import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { getSearchIndex } from "./lib/posts";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const searchIndex = getSearchIndex();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -53,7 +55,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <main className="w-full m-auto px-4">
               {/* <main style={{ maxWidth: "576px", margin: "auto" }}> */}
-              <Navigation />
+              <Navigation posts={searchIndex} />
               <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
                 <div className="lg:col-span-3 order-2 lg:order-1 hidden lg:block">
                   <div className="flex flex-col gap-4 caret-none">

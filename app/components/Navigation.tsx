@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Home, FileText, Tag, Search } from "lucide-react";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { SearchBar } from "./SearchBar";
+import type { PostSearchItem } from "../lib/posts";
 import {
   Sheet,
   SheetClose,
@@ -27,7 +28,7 @@ const navItems = [
   // { href: "/tags", label: "태그", icon: Tag },
 ];
 
-export function Navigation() {
+export function Navigation({ posts }: { posts: PostSearchItem[] }) {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
 
@@ -163,7 +164,7 @@ export function Navigation() {
           {/* 검색바 */}
           <div className="col-span-7 order-2 caret-none flex justify-between">
             <div className="max-w-[400px] w-full">
-              <SearchBar />
+              <SearchBar posts={posts} />
             </div>
             <ThemeSwitch />
           </div>

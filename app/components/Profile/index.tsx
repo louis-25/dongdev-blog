@@ -1,6 +1,4 @@
-"use client";
-
-import { allPosts } from "contentlayer/generated";
+// 서버 컴포넌트: allPosts를 클라이언트로 보내지 않고 서버에서 집계만 수행한다.
 import { TagList } from "../TagList";
 import { TechKey } from "@/app/utils/SkillPicker";
 import {
@@ -10,50 +8,11 @@ import {
   AccordionTrigger,
 } from "@/ui/accordion";
 import { Badge } from "@/ui/badge";
-import { CATEGORY_LIST } from "@/config/post";
+import { getCategoryTagsWithCounts } from "@/app/lib/posts";
 import Image from "next/image";
 
-function getCategoryTagsWithCounts() {
-  const countsByCategory: Record<string, Record<TechKey, number>> = {};
-  const tagsByCategory: Record<string, TechKey[]> = {};
-
-  for (const category of CATEGORY_LIST) {
-    countsByCategory[category] = {} as Record<TechKey, number>;
-    tagsByCategory[category] = [] as TechKey[];
-  }
-
-  for (const post of allPosts) {
-    if (!post.published) continue;
-    const category = post.category as string;
-    if (!CATEGORY_LIST.includes(category)) continue;
-    const tags = (post.tags as TechKey[] | undefined) ?? [];
-    for (const tag of tags) {
-      const current = countsByCategory[category][tag] ?? 0;
-      countsByCategory[category][tag] = current + 1;
-    }
-  }
-
-  for (const category of CATEGORY_LIST) {
-    const tagCounts = countsByCategory[category];
-    const tags = Object.keys(tagCounts).sort((a, b) =>
-      a.localeCompare(b)
-    ) as TechKey[];
-    tagsByCategory[category] = tags;
-  }
-
-  const categoryData = CATEGORY_LIST.map((category) => ({
-    category,
-    tags: tagsByCategory[category],
-    tagCounts: countsByCategory[category],
-  }));
-
-  return { categoryData };
-}
-
-// allPosts / CATEGORY_LIST는 정적이므로 렌더마다 재계산하지 않고 모듈 스코프에서 한 번만 계산한다.
-const { categoryData } = getCategoryTagsWithCounts();
-
 const Profile = () => {
+  const { categoryData } = getCategoryTagsWithCounts();
   return (
     <aside className="w-full">
       <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/60 dark:bg-neutral-900/60 backdrop-blur p-4 md:p-5">
@@ -106,7 +65,7 @@ const Profile = () => {
           <Accordion
             type="multiple"
             className="rounded-none"
-            defaultValue={CATEGORY_LIST.map((category) => `${category}-menu`)}
+            defaultValue={categoryData.map(({ category }) => `${category}-menu`)}
           >
             {categoryData
               .filter(({ tags }) => tags.length > 0)
