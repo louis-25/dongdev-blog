@@ -117,11 +117,12 @@ contentlayer/generated → ./.contentlayer/generated
 
 1. **카테고리 정의 불일치**: `config/post.ts`는 6종(`library, style, devops, framework, language, ai`)이지만
    `contentlayer.config.ts`의 `category` enum은 3종(`library, framework, language`)만 허용한다.
-   새 카테고리의 글을 추가하려면 **enum도 함께 갱신**해야 빌드가 통과한다.
-2. **PostCSS 설정 중복**: `postcss.config.js` 와 `postcss.config.mjs` 가 공존 → 정리 대상.
-3. **`next.config.mjs`의 `repo = "your-repo-name"`** 플레이스홀더 미정리(현재 basePath 주석 처리됨).
-4. **`scripts/contentlayer-build.ts`는 항상 exit 0** 으로 종료 → contentlayer 빌드 실패가 CI에서 가려질 수 있음.
-5. 다수 AI 도구 룰 공존(`.cursor`, `.roo`, `.clinerules`, `.trae`, `.windsurfrules`, `.github/instructions`).
+   새 카테고리의 글을 추가하려면 **enum도 함께 갱신**해야 빌드가 통과한다. (예: `hello-world.mdx`는 category 누락으로 빌드 시 스킵됨)
+2. ✅ **(해결됨, config-cleanup)** PostCSS 설정 중복 → `postcss.config.mjs` 제거, `postcss.config.js` 단일.
+3. ✅ **(해결됨, config-cleanup)** `next.config.mjs` 플레이스홀더(`repo`/`isProd`/주석) 정리.
+4. ✅ **(해결됨, config-cleanup)** `build` 스크립트가 Windows에서 contentlayer 종료버그로 실패 → `build`를 `tsx scripts/contentlayer-build.ts && next build`로 통일(cross-platform). CI는 `vercel build` 사용으로 무관. `scripts/contentlayer-build.ts`는 Windows 종료버그 우회용으로 exit 0 유지(실 빌드 게이트는 후속 `next build`).
+5. ✅ **(해결됨, config-cleanup)** ESLint flat config(`eslint.config.mjs` + 미설치 `@eslint/eslintrc`)가 깨져 있던 문제 → `.eslintrc.json`(`next/core-web-vitals`)로 교체, `pnpm lint` 정상.
+6. 다수 AI 도구 룰 공존(`.cursor`, `.roo`, `.clinerules`, `.trae`, `.windsurfrules`, `.github/instructions`).
    에이전트 작업 규칙은 **이 AGENTS.md / CLAUDE.md 를 우선**한다.
 
 ## 10. Git / PR

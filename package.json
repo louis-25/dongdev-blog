@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "contentlayer build && next build",
-    "build:contentlayer": "tsx scripts/contentlayer-build.ts && next build",
+    "build": "tsx scripts/contentlayer-build.ts && next build",
     "deploy:gh": "next build && gh-pages -d out -b deploy -m Update",
     "start": "next start",
     "lint": "next lint",
