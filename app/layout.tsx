@@ -11,7 +11,12 @@ import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getSearchIndex } from "./lib/posts";
-const inter = Inter({ subsets: ["latin"] });
+// Design Ref: §Design Anchor — Inter를 CSS 변수(--font-inter)로 노출해 globals.css의 --font-sans 토큰과 연결
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "DongDev Blog",
@@ -41,7 +46,7 @@ export default function RootLayout({
 }) {
   const searchIndex = getSearchIndex();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ko" suppressHydrationWarning className={inter.variable}>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
