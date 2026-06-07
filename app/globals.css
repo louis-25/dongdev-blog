@@ -37,8 +37,8 @@
   );
 }
 ::selection {
-  background-color: #47a3f3;
-  color: #fefefe;
+  background-color: var(--brand);
+  color: var(--brand-foreground);
 }
 @theme inline {
   --color-background: var(--background);
@@ -390,7 +390,7 @@ code {
 
 .mdx strong {
   @apply font-bold;
-  color: #47a3f3;
+  color: var(--brand);
 }
 
 .mdx ul {

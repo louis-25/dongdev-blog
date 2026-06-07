@@ -52,29 +52,12 @@ export async function generateMetadata({
   };
 }
 
-// 블로그 글 목록 페이지에서 사용
+// 정적 경로 생성: 각 글의 url을 slug 파라미터로 사용
 export async function generateStaticParams() {
-  // console.log("allPosts", allPosts);
-  return allPosts.map((post) => {
-    // console.log("post", post);
-    const {
-      title,
-      slugAsParams,
-      formattedDate,
-      date,
-      tags,
-      description,
-      url,
-      body,
-    } = post;
-    return {
-      slug: url,
-    };
-  });
+  return allPosts.map((post) => ({ slug: post.url }));
 }
 
 export default function PostPage({ params }: PostProps) {
-  // const post = allPosts.find((post) => post.slugAsParams === params.slug);
   const { slug } = params;
   const text = decodeURIComponent(slug);
   const post = allPosts.find((post) => post.slugAsParams === text);

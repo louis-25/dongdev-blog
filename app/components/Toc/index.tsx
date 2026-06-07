@@ -102,9 +102,7 @@ const Toc = () => {
                 <Link
                   href={`#${h.id}`}
                   className={`block rounded-md px-2 py-1 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors ${
-                    activeId === h.id
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-inherit"
+                    activeId === h.id ? "text-brand" : "text-inherit"
                   }`}
                 >
                   {h.text}
