@@ -1,125 +1,121 @@
+// Design Ref: §2.1 — 블로그 목록 서버 컴포넌트. URL 쿼리(q/tag/category/sort/page)로 필터·정렬·페이지 계산
 import { allPosts } from "contentlayer/generated";
-import { compareDesc } from "date-fns";
-import Link from "next/link";
-import { TagList } from "../components/TagList";
-import Image from "next/image";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-} from "@/ui/pagination";
-import { TechKey } from "@/app/utils/SkillPicker";
+import { compareAsc, compareDesc } from "date-fns";
+import { getCategoryTagsWithCounts } from "@/app/lib/posts";
+import type { TechKey } from "@/app/utils/SkillPicker";
+import BlogToolbar from "../components/blog/BlogToolbar";
+import BlogFilters from "../components/blog/BlogFilters";
+import PostListRow, {
+  type BlogRowItem,
+} from "../components/blog/PostListRow";
+import BlogPagination from "../components/blog/BlogPagination";
+import type { BlogSort } from "../components/blog/query";
+
+const POSTS_PER_PAGE = 5;
+
+function first(v: string | string[] | undefined): string | undefined {
+  const s = Array.isArray(v) ? v[0] : v;
+  return s && s.trim() ? s.trim() : undefined;
+}
 
 export default async function BlogPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const posts = allPosts
-    ?.filter((post) => post?.published)
-    ?.sort((a, b) => compareDesc(new Date(a?.date), new Date(b?.date)));
-
   const sp = await searchParams;
-  const postsPerPage = 5;
-  const totalPosts = posts?.length ?? 0;
-  const totalPages = Math.max(1, Math.ceil(totalPosts / postsPerPage));
-  const rawPage = Array.isArray(sp?.page) ? sp?.page?.[0] : sp?.page;
-  const parsed = Number(rawPage ?? "1");
+  const q = first(sp.q);
+  const category = first(sp.category);
+  const tag = first(sp.tag);
+  const sort: BlogSort = first(sp.sort) === "oldest" ? "oldest" : "newest";
+
+  // Plan SC: FR-02/FR-01 — published + category + tag + q 필터 (서버)
+  const lowerQ = q?.toLowerCase();
+  const filtered = allPosts.filter((post) => {
+    if (!post.published) return false;
+    if (category && post.category !== category) return false;
+    if (tag && !(post.tags ?? []).includes(tag)) return false;
+    if (lowerQ) {
+      const haystack = [
+        post.title,
+        post.description,
+        ...(post.tags ?? []),
+      ]
+        .join(" ")
+        .toLowerCase();
+      if (!haystack.includes(lowerQ)) return false;
+    }
+    return true;
+  });
+
+  // Plan SC: FR-03 — 정렬(최신/오래된)
+  const sorted = filtered.sort((a, b) =>
+    sort === "oldest"
+      ? compareAsc(new Date(a.date), new Date(b.date))
+      : compareDesc(new Date(a.date), new Date(b.date))
+  );
+
+  const total = sorted.length;
+  const totalPages = Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
+  const parsed = Number(first(sp.page) ?? "1");
   const currentPage = Number.isFinite(parsed)
     ? Math.min(Math.max(parsed, 1), totalPages)
     : 1;
-  const start = (currentPage - 1) * postsPerPage;
-  const end = start + postsPerPage;
-  const paginatedPosts = posts?.slice(start, end) ?? [];
+  const start = (currentPage - 1) * POSTS_PER_PAGE;
+  const pagePosts: BlogRowItem[] = sorted
+    .slice(start, start + POSTS_PER_PAGE)
+    .map((post) => ({
+      _id: post._id,
+      title: post.title,
+      description: post.description,
+      url: post.url,
+      formattedDate: post.formattedDate,
+      tags: post.tags,
+      thumbnail: post.thumbnail,
+    }));
+
+  // 필터 칩 데이터: 글 있는 카테고리 + (선택 시) 해당 카테고리 태그, 아니면 전체 태그
+  const { categoryData } = getCategoryTagsWithCounts();
+  const withPosts = categoryData.filter(({ tags }) => tags.length > 0);
+  const categories = withPosts.map(({ category }) => category);
+  const tagsToShow: TechKey[] = category
+    ? withPosts.find((c) => c.category === category)?.tags ?? []
+    : Array.from(new Set(withPosts.flatMap(({ tags }) => tags)));
 
   return (
-    <div className="dark:prose-invert">
-      <h1 className="text-3xl font-bold mb-8">Blog Posts</h1>
+    <div>
+      <h1 className="mb-6 text-3xl font-bold">블로그</h1>
 
-      <div className="space-y-4 transition-colors ">
-        {paginatedPosts?.map((post, idx) => (
-          <div
-            key={post._id}
-            className="bg-card hover:bg-card/80 rounded-lg p-6 transition-colors "
-          >
-            <article>
-              <Link
-                href={post.url}
-                className="flex flex-col md:flex-row items-start md:items-center w-full gap-4 md:gap-10"
-              >
-                <div>
-                  <h2 className="font-semibold mb-2">{post.title}</h2>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {post.description}
-                  </p>
-                  <div className="flex gap-2 mt-2">
-                    <TagList tags={post?.tags as TechKey[]} />
-                    {/* {post.tags?.map((tag) => (
-                  <Link
-                    key={tag}
-                    href={`/tags/${tag}`}
-                    className="text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 no-underline"
-                  >
-                    #{tag}
-                  </Link>
-                ))} */}
-                  </div>
-                  <time className="text-sm text-gray-500">
-                    {post.formattedDate}
-                  </time>
-                </div>
-                {post?.thumbnail && (
-                  <Image
-                    src={post?.thumbnail}
-                    alt={post?.title}
-                    width={200}
-                    height={200}
-                    sizes="(max-width: 768px) 100vw, 200px"
-                    className="rounded-xl shadow-lg w-full h-auto md:w-[200px] md:h-auto md:ml-auto"
-                  />
-                )}
-              </Link>
-            </article>
-          </div>
-        ))}
+      <div className="space-y-5">
+        <BlogToolbar total={total} />
+        <BlogFilters
+          categories={categories}
+          tags={tagsToShow}
+          activeCategory={category}
+          activeTag={tag}
+          q={q}
+          sort={sort}
+        />
       </div>
-      {totalPages > 1 && (
-        <div className="mt-8">
-          <Pagination>
-            <PaginationContent>
-              {currentPage > 1 && (
-                <PaginationItem>
-                  <PaginationPrevious href={`/blog?page=${currentPage - 1}`} />
-                </PaginationItem>
-              )}
 
-              {Array.from({ length: totalPages }).map((_, i) => {
-                const pageNum = i + 1;
-                return (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      href={`/blog?page=${pageNum}`}
-                      aria-label={`Go to page ${pageNum}`}
-                      isActive={pageNum === currentPage}
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
+      <div className="mt-6 space-y-4">
+        {pagePosts.length === 0 ? (
+          <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
+            조건에 맞는 글이 없습니다.
+          </p>
+        ) : (
+          pagePosts.map((post) => <PostListRow key={post._id} post={post} />)
+        )}
+      </div>
 
-              {currentPage < totalPages && (
-                <PaginationItem>
-                  <PaginationNext href={`/blog?page=${currentPage + 1}`} />
-                </PaginationItem>
-              )}
-            </PaginationContent>
-          </Pagination>
-        </div>
-      )}
+      <BlogPagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        q={q}
+        tag={tag}
+        category={category}
+        sort={sort}
+      />
     </div>
   );
 }

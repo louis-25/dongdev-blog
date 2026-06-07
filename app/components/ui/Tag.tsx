@@ -37,11 +37,11 @@ export function Tag({
       }}
       className={`inline-flex items-center px-3 py-1 ${
         isClickable ? "cursor-pointer" : "cursor-default"
-      } rounded-full text-sm ${
+      } rounded-full text-sm transition-colors ${
         isSelected
-          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-          : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
-      } hover:bg-opacity-90 transition-colors ${className}`}
+          ? "bg-brand/15 text-brand hover:bg-brand/25"
+          : "bg-muted text-muted-foreground hover:bg-muted/70"
+      } ${className}`}
     >
       {tech?.Icon && <tech.Icon className="w-4 h-4 mr-2" />}
       {/* {name} */}
