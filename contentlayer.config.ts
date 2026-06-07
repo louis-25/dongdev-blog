@@ -7,6 +7,9 @@ import type { Options } from "rehype-pretty-code";
 import rehypeToc from "rehype-toc";
 import remarkGemoji from "remark-gemoji";
 import remarkGfm from "remark-gfm";
+// 카테고리 단일 진실원: config/post.ts의 CATEGORY_LIST를 enum 옵션으로 재사용
+// (기존 enum 3종 하드코딩 ↔ config 6종 불일치 해소)
+import { CATEGORY_LIST } from "./config/post";
 // rehype-toc로 생성된 TOC를 <details><summary>로 감싸 토글 가능하게 만드는 플러그인
 function rehypeWrapTocWithDetails() {
   return function transformer(tree: any) {
@@ -131,7 +134,7 @@ const Post = defineDocumentType(() => ({
     category: {
       type: "enum",
       required: true,
-      options: ["library", "framework", "language"],
+      options: CATEGORY_LIST,
     },
     tags: {
       type: "list",
