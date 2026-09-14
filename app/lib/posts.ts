@@ -57,10 +57,12 @@ export function getCategoryTagsWithCounts(): { categoryData: CategoryData[] } {
 
 // 검색에 필요한 최소 필드만 추린 경량 인덱스 (본문 제외)
 export function getSearchIndex(): PostSearchItem[] {
-  return allPosts.map((post) => ({
-    title: post.title,
-    description: post.description,
-    url: post.url,
-    tags: post.tags,
-  }));
+  return allPosts
+    .filter((post) => post.published)
+    .map((post) => ({
+      title: post.title,
+      description: post.description,
+      url: post.url,
+      tags: post.tags,
+    }));
 }

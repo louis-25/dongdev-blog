@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { MdxImage } from "@/app/components/mdx/MdxImage";
 import CommentWidget from "@/app/components/CommentWidget";
 import { TechKey } from "@/app/utils/SkillPicker";
+import { SITE } from "@/config/site";
 
 interface PostProps {
   params: {
@@ -16,24 +17,27 @@ interface PostProps {
 export async function generateMetadata({
   params,
 }: PostProps): Promise<Metadata> {
-  const post = allPosts.find((post) => post.slugAsParams === params.slug);
+  const post = allPosts.find(
+    (post) => post.slugAsParams === params.slug && post.published
+  );
 
   if (!post) {
     return {};
   }
 
-  const ogUrl = new URL("/api/og", "https://dongdev-blog.vercel.app");
+  const ogUrl = new URL("/api/og", SITE.url);
   ogUrl.searchParams.set("title", post.title);
   ogUrl.searchParams.set("description", post.description);
 
   return {
     title: post.title,
     description: post.description,
+    alternates: { canonical: `/blog/${params.slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
       type: "article",
-      url: `https://dongdev-blog.vercel.app/blog/${params.slug}`,
+      url: `${SITE.url}/blog/${params.slug}`,
       images: [
         {
           url: ogUrl.toString(),
@@ -54,13 +58,18 @@ export async function generateMetadata({
 
 // 정적 경로 생성: 각 글의 url을 slug 파라미터로 사용
 export async function generateStaticParams() {
-  return allPosts.map((post) => ({ slug: post.url }));
+  return allPosts
+    .filter((post) => post.published)
+    .map((post) => ({ slug: post.slugAsParams }));
 }
 
 export default function PostPage({ params }: PostProps) {
   const { slug } = params;
   const text = decodeURIComponent(slug);
-  const post = allPosts.find((post) => post.slugAsParams === text);
+  // 초안(published:false)은 URL 직접 접근으로도 열리지 않게 한다.
+  const post = allPosts.find(
+    (post) => post.slugAsParams === text && post.published
+  );
 
   if (!post) {
     notFound();
