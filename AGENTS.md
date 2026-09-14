@@ -84,6 +84,10 @@ dongdev-blog/
   `rehype-autolink-headings`, `rehype-toc` → **커스텀 플러그인 `rehypeWrapTocWithDetails`** 로 TOC를 `<details>` 토글로 감쌈.
 - `rehypePrettyCode` 항목에 `as never` 캐스팅이 붙어 있다. mdx-bundler(unified@10)와
   rehype-pretty-code(unified@11)의 `Plugin` 타입 트리가 달라서이며 런타임 영향은 없다.
+- `package.json`의 `pnpm.packageExtensions`는 **지우지 말 것.** `@jsdevtools/rehype-toc`가
+  `unified` 타입을 import하면서 의존성으로 선언하지 않아(phantom dependency), pnpm이 어느 버전을
+  호이스팅하느냐에 따라 타입이 unified@10/@11로 갈린다. 로컬은 통과하고 Vercel에서만
+  `content-collections.ts` TS2322로 빌드가 실패했던 원인이다. 확장으로 unified@11을 명시해 고정한다.
 
 ### 새 글 추가 절차
 1. `posts/YYYY-MM/<유일한-파일명>.mdx` 생성.
