@@ -12,6 +12,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getSearchIndex } from "./lib/posts";
 import { SITE } from "@/config/site";
+import { PageTransition } from "./components/animations/PageTransition";
 // Design Ref: §Design Anchor — Inter를 CSS 변수(--font-inter)로 노출해 globals.css의 --font-sans 토큰과 연결
 const inter = Inter({
   subsets: ["latin"],
@@ -85,7 +86,7 @@ export default function RootLayout({
                   </div>
                 </div>
                 <div className="lg:col-span-7 order-1 lg:order-2 caret-none">
-                  {children}
+                  <PageTransition>{children}</PageTransition>
                 </div>
               </div>
             </main>
