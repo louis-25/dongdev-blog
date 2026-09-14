@@ -18,6 +18,14 @@ function first(v: string | string[] | undefined): string | undefined {
   return s && s.trim() ? s.trim() : undefined;
 }
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "블로그",
+  description: "검색·태그·카테고리로 찾아보는 전체 글 목록입니다.",
+  alternates: { canonical: "/blog" },
+};
+
 export default async function BlogPage({
   searchParams,
 }: {

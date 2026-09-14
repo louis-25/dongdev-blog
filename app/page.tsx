@@ -9,6 +9,12 @@ import LatestPosts, {
 import QuickNav from "./components/home/QuickNav";
 import UsefulSites from "./components/home/UsefulSites";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function Home() {
   // Plan SC: FR-06 — 최신 글 6개(설명 포함). Plan SC: FR-09 — any 캐스팅 제거(정렬은 숫자 타임스탬프)
   const latestPosts: LatestPostItem[] = allPosts

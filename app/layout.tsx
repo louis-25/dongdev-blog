@@ -11,6 +11,7 @@ import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getSearchIndex } from "./lib/posts";
+import { SITE } from "@/config/site";
 // Design Ref: §Design Anchor — Inter를 CSS 변수(--font-inter)로 노출해 globals.css의 --font-sans 토큰과 연결
 const inter = Inter({
   subsets: ["latin"],
@@ -19,23 +20,29 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DongDev Blog",
-  description: "웹개발에 관한 글을 기록하는 공간입니다.",
+  // 상대 URL(OG 이미지·canonical)을 절대 URL로 풀어주는 기준점
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: SITE.name,
+    template: `%s | ${SITE.name}`,
+  },
+  description: SITE.description,
   openGraph: {
-    title: "DongDev Blog",
-    description: "웹개발에 관한 전문적인 블로그가 되기 위해 노력하겠습니다.",
-    url: "https://dongdev-blog.vercel.app",
-    siteName: "DongDev Blog",
+    title: SITE.name,
+    description: SITE.description,
+    url: SITE.url,
+    siteName: SITE.name,
     images: [
-      {
-        url: "https://dongdev-blog.vercel.app/rakun.png",
-        width: 1200,
-        height: 630,
-        alt: "블로그 대표 이미지",
-      },
+      { url: "/rakun.png", width: 1200, height: 630, alt: "블로그 대표 이미지" },
     ],
-    locale: "ko_KR",
+    locale: SITE.locale,
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE.name,
+    description: SITE.description,
+    images: ["/rakun.png"],
   },
 };
 
@@ -49,6 +56,13 @@ export default function RootLayout({
     <html lang="ko" suppressHydrationWarning className={inter.variable}>
       <head>
         <link rel="icon" href="/favicon.ico" />
+        {/* alternates는 페이지 metadata가 통째로 덮어쓰므로 head에 직접 둔다 */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={SITE.name}
+          href="/rss.xml"
+        />
       </head>
       <body className={classNames(inter.className, "antialiased")}>
         <div className="max-w-5xl mt-8 mb-8 mx-auto">

@@ -2,6 +2,14 @@ import { allPosts } from "contentlayer/generated";
 import { TagList } from "../components/TagList";
 import { TechKey } from "../utils/SkillPicker";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "태그",
+  description: "글에 사용된 전체 태그 목록입니다.",
+  alternates: { canonical: "/tags" },
+};
+
 export default function TagsPage() {
   const tagCounts = allPosts
     .filter((post) => post.published)

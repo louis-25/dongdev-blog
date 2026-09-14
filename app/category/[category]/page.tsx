@@ -15,6 +15,21 @@ import {
   PaginationNext,
 } from "@/ui/pagination";
 
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}): Promise<Metadata> {
+  const { category } = await params;
+  return {
+    title: category,
+    description: `${category} 카테고리의 글 모음입니다.`,
+    alternates: { canonical: `/category/${category}` },
+  };
+}
+
 export default async function CategoryPage({
   params,
   searchParams,

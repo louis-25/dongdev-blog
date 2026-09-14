@@ -11,6 +11,17 @@ interface TagPageProps {
   };
 }
 
+import type { Metadata } from "next";
+
+export function generateMetadata({ params }: TagPageProps): Metadata {
+  const tag = decodeURIComponent(params.tag);
+  return {
+    title: `#${tag}`,
+    description: `${tag} 태그가 달린 글 모음입니다.`,
+    alternates: { canonical: `/tags/${encodeURIComponent(tag)}` },
+  };
+}
+
 export function generateStaticParams() {
   const tags = new Set<string>();
   allPosts.forEach((post) => {
