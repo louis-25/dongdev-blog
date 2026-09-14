@@ -1,40 +1,48 @@
-<<<<<<< HEAD
 # dongdev-blog
-=======
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+웹개발 기록을 남기는 개인 블로그. Next.js App Router + Contentlayer(MDX) 기반.
 
-First, run the development server:
+## 개발
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`pnpm` 전용입니다 (`packageManager: pnpm@10.17.1`). npm/yarn/bun 은 사용하지 않습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 스크립트
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| 명령 | 설명 |
+| --- | --- |
+| `pnpm dev` | 개발 서버 |
+| `pnpm build` | Contentlayer 생성 후 Next 빌드 |
+| `pnpm start` | 프로덕션 서버 |
+| `pnpm lint` | ESLint |
+| `pnpm typecheck` | `tsc --noEmit` |
 
-## Learn More
+커밋/PR 전 `pnpm typecheck` 와 `pnpm lint` 를 통과시킬 것.
 
-To learn more about Next.js, take a look at the following resources:
+## 글 작성
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`posts/<YYYY-MM>/<slug>.mdx` 에 작성합니다. frontmatter 필수 항목:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```yaml
+---
+title: 제목
+date: 2026-01-01
+description: 한 줄 요약
+category: library # config/post.ts 의 CATEGORY_LIST 중 하나
+tags: [react, nextjs]
+published: true # false 면 목록·RSS·사이트맵·직접 URL 모두에서 제외
+---
+```
 
-## Deploy on Vercel
+## 배포
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`develop` 푸시 → Vercel 프리뷰 배포 → Vercel 대시보드에서 프로덕션 승격.
+`main` 자동 배포는 [vercel.json](vercel.json) 에서 의도적으로 비활성화되어 있습니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
->>>>>>> master
+## 규칙
+
+프로젝트 전체 규칙은 [AGENTS.md](AGENTS.md) 를 참조하세요.

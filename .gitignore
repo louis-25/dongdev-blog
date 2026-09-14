@@ -65,3 +65,8 @@ node_modules/
 .taskmaster/
 .contentlayer/
 .bkit/*
+# Claude Code
+.claude/
+
+# graphify knowledge graph output
+graphify-out/
