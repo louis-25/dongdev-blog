@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { MDXContent } from "../../components/MDXComponents";
 import { TagList } from "../../components/TagList";
 import { Metadata } from "next";
@@ -9,16 +9,18 @@ import { TechKey } from "@/app/utils/SkillPicker";
 import { SITE } from "@/config/site";
 
 interface PostProps {
-  params: {
+  // Next 16부터 params는 Promise다 (동기 접근 제거됨)
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
   params,
 }: PostProps): Promise<Metadata> {
+  const { slug } = await params;
   const post = allPosts.find(
-    (post) => post.slugAsParams === params.slug && post.published
+    (post) => post.slugAsParams === slug && post.published
   );
 
   if (!post) {
@@ -32,12 +34,12 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.description,
-    alternates: { canonical: `/blog/${params.slug}` },
+    alternates: { canonical: `/blog/${slug}` },
     openGraph: {
       title: post.title,
       description: post.description,
       type: "article",
-      url: `${SITE.url}/blog/${params.slug}`,
+      url: `${SITE.url}/blog/${slug}`,
       images: [
         {
           url: ogUrl.toString(),
@@ -63,8 +65,8 @@ export async function generateStaticParams() {
     .map((post) => ({ slug: post.slugAsParams }));
 }
 
-export default function PostPage({ params }: PostProps) {
-  const { slug } = params;
+export default async function PostPage({ params }: PostProps) {
+  const { slug } = await params;
   const text = decodeURIComponent(slug);
   // 초안(published:false)은 URL 직접 접근으로도 열리지 않게 한다.
   const post = allPosts.find(
@@ -100,7 +102,7 @@ export default function PostPage({ params }: PostProps) {
           height={300}
         />
       ) : null}
-      <MDXContent code={post.body.code} />
+      <MDXContent code={post.mdx} />
       <CommentWidget />
     </article>
   );

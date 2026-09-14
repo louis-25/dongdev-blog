@@ -1,4 +1,4 @@
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { TagList } from "../components/TagList";
 import { TechKey } from "../utils/SkillPicker";
 

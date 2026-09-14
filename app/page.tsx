@@ -1,5 +1,5 @@
 // Design Ref: §2.1 — 홈 서버 컴포넌트. 섹션 컴포넌트 조립만 담당 (본문은 클라이언트로 미전송)
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { getCategoryTagsWithCounts } from "@/app/lib/posts";
 import { usefulSites } from "@/app/data/usefulSites";
 import Hero from "./components/home/Hero";

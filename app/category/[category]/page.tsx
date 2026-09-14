@@ -1,4 +1,4 @@
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { compareDesc } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
@@ -88,7 +88,7 @@ export default async function CategoryPage({
       <div className="space-y-4 transition-colors ">
         {paginatedPosts?.map((post) => (
           <div
-            key={post._id}
+            key={post.url}
             className="bg-card hover:bg-card/80 rounded-lg p-6 transition-colors "
           >
             <article>

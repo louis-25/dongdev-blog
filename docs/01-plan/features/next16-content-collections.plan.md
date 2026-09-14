@@ -6,7 +6,7 @@ date: 2026-09-14
 author: louis-25
 project: dongdev-blog
 projectVersion: 0.1.0
-status: Spike Done
+status: Done
 ---
 
 # next16-content-collections Planning Document
@@ -17,7 +17,7 @@ status: Spike Done
 > **Version**: 0.1.0
 > **Author**: louis-25
 > **Date**: 2026-09-14
-> **Status**: Draft
+> **Status**: Done (§11 실행 결과 참조)
 
 ---
 
@@ -140,12 +140,12 @@ status: Spike Done
 
 ### 4.1 Definition of Done
 
-- [ ] Phase 1 / Phase 2 각각 **독립 커밋**으로 분리되어, 어느 쪽이든 단독 revert 가능
-- [ ] `pnpm typecheck` · `pnpm lint` 통과
-- [ ] `pnpm build` 완주 (Windows 로컬 + Vercel 프리뷰 양쪽)
-- [ ] 아래 **렌더링 동등성 검증** 전 항목 통과
-- [ ] `contentlayer`·`next-contentlayer` 의존성이 `package.json`에서 완전히 제거됨
-- [ ] [AGENTS.md](../../../AGENTS.md) 갱신 (§1 스택 표, §2 명령어, §3 구조, §4 파이프라인)
+- [x] ~~Phase 1 / Phase 2 각각 **독립 커밋**으로 분리~~ → **§11.1 근거로 통합 실행** (분리 불가 판명)
+- [x] `pnpm typecheck` · `pnpm lint` 통과
+- [x] `pnpm build` 완주 (Windows 로컬 + Vercel 프리뷰 양쪽)
+- [x] 아래 **렌더링 동등성 검증** 전 항목 통과
+- [x] `contentlayer`·`next-contentlayer` 의존성이 `package.json`에서 완전히 제거됨
+- [x] [AGENTS.md](../../../AGENTS.md) 갱신 (§1 스택 표, §2 명령어, §3 구조, §4 파이프라인)
 
 ### 4.2 Quality Criteria — 렌더링 동등성 검증
 
@@ -385,9 +385,88 @@ Phase 2에서 contentlayer(=unified@10)가 사라지면 캐스팅도 함께 제�
 
 ---
 
+## 11. 실행 결과 — Phase 1·2 통합 실행 (2026-09-14)
+
+**결론: Phase 1과 Phase 2는 분리 실행이 불가능했다. 한 커밋으로 통합 실행하여 완료.**
+
+### 11.1 AD-1(Phase 분리)이 무너진 이유
+
+Next 16으로만 올리고 contentlayer를 남겨두면 **MDX 페이지 프리렌더가 실패**한다.
+
+```
+Error occurred prerendering page "/blog/gitlab-runner"
+TypeError: Cannot read properties of undefined (reading 'ReactCurrentDispatcher')
+  → 캐시 정리 후 → TypeError: i.getOwner is not a function
+```
+
+원인: contentlayer 0.3.4는 **React JSX 런타임 전체를 각 글의 컴파일 결과에 인라인**한다.
+
+| | 본문 원문 | 컴파일 코드 | 배율 | React 런타임 인라인 |
+|---|---|---|---|---|
+| contentlayer 0.3.4 | 1,147 B | **32,053 B** | 28x | ✅ (`jsx-dev-runtime`, `getOwner`) |
+| content-collections | 1,145 B | **8,884 B** | 7.8x | ❌ 없음 |
+
+인라인된 React 런타임이 Next 16의 vendored React와 내부 API가 달라 충돌한다.
+contentlayer를 제거하는 것 외에 해결책이 없으므로 두 Phase를 합쳤다.
+
+### 11.2 AD-2(React 18.2 유지)도 무너짐
+
+`next@16.3.5`의 peer는 `react: ^18.2.0 || ^19.0.0`이지만, App Router가 내부적으로 React 19를
+쓰기 때문에 **React 18.2로는 실제 렌더가 되지 않는다.** peer 범위가 실제 호환성보다 넓다.
+React 19.3.0으로 올렸고, 연쇄로 framer-motion도 12→13이 필요했다
+(12.23.12가 React 19에서 제거된 `__SECRET_INTERNALS_...`를 참조).
+
+### 11.3 발견 4 — contentlayer 컴파일 캐시가 React 버전에 민감 (기존 결함)
+
+`.contentlayer/.cache`는 일반 빌드로 갱신되지 않는다. React 18 시절 캐시에 React 18 런타임이
+인라인된 채 남아 React 19 빌드에서 터졌다. `--clearCache`가 필요했다. Vercel은 클린 클론이라
+드러나지 않고 **로컬 증분 빌드에서만** 발생한다. contentlayer 제거로 함께 소멸.
+
+### 11.4 최종 검증 결과
+
+| 게이트 | 기준선 | 결과 | 판정 |
+|---|---|---|---|
+| `pnpm build` | — | 완주, 37 페이지 생성 (글 17편 SSG) | ✅ |
+| `pnpm typecheck` | — | 에러 0 | ✅ |
+| `pnpm lint` | — | 에러 0 / 경고 4 (§9-8) | ✅ |
+| **sitemap 전체 URL** | 35 | 35, **완전 일치** | ✅ |
+| **발행글 URL** | 17 | 17, 양방향 차집합 공집합 | ✅ |
+| RSS `<item>` | 17 | 17 | ✅ |
+| 초안 차단 | 404 | `/blog/hello-world` → 404 | ✅ |
+| 본문 구조 3편 | — | h1·h2·h3·pre·code·img·li·anchor·toc·details·shiki **전 항목 일치** | ✅ |
+| 쿼리 필터 | — | `?q=` 1건 / `?sort=oldest` 5건 / `?category=devops` 4건 / `?tag=&page=2` 3건 | ✅ |
+| `pnpm dev` | — | `content-collections watch` + `next dev` 동시 실행, MDX 저장 시 자동 재생성 확인 | ✅ |
+
+### 11.5 계획 대비 실제 변경 범위
+
+앱 코드에서 Next 16이 실제로 깨뜨린 것은 **동기 `params` 2개 파일**뿐이었다.
+나머지는 전부 설정과 import 경로다.
+
+| 변경 | 파일 수 | 비고 |
+|---|---|---|
+| `contentlayer/generated` → `content-collections` | 9 | import 한 줄씩 |
+| `useMDXComponent` 출처 교체 | 1 | 시그니처 동일 |
+| `post.body.code` → `post.mdx` | 1 | |
+| `_id` 제거 (React key는 `url`) | 4 | contentlayer 전용 필드였음 |
+| 동기 `params` → async | 2 | **Next 16 breaking change** |
+| 설정 | 6 | next.config·tsconfig·package.json·eslint.config·gitignore·content-collections.ts |
+| 삭제 | 2 | `contentlayer.config.ts`, `scripts/contentlayer-build.ts` |
+
+### 11.6 남은 과제
+
+- **태그 대소문자 혼용** (신규 발견): `React` 9편 / `react` 1편. Linux에서 태그 페이지가 둘로
+  갈라지고 Windows에서는 파일명이 충돌한다. 콘텐츠 1글자 수정이라 이번 커밋에 섞지 않음
+- lint 경고 4건 — 고치면 동작이 바뀌므로 별도 사이클
+- React Compiler (`reactCompiler: true`) — React 19 안정화 후 검토
+- `framer-motion` → `motion` 패키지명 변경, `shiki` 0.14 → 4.x
+- Edge Runtime 폐기 예고 — `app/api/og/route.tsx`의 `runtime = "edge"` 재검토 필요
+
+---
+
 ## Version History
 
 | 버전 | 날짜 | 작성자 | 내용 |
 |---|---|---|---|
+| 1.2 | 2026-09-14 | louis-25 | §11 실행 결과 추가 — AD-1·AD-2 무효화로 Phase 1·2 통합 실행, 전 게이트 통과 |
 | 1.1 | 2026-09-14 | louis-25 | §10 Spike 결과 추가 — R-1/R-2/R-3/R-5 해소, 신규 발견 3건 반영, Phase 2 원자성 제약 확정 |
 | 1.0 | 2026-09-14 | louis-25 | 최초 작성 — Next 16 + content-collections 이관 계획 |

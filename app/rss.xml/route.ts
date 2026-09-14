@@ -1,5 +1,5 @@
 import { Feed } from "feed";
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { SITE } from "@/config/site";
 
 export async function GET() {

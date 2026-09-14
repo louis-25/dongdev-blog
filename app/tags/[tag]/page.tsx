@@ -1,4 +1,4 @@
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { compareDesc } from "date-fns";
 import { notFound } from "next/navigation";
 import { TagList } from "@/app/components/TagList";
@@ -6,15 +6,18 @@ import { InteractiveLink } from "@/app/components/ui/interactive";
 import { TechKey } from "@/app/utils/SkillPicker";
 
 interface TagPageProps {
-  params: {
+  // Next 16부터 params는 Promise다 (동기 접근 제거됨)
+  params: Promise<{
     tag: string;
-  };
+  }>;
 }
 
 import type { Metadata } from "next";
 
-export function generateMetadata({ params }: TagPageProps): Metadata {
-  const tag = decodeURIComponent(params.tag);
+export async function generateMetadata({
+  params,
+}: TagPageProps): Promise<Metadata> {
+  const tag = decodeURIComponent((await params).tag);
   return {
     title: `#${tag}`,
     description: `${tag} 태그가 달린 글 모음입니다.`,
@@ -30,8 +33,8 @@ export function generateStaticParams() {
   return Array.from(tags).map((tag) => ({ tag }));
 }
 
-export default function TagPage({ params }: TagPageProps) {
-  const { tag } = params;
+export default async function TagPage({ params }: TagPageProps) {
+  const { tag } = await params;
   const decodedTag = decodeURIComponent(tag) as TechKey;
 
   const posts = allPosts
@@ -67,7 +70,7 @@ export default function TagPage({ params }: TagPageProps) {
       <div className="space-y-6">
         {posts.map((post) => (
           <InteractiveLink
-            key={post._id}
+            key={post.url}
             href={post.url}
             className="block no-underline"
           >

@@ -5,7 +5,6 @@ import { TagList } from "../TagList";
 import type { TechKey } from "@/app/utils/SkillPicker";
 
 export interface BlogRowItem {
-  _id: string;
   title: string;
   description: string;
   url: string;

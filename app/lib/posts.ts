@@ -1,4 +1,4 @@
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { CATEGORY_LIST } from "@/config/post";
 import type { TechKey } from "@/app/utils/SkillPicker";
 

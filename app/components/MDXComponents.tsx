@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert, CodeBlock } from "./mdx";
-import { useMDXComponent } from "next-contentlayer/hooks";
+import { useMDXComponent } from "@content-collections/mdx/react";
 
 const components = {
   Alert,

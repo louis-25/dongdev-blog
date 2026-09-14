@@ -1,5 +1,5 @@
 // Design Ref: §2.1 — 블로그 목록 서버 컴포넌트. URL 쿼리(q/tag/category/sort/page)로 필터·정렬·페이지 계산
-import { allPosts } from "contentlayer/generated";
+import { allPosts } from "content-collections";
 import { compareAsc, compareDesc } from "date-fns";
 import { getCategoryTagsWithCounts } from "@/app/lib/posts";
 import type { TechKey } from "@/app/utils/SkillPicker";
@@ -73,7 +73,6 @@ export default async function BlogPage({
   const pagePosts: BlogRowItem[] = sorted
     .slice(start, start + POSTS_PER_PAGE)
     .map((post) => ({
-      _id: post._id,
       title: post.title,
       description: post.description,
       url: post.url,
@@ -112,7 +111,7 @@ export default async function BlogPage({
             조건에 맞는 글이 없습니다.
           </p>
         ) : (
-          pagePosts.map((post) => <PostListRow key={post._id} post={post} />)
+          pagePosts.map((post) => <PostListRow key={post.url} post={post} />)
         )}
       </div>
 
