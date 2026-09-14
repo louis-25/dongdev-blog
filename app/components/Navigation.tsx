@@ -38,11 +38,15 @@ export function Navigation({ posts }: { posts: PostSearchItem[] }) {
         <nav className="grid grid-cols-10 gap-6" id="nav">
           {/* 햄버거(태블릿 전용) */}
           <div className="col-span-3 order-1 md:flex lg:hidden items-center">
-            <Sheet>
-              <SheetTrigger>
+            {/* open/onOpenChange로 제어해야 아래 햄버거 애니메이션이 동작한다
+                (제어하지 않으면 open이 false로 고정돼 X 전환이 죽는다) */}
+            <Sheet open={open} onOpenChange={setOpen}>
+              {/* asChild 필수: 없으면 SheetTrigger가 자체 <button>을 렌더해
+                  <button> 안에 <button>이 중첩되고 React 19에서 하이드레이션 에러가 난다.
+                  aria-expanded / data-state는 Radix가 주입하므로 직접 쓰지 않는다. */}
+              <SheetTrigger asChild>
                 <button
                   aria-label="Open menu"
-                  aria-expanded={open}
                   className="relative h-8 w-8 rounded-sm transition-colors hover:bg-muted/60"
                 >
                   <span className="sr-only">Open menu</span>
