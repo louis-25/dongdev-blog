@@ -189,8 +189,11 @@ export default makeSource({
         },
       ],
       // contentlayer에서 제공하는 rehypeToc
+      // contentlayer 0.3.4는 unified@10에 고정되어 있고 rehype-toc는 unified@11을 쓴다.
+      // Plugin 타입 트리가 둘이라 tsc가 거부하므로 캐스팅으로 우회한다(런타임 영향 없음).
+      // Phase 2에서 contentlayer를 제거하면 unified@10이 사라져 이 캐스팅도 함께 삭제된다.
       [
-        rehypeToc,
+        rehypeToc as never,
         {
           headings: ["h1", "h2", "h3"],
           position: "afterbegin",

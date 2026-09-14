@@ -6,7 +6,7 @@ date: 2026-09-14
 author: louis-25
 project: dongdev-blog
 projectVersion: 0.1.0
-status: Draft
+status: Spike Done
 ---
 
 # next16-content-collections Planning Document
@@ -299,8 +299,95 @@ dongdev-blog/
 
 ---
 
+## 10. Spike 결과 (0단계) — 2026-09-14
+
+**판정: content-collections 채택 확정. Phase 2 진행 가능.**
+
+Next 14 + contentlayer가 그대로 있는 상태에서 `content-collections.ts`를 작성하고
+`content-collections build`를 돌려 18개 문서를 생성, 생성물을 `react-dom/server`로
+실제 렌더해 기준선과 비교했다.
+
+### 10.1 리스크 판정
+
+| # | 리스크 | 판정 | 근거 |
+|---|---|---|---|
+| R-1 | `@content-collections/mdx` 정체(18개월) | ✅ **해소** | `useMDXComponent(code)` 시그니처가 `next-contentlayer/hooks`와 **동일**. 둘 다 mdx-bundler 기반이라 [MDXComponents.tsx](../../../app/components/MDXComponents.tsx) 변경은 **import 한 줄 교체**로 끝난다. 대표 글 3편 렌더 성공 |
+| R-2 | 슬러그 산출 차이로 URL 변경 | ✅ **해소** | 발행글 17개 URL **완전 일치** (before−after, after−before 모두 공집합). §10.2의 함정 수정 후 |
+| R-3 | 커스텀 `rehypeWrapTocWithDetails` 이식 실패 | ✅ **해소** | 수정 없이 그대로 복사해 동작. 렌더 결과에 `toc-collapsible`·`toc-summary` 존재 |
+| R-5 | 빌드 래퍼가 실패를 삼킴 | ✅ 확인 | `content-collections build`는 정상 종료 코드를 반환. 래퍼 제거 가능 |
+
+### 10.2 발견 1 — `_meta.path`의 Windows 경로 구분자 (신규)
+
+content-collections의 `_meta.path`는 **Windows에서 역슬래시**를 쓴다 (`2022-04\PeerJS란`).
+contentlayer의 규칙을 그대로 옮겨 `.split("/")`로 쓰면 폴더명이 URL에 섞여 들어간다:
+
+```
+기대:  /blog/PeerJS란
+실제:  /blog/2022-04\PeerJS란     ← 17개 전부 깨짐
+```
+
+**Linux(Vercel)에서는 통과하고 Windows 로컬에서만 깨지는 플랫폼 의존 버그**라, 스파이크 없이
+Phase 2를 진행했다면 CI 통과 후 뒤늦게 발견됐을 것이다. 확정 규칙:
+
+```ts
+const slug = doc._meta.path.split(/[\\/]/).pop() as string;
+```
+
+### 10.3 발견 2 — 두 스택 공존 불가 → **Phase 2는 원자적이어야 한다** (신규)
+
+`package.json`이 contentlayer 0.3.4 전용으로 `vfile@^5.3.7`·`vfile-message@^3.1.4`를
+**직접 의존성에 핀**하고 있다. content-collections는 vfile@6 / vfile-message@4를 쓴다.
+둘을 동시에 설치하면 unified 타입 트리가 둘이 되어 `pnpm typecheck`가 통과하지 못한다.
+
+> **계획 수정**: "content-collections를 추가하고 파일을 하나씩 이관한 뒤 contentlayer 제거"는
+> 불가능하다. Phase 2는 **의존성 교체 + vfile 핀 제거 + 전체 파일 이관을 한 커밋**으로 처리한다.
+
+### 10.4 발견 3 — `pnpm typecheck`가 깨끗한 설치에서 실패하고 있었음 (기존 결함)
+
+`develop`에서도 재현된다. `node_modules`를 lockfile 기준으로 새로 설치하면:
+
+```
+contentlayer.config.ts(193,9): error TS2322 — rehype-toc(unified@11) vs contentlayer(unified@10)
+```
+
+`next build`는 이 파일을 타입체크 대상에 넣지 않아(앱 그래프 밖) 지금까지 드러나지 않았다.
+즉 **`pnpm build`는 통과하는데 `pnpm typecheck`만 실패**하는 상태였고, 기존 `node_modules`가
+lockfile과 달라 로컬에서는 보이지 않았다. 이 브랜치에서 캐스팅으로 임시 우회했으며,
+Phase 2에서 contentlayer(=unified@10)가 사라지면 캐스팅도 함께 제거한다.
+
+### 10.5 확정된 이관 규칙
+
+| 항목 | 확정 내용 |
+|---|---|
+| 패키지 | `@content-collections/core` `/next` `/mdx` `/cli` + `zod`(peer 아님, 직접 설치) |
+| 설정 파일 | `content-collections.ts` (루트) |
+| 컬렉션 | `defineCollection({ name:"posts", directory:"posts", include:"**/*.mdx" })` |
+| 스키마 | `z.object({ content, title, date, description, thumbnail?, category: z.enum(CATEGORY_LIST), tags?, published })` — `content`는 **명시 선언 필수**(암묵 추가는 deprecated) |
+| MDX 컴파일 | `compileMDX(context, doc, { remarkPlugins, rehypePlugins })` — 기존 체인 순서 그대로 |
+| 슬러그 | `doc._meta.path.split(/[\\/]/).pop()` (§10.2) |
+| 렌더러 | `useMDXComponent` from `@content-collections/mdx/react` — 기존 호출부 그대로 |
+| 생성물 | `.content-collections/generated` (`.gitignore` 등록 완료) |
+| 설정 진입 | `defineConfig({ content: [...] })` — `collections:`는 deprecated |
+
+### 10.6 검증 데이터
+
+| 항목 | 기준선(contentlayer) | 스파이크(content-collections) | 판정 |
+|---|---|---|---|
+| 생성 문서 | 18 (발행 17 + 초안 1) | 18 (발행 17 + 초안 1) | 일치 |
+| 발행글 URL 집합 | 17 | 17 | **완전 일치** |
+| `formattedDate` | `April 05, 2022` | `April 05, 2022` | 일치 |
+| 본문 h2/h3/pre/code/li/table | — | — | **전 항목 일치** |
+| `anchor`·`toc-item`·`details` 수 | — | — | **전 항목 일치** |
+| h1 / img | 각 +1 | — | 페이지 크롬(글 제목·썸네일) 차이로 확인, 본문 차이 아님 |
+
+> 스파이크 산출물(`content-collections.ts`)은 §10.3 때문에 커밋하지 않았다.
+> Phase 2에서 §10.5 규칙에 따라 재작성한다.
+
+---
+
 ## Version History
 
 | 버전 | 날짜 | 작성자 | 내용 |
 |---|---|---|---|
+| 1.1 | 2026-09-14 | louis-25 | §10 Spike 결과 추가 — R-1/R-2/R-3/R-5 해소, 신규 발견 3건 반영, Phase 2 원자성 제약 확정 |
 | 1.0 | 2026-09-14 | louis-25 | 최초 작성 — Next 16 + content-collections 이관 계획 |
