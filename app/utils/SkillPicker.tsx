@@ -56,14 +56,14 @@ const NextLogo = (props: React.SVGProps<SVGSVGElement>) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
-      <g clip-path="url(#clip0)">
+      <g clipPath="url(#clip0)">
         <path
           d="M11.2141 0.00645944C11.1625 0.0111515 10.9982 0.0275738 10.8504 0.039304C7.44164 0.346635 4.24868 2.18593 2.22639 5.01291C1.10029 6.58476 0.380059 8.36775 0.107918 10.2563C0.0117302 10.9156 0 11.1103 0 12.0041C0 12.898 0.0117302 13.0927 0.107918 13.7519C0.760117 18.2587 3.96716 22.0452 8.31672 23.4481C9.0956 23.6991 9.91672 23.8704 10.8504 23.9736C11.2141 24.0135 12.7859 24.0135 13.1496 23.9736C14.7613 23.7953 16.1267 23.3965 17.4733 22.7091C17.6798 22.6035 17.7196 22.5754 17.6915 22.5519C17.6727 22.5378 16.793 21.3578 15.7372 19.9314L13.8182 17.339L11.4135 13.7801C10.0903 11.8235 9.00176 10.2235 8.99238 10.2235C8.98299 10.2211 8.97361 11.8024 8.96891 13.7331C8.96188 17.1138 8.95953 17.2499 8.9173 17.3296C8.85631 17.4446 8.80938 17.4915 8.71085 17.5431C8.63578 17.5807 8.57009 17.5877 8.21584 17.5877H7.80997L7.70205 17.5197C7.63167 17.4751 7.58006 17.4164 7.54487 17.3484L7.4956 17.2428L7.50029 12.539L7.50733 7.83285L7.58006 7.74136C7.6176 7.69209 7.69736 7.62875 7.75367 7.59825C7.84985 7.55133 7.88739 7.54664 8.29325 7.54664C8.77185 7.54664 8.85161 7.5654 8.97595 7.70147C9.01114 7.73901 10.3132 9.7003 11.871 12.0628C13.4287 14.4252 15.5589 17.651 16.6053 19.2346L18.5056 22.1132L18.6018 22.0499C19.4534 21.4962 20.3543 20.7079 21.0674 19.8868C22.5853 18.1437 23.5636 16.0182 23.8921 13.7519C23.9883 13.0927 24 12.898 24 12.0041C24 11.1103 23.9883 10.9156 23.8921 10.2563C23.2399 5.74957 20.0328 1.96306 15.6833 0.560125C14.9161 0.311445 14.0997 0.140184 13.1848 0.036958C12.9595 0.0134976 11.4088 -0.0123089 11.2141 0.00645944ZM16.1267 7.26511C16.2393 7.32142 16.3308 7.42933 16.3636 7.54194C16.3824 7.60294 16.3871 8.90734 16.3824 11.8469L16.3754 16.0651L15.6317 14.9249L14.8856 13.7848V10.7185C14.8856 8.73608 14.895 7.62171 14.9091 7.56775C14.9466 7.43637 15.0287 7.33315 15.1413 7.27215C15.2375 7.22288 15.2727 7.21819 15.6411 7.21819C15.9883 7.21819 16.0493 7.22288 16.1267 7.26511Z"
           fill="#000000"
@@ -89,11 +89,11 @@ const TSLogo = (props: React.SVGProps<SVGSVGElement>) => (
     preserveAspectRatio="xMidYMid"
     fill="#000000"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <g>
@@ -129,11 +129,11 @@ const JSLogo = (props: React.SVGProps<SVGSVGElement>) => (
     preserveAspectRatio="xMidYMid"
     fill="#000000"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth={"0"}></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <g>
@@ -221,11 +221,11 @@ const ReduxLogo = (props: React.SVGProps<SVGSVGElement>) => (
     {...props}
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
@@ -272,8 +272,8 @@ const AntdLogo = (props: React.SVGProps<SVGSVGElement>) => (
         y2="37.8635764%"
         id="linearGradient-1"
       >
-        <stop stop-color="#4285EB" offset="0%"></stop>
-        <stop stop-color="#2EC7FF" offset="100%"></stop>
+        <stop stopColor="#4285EB" offset="0%"></stop>
+        <stop stopColor="#2EC7FF" offset="100%"></stop>
       </linearGradient>
       <linearGradient
         x1="69.644116%"
@@ -282,9 +282,9 @@ const AntdLogo = (props: React.SVGProps<SVGSVGElement>) => (
         y2="108.456714%"
         id="linearGradient-2"
       >
-        <stop stop-color="#29CDFF" offset="0%"></stop>
-        <stop stop-color="#148EFF" offset="37.8600687%"></stop>
-        <stop stop-color="#0A60FF" offset="100%"></stop>
+        <stop stopColor="#29CDFF" offset="0%"></stop>
+        <stop stopColor="#148EFF" offset="37.8600687%"></stop>
+        <stop stopColor="#0A60FF" offset="100%"></stop>
       </linearGradient>
       <linearGradient
         x1="69.6908165%"
@@ -293,9 +293,9 @@ const AntdLogo = (props: React.SVGProps<SVGSVGElement>) => (
         y2="117.391248%"
         id="linearGradient-3"
       >
-        <stop stop-color="#FA816E" offset="0%"></stop>
-        <stop stop-color="#F74A5C" offset="41.472606%"></stop>
-        <stop stop-color="#F51D2C" offset="100%"></stop>
+        <stop stopColor="#FA816E" offset="0%"></stop>
+        <stop stopColor="#F74A5C" offset="41.472606%"></stop>
+        <stop stopColor="#F51D2C" offset="100%"></stop>
       </linearGradient>
       <linearGradient
         x1="68.1279872%"
@@ -304,22 +304,22 @@ const AntdLogo = (props: React.SVGProps<SVGSVGElement>) => (
         y2="114.942679%"
         id="linearGradient-4"
       >
-        <stop stop-color="#FA8E7D" offset="0%"></stop>
-        <stop stop-color="#F74A5C" offset="51.2635191%"></stop>
-        <stop stop-color="#F51D2C" offset="100%"></stop>
+        <stop stopColor="#FA8E7D" offset="0%"></stop>
+        <stop stopColor="#F74A5C" offset="51.2635191%"></stop>
+        <stop stopColor="#F51D2C" offset="100%"></stop>
       </linearGradient>
     </defs>
     <g
       id="Page-1"
       stroke="none"
-      stroke-width="1"
+      strokeWidth="1"
       fill="none"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     >
       <g id="logo" transform="translate(-20.000000, -20.000000)">
         <g id="Group-28-Copy-5" transform="translate(20.000000, 20.000000)">
           <g id="Group-27-Copy-3">
-            <g id="Group-25" fill-rule="nonzero">
+            <g id="Group-25" fillRule="nonzero">
               <g id="2">
                 <path
                   d="M91.5880863,4.17652823 L4.17996544,91.5127728 C-0.519240605,96.2081146 -0.519240605,103.791885 4.17996544,108.487227 L91.5880863,195.823472 C96.2872923,200.518814 103.877304,200.518814 108.57651,195.823472 L145.225487,159.204632 C149.433969,154.999611 149.433969,148.181924 145.225487,143.976903 C141.017005,139.771881 134.193707,139.771881 129.985225,143.976903 L102.20193,171.737352 C101.032305,172.906015 99.2571609,172.906015 98.0875359,171.737352 L28.285908,101.993122 C27.1162831,100.824459 27.1162831,99.050775 28.285908,97.8821118 L98.0875359,28.1378823 C99.2571609,26.9692191 101.032305,26.9692191 102.20193,28.1378823 L129.985225,55.8983314 C134.193707,60.1033528 141.017005,60.1033528 145.225487,55.8983314 C149.433969,51.69331 149.433969,44.8756232 145.225487,40.6706018 L108.58055,4.05574592 C103.862049,-0.537986846 96.2692618,-0.500797906 91.5880863,4.17652823 Z"
@@ -362,11 +362,11 @@ const GoogleSheetsLogo = (props: React.SVGProps<SVGSVGElement>) => (
     {...props}
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path d="M11.318 12.545H7.91v-1.909h3.41v1.91zM14.728 0v6h6l-6-6zm1.363 10.636h-3.41v1.91h3.41v-1.91zm0 3.273h-3.41v1.91h3.41v-1.91zM20.727 6.5v15.864c0 .904-.732 1.636-1.636 1.636H4.909a1.636 1.636 0 0 1-1.636-1.636V1.636C3.273.732 4.005 0 4.909 0h9.318v6.5h6.5zm-3.273 2.773H6.545v7.909h10.91v-7.91zm-6.136 4.636H7.91v1.91h3.41v-1.91z"></path>
@@ -382,11 +382,11 @@ const GitLabLogo = (props: React.SVGProps<SVGSVGElement>) => (
     width="1em"
     height="1em"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
@@ -424,11 +424,11 @@ const DockerLogo = (props: React.SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
@@ -463,11 +463,11 @@ const ViteLogo = (props: React.SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <title>file_type_vite</title>
@@ -489,8 +489,8 @@ const ViteLogo = (props: React.SVGProps<SVGSVGElement>) => (
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(.07142 0 0 .07142 1.3398 1.8944)"
         >
-          <stop stop-color="#41D1FF" id="stop38"></stop>
-          <stop offset="1" stop-color="#BD34FE" id="stop40"></stop>
+          <stop stopColor="#41D1FF" id="stop38"></stop>
+          <stop offset="1" stopColor="#BD34FE" id="stop40"></stop>
         </linearGradient>
         <linearGradient
           id="paint1_linear"
@@ -501,9 +501,9 @@ const ViteLogo = (props: React.SVGProps<SVGSVGElement>) => (
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(.07142 0 0 .07142 1.3398 1.8944)"
         >
-          <stop stop-color="#FFEA83" id="stop43"></stop>
-          <stop offset=".0833" stop-color="#FFDD35" id="stop45"></stop>
-          <stop offset="1" stop-color="#FFA800" id="stop47"></stop>
+          <stop stopColor="#FFEA83" id="stop43"></stop>
+          <stop offset=".0833" stopColor="#FFDD35" id="stop45"></stop>
+          <stop offset="1" stopColor="#FFA800" id="stop47"></stop>
         </linearGradient>
       </defs>
     </g>
@@ -519,11 +519,11 @@ const WordPressLogo = (props: React.SVGProps<SVGSVGElement>) => (
     {...props}
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <circle cx="16" cy="16" r="14" fill="#028CB0"></circle>
@@ -546,11 +546,11 @@ const SocketLogo = (props: React.SVGProps<SVGSVGElement>) => (
     preserveAspectRatio="xMidYMid"
     fill="#000000"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <g>
@@ -585,11 +585,11 @@ const StorybookLogo = (props: React.SVGProps<SVGSVGElement>) => (
     preserveAspectRatio="xMidYMid"
     fill="#000000"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <defs>
@@ -602,11 +602,11 @@ const StorybookLogo = (props: React.SVGProps<SVGSVGElement>) => (
         <mask id="mask-2" fill="white">
           <use xlinkHref="#path-1"> </use>
         </mask>
-        <use fill="#FF4785" fill-rule="nonzero" xlinkHref="#path-1"></use>
+        <use fill="#FF4785" fillRule="nonzero" xlinkHref="#path-1"></use>
         <path
           d="M188.665358,39.126973 L190.191903,2.41148534 L220.883535,0 L222.205755,37.8634126 C222.251771,39.1811466 221.22084,40.2866846 219.903106,40.3327009 C219.338869,40.3524045 218.785907,40.1715096 218.342409,39.8221376 L206.506729,30.4984116 L192.493574,41.1282444 C191.443077,41.9251106 189.945493,41.7195021 189.148627,40.6690048 C188.813185,40.2267976 188.6423,39.6815326 188.665358,39.126973 Z M149.413703,119.980309 C149.413703,126.206975 191.355678,123.222696 196.986019,118.848893 C196.986019,76.4467826 174.234041,54.1651411 132.57133,54.1651411 C90.9086182,54.1651411 67.5656805,76.7934542 67.5656805,110.735941 C67.5656805,169.85244 147.345341,170.983856 147.345341,203.229219 C147.345341,212.280549 142.913138,217.654777 133.162291,217.654777 C120.456641,217.654777 115.433477,211.165914 116.024438,189.103298 C116.024438,184.317101 67.5656805,182.824962 66.0882793,189.103298 C62.3262146,242.56887 95.6363019,257.990394 133.753251,257.990394 C170.688279,257.990394 199.645341,238.303123 199.645341,202.663511 C199.645341,139.304202 118.683759,141.001326 118.683759,109.604526 C118.683759,96.8760922 128.139127,95.178968 133.753251,95.178968 C139.662855,95.178968 150.300143,96.2205679 149.413703,119.980309 Z"
           fill="#FFFFFF"
-          fill-rule="nonzero"
+          fillRule="nonzero"
           mask="url(#mask-2)"
         ></path>
       </g>
@@ -633,11 +633,11 @@ const SCSSLogo = (props: React.SVGProps<SVGSVGElement>) => (
     {...props}
     fill="#000000"
   >
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     ></g>
     <g id="SVGRepo_iconCarrier">
       <title>file_type_scss2</title>

@@ -32,6 +32,14 @@ const config = [
       "react-hooks/static-components": "warn",
     },
   },
+  {
+    // eslint-config-next가 이 규칙을 off로 둔다. 외부에서 붙여 넣은 SVG의
+    // HTML 표기 속성(stroke-linecap 등)이 JSX에 남으면 런타임 경고만 뜨고
+    // lint는 통과해버리므로 켜둔다. (JSX에서는 strokeLinecap처럼 camelCase)
+    rules: {
+      "react/no-unknown-property": "error",
+    },
+  },
 ];
 
 export default config;
