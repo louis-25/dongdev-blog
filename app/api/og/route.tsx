@@ -1,8 +1,8 @@
-// import { ImageResponse } from "@vercel/og";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 
-export const runtime = "edge";
+// Edge Runtime은 Next 16에서 폐기 예고됐다. next/og는 nodejs 런타임(기본값)에서도
+// 동일하게 동작하므로 runtime 지정을 두지 않는다.
 
 export async function GET(req: NextRequest) {
   try {

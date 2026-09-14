@@ -39,7 +39,7 @@ pnpm typecheck        # tsc --noEmit
 dongdev-blog/
 ├─ app/                        # Next.js App Router 루트
 │  ├─ page.tsx                 # 홈
-│  ├─ layout.tsx / template.tsx# 전역 레이아웃 / 트랜지션 래퍼
+│  ├─ layout.tsx               # 전역 레이아웃 (페이지 진입 애니메이션은 animations/PageTransition)
 │  ├─ not-found.tsx
 │  ├─ about/                   # 이력·경력 페이지
 │  ├─ blog/                    # 글 목록
@@ -76,7 +76,7 @@ dongdev-blog/
 - `category`는 `config/post.ts`의 `CATEGORY_LIST`를 `z.enum`으로 재사용 — 단일 진실원.
 - **transform 산출 필드**: `mdx`(컴파일된 코드), `url`(`/blog/{파일명}`), `slugAsParams`, `formattedDate`.
   - URL/슬러그는 **파일명만** 사용한다(폴더 경로 제외). 따라서 파일명은 전역에서 유일해야 한다.
-  - 슬러그 추출은 반드시 `doc._meta.path.split(/[\/]/).pop()` — `_meta.path`가 **Windows에서는
+  - 슬러그 추출은 반드시 `doc._meta.path.split(/[\\/]/).pop()` — `_meta.path`가 **Windows에서는
     역슬래시**를 쓰므로 `"/"`로만 split하면 폴더명이 URL에 섞이고, Linux(Vercel)에서는 통과해
     플랫폼마다 URL이 달라진다.
 - 렌더러: `useMDXComponent` from `@content-collections/mdx/react` (`app/components/MDXComponents.tsx`).
@@ -138,14 +138,17 @@ content-collections    → ./.content-collections/generated
    제거하고 `content-collections build`로 교체. 래퍼 스크립트도 함께 삭제.
 5. ✅ **(해결됨, next16-content-collections)** ESLint → `eslint.config.mjs` flat config + ESLint 9.
    `next lint`는 Next 16에서 제거되어 `eslint .` 를 직접 호출한다.
+6. 다수 AI 도구 룰 공존(`.cursor`, `.roo`, `.clinerules`, `.trae`, `.windsurfrules`, `.github/instructions`).
+   에이전트 작업 규칙은 **이 AGENTS.md / CLAUDE.md 를 우선**한다.
 7. **태그 대소문자 혼용**: 발행글에 `React`(9편)와 `react`(1편)가 섞여 있다. Linux에서는 태그
    페이지가 둘로 갈라지고, Windows에서는 `React.html`/`react.html` 파일명이 충돌해 한쪽이 덮어써진다.
    `posts/2025-06/pnpm도입기.mdx`의 `tags: ["react"]`를 `["React"]`로 고치면 해소된다.
 8. **lint 경고 4건**: `react-hooks/set-state-in-effect`(ThemeSelector, BlogToolbar),
    `react-hooks/static-components`(MDXComponents). 전부 의도된 패턴이라 `eslint.config.mjs`에서
    warn으로 낮췄다. 고치려면 동작이 바뀌므로 별도 사이클로 다룰 것.
-6. 다수 AI 도구 룰 공존(`.cursor`, `.roo`, `.clinerules`, `.trae`, `.windsurfrules`, `.github/instructions`).
-   에이전트 작업 규칙은 **이 AGENTS.md / CLAUDE.md 를 우선**한다.
+9. **`app/template.tsx`를 만들지 말 것**: Next 16.3.5 개발 모드에서는 template 파일이 존재하기만 해도
+   (내용이 `<>{children}</>`여도) 초기 로드마다 `OuterLayoutRouter` key 경고가 난다. 페이지 전환 효과는
+   `app/components/animations/PageTransition.tsx`(최상위 세그먼트를 key로 리마운트)에서 처리한다.
 
 ## 10. Git / PR
 
