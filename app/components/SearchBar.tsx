@@ -97,6 +97,10 @@ export function SearchBar({ posts }: SearchBarProps) {
   }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setIsOpen(false);
+      return;
+    }
     if (e.key === "Enter" && results.length > 0) {
       router.push(results[0].url);
       setIsOpen(false);
@@ -117,6 +121,7 @@ export function SearchBar({ posts }: SearchBarProps) {
           }}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
+          aria-label="글 검색"
           placeholder="Search posts..."
           className="w-full pl-10 pr-4 py-2 rounded-lg bg-background border focus:outline-hidden focus:ring-2 focus:ring-primary"
         />
@@ -153,7 +158,11 @@ export function SearchBar({ posts }: SearchBarProps) {
                       {result.description}
                     </p>
                     {result.tags && (
-                      <TagList tags={result?.tags as TechKey[]} />
+                      // 결과 행 전체가 <Link>라 태그는 링크가 아닌 표시용으로 둔다(<a> 중첩 방지)
+                      <TagList
+                        tags={result?.tags as TechKey[]}
+                        isClickable={false}
+                      />
                     )}
                   </Link>
                 ))

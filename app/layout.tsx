@@ -28,23 +28,14 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
+  // 페이지별 openGraph/twitter는 app/lib/metadata.ts의 pageMetadata로 채운다.
+  // og:image는 app/opengraph-image.tsx(기본)와 app/blog/[slug]/opengraph-image.tsx(글별)가 담당.
   openGraph: {
-    title: SITE.name,
-    description: SITE.description,
-    url: SITE.url,
     siteName: SITE.name,
-    images: [
-      { url: "/rakun.png", width: 1200, height: 630, alt: "블로그 대표 이미지" },
-    ],
     locale: SITE.locale,
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE.name,
-    description: SITE.description,
-    images: ["/rakun.png"],
-  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
@@ -56,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning className={inter.variable}>
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        {/* favicon·apple-icon은 app/favicon.ico·app/apple-icon.png 파일 컨벤션이 넣는다 */}
         {/* alternates는 페이지 metadata가 통째로 덮어쓰므로 head에 직접 둔다 */}
         <link
           rel="alternate"

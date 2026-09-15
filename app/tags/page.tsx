@@ -2,13 +2,13 @@ import { allPosts } from "content-collections";
 import { TagList } from "../components/TagList";
 import { TechKey } from "../utils/SkillPicker";
 
-import type { Metadata } from "next";
+import { pageMetadata } from "@/app/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "태그",
   description: "글에 사용된 전체 태그 목록입니다.",
-  alternates: { canonical: "/tags" },
-};
+  path: "/tags",
+});
 
 export default function TagsPage() {
   const tagCounts = allPosts

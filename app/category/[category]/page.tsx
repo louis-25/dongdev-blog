@@ -16,6 +16,7 @@ import {
 } from "@/ui/pagination";
 
 import type { Metadata } from "next";
+import { pageMetadata } from "@/app/lib/metadata";
 
 export async function generateMetadata({
   params,
@@ -23,11 +24,11 @@ export async function generateMetadata({
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const { category } = await params;
-  return {
+  return pageMetadata({
     title: category,
     description: `${category} 카테고리의 글 모음입니다.`,
-    alternates: { canonical: `/category/${category}` },
-  };
+    path: `/category/${category}`,
+  });
 }
 
 export default async function CategoryPage({
@@ -40,16 +41,19 @@ export default async function CategoryPage({
   const { category } = await params;
   const sp = await searchParams;
 
-  if (!CATEGORY_LIST.includes(category)) {
+  const categoryPosts = allPosts.filter(
+    (post) => post.published && (post.category as string) === category
+  );
+
+  // 발행 글이 없는 카테고리는 빈 페이지 대신 404 (sitemap도 같은 기준)
+  if (!CATEGORY_LIST.includes(category) || categoryPosts.length === 0) {
     notFound();
   }
 
   const selectedTagRaw = Array.isArray(sp?.tag) ? sp?.tag?.[0] : sp?.tag;
   const selectedTag = (selectedTagRaw as TechKey | undefined) ?? undefined;
 
-  const posts = allPosts
-    ?.filter((post) => post?.published)
-    ?.filter((post) => (post?.category as string) === category)
+  const posts = categoryPosts
     ?.filter((post) =>
       selectedTag
         ? (post?.tags as TechKey[] | undefined)?.includes(selectedTag)
@@ -91,37 +95,41 @@ export default async function CategoryPage({
             key={post.url}
             className="bg-card hover:bg-card/80 rounded-lg p-6 transition-colors "
           >
-            <article>
-              <Link
-                href={post.url}
-                className="flex flex-col md:flex-row items-start md:items-center w-full gap-4 md:gap-10"
-              >
-                <div>
-                  <h2 className="font-semibold mb-2">{post.title}</h2>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {post.description}
-                  </p>
-                  <div className="flex gap-2 mt-2">
-                    <TagList
-                      tags={post?.tags as TechKey[]}
-                      category={category}
-                    />
-                  </div>
-                  <time className="text-sm text-gray-500">
-                    {post.formattedDate}
-                  </time>
-                </div>
-                {post?.thumbnail && (
-                  <Image
-                    src={post?.thumbnail}
-                    alt={post?.title}
-                    width={200}
-                    height={200}
-                    sizes="(max-width: 768px) 100vw, 200px"
-                    className="rounded-xl shadow-lg w-full h-auto md:w-[200px] md:h-auto md:ml-auto"
+            {/* stretched link: 제목 링크의 ::after가 카드 전체를 덮고, 태그 링크는 z-10으로 그 위에 둔다
+                (카드 전체를 <Link>로 감싸면 태그 <a>가 중첩된다) */}
+            <article className="relative flex flex-col md:flex-row items-start md:items-center w-full gap-4 md:gap-10">
+              <div>
+                <h2 className="font-semibold mb-2">
+                  <Link
+                    href={post.url}
+                    className="after:absolute after:inset-0"
+                  >
+                    {post.title}
+                  </Link>
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {post.description}
+                </p>
+                <div className="relative z-10 flex gap-2 mt-2">
+                  <TagList
+                    tags={post?.tags as TechKey[]}
+                    category={category}
                   />
-                )}
-              </Link>
+                </div>
+                <time className="text-sm text-gray-500" dateTime={post.date}>
+                  {post.formattedDate}
+                </time>
+              </div>
+              {post?.thumbnail && (
+                <Image
+                  src={post?.thumbnail}
+                  alt={post?.title}
+                  width={200}
+                  height={200}
+                  sizes="(max-width: 768px) 100vw, 200px"
+                  className="rounded-xl shadow-lg w-full h-auto md:w-[200px] md:h-auto md:ml-auto"
+                />
+              )}
             </article>
           </div>
         ))}

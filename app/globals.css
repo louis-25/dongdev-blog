@@ -411,13 +411,9 @@ code {
   margin-bottom: 1.25em !important;
 }
 
-pre::-webkit-scrollbar {
-  display: none;
-}
-
+/* 가로로 긴 코드가 잘린 게 아니라 스크롤된다는 걸 보이도록 스크롤바를 숨기지 않고 얇게만 */
 pre {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: thin;
 }
 
 /* Remove Safari input shadow on mobile */

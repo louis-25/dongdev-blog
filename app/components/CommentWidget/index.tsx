@@ -1,6 +1,7 @@
 "use client";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
+import { useTheme } from "next-themes";
 
 const src = "https://utteranc.es/client.js";
 const repo = "louis-25/louis-25.github.io"; // 자신 계정의 레포지토리로 설정
@@ -23,10 +24,23 @@ const UtterancesWrapper = styled.div`
 
 const CommentWidget: FunctionComponent = function () {
   const element = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const theme = resolvedTheme === "dark" ? "github-dark" : "github-light";
 
   useEffect(() => {
-    if (element.current === null) return;
-    // 이미 주입된 경우 중복 주입 방지
+    // resolvedTheme은 마운트 전엔 undefined — 테마가 정해진 뒤 한 번만 주입한다
+    if (element.current === null || resolvedTheme === undefined) return;
+
+    // 이미 주입된 경우: 다시 주입하지 않고 iframe에 테마 변경만 알린다
+    const frame =
+      element.current.querySelector<HTMLIFrameElement>(".utterances-frame");
+    if (frame) {
+      frame.contentWindow?.postMessage(
+        { type: "set-theme", theme },
+        "https://utteranc.es"
+      );
+      return;
+    }
     if (element.current.childNodes.length > 0) return;
 
     const utterances: HTMLScriptElement = document.createElement("script");
@@ -36,7 +50,7 @@ const CommentWidget: FunctionComponent = function () {
       repo,
       "issue-term": "pathname",
       label: "Comment",
-      theme: `github-light`,
+      theme,
       crossorigin: "anonymous",
       async: "true",
     };
@@ -46,7 +60,7 @@ const CommentWidget: FunctionComponent = function () {
     });
 
     element.current.appendChild(utterances);
-  }, []);
+  }, [resolvedTheme, theme]);
 
   return <div ref={element} />;
 };

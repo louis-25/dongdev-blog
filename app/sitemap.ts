@@ -6,6 +6,10 @@ import { SITE } from "@/config/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = allPosts.filter((post) => post.published);
   const tags = Array.from(new Set(posts.flatMap((post) => post.tags ?? [])));
+  // 발행 글이 없는 카테고리 페이지는 404이므로 싣지 않는다
+  const categories = CATEGORY_LIST.filter((category) =>
+    posts.some((post) => post.category === category)
+  );
 
   return [
     { url: SITE.url, changeFrequency: "daily", priority: 1 },
@@ -18,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    ...CATEGORY_LIST.map((category) => ({
+    ...categories.map((category) => ({
       url: `${SITE.url}/category/${category}`,
       changeFrequency: "weekly" as const,
       priority: 0.6,

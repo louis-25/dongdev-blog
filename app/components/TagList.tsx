@@ -39,7 +39,7 @@ export function TagList({
             href={
               category
                 ? `/category/${category}?tag=${encodeURIComponent(tag)}`
-                : `/tags/${tag}`
+                : `/tags/${encodeURIComponent(tag)}`
             }
           ></Tag>
         );

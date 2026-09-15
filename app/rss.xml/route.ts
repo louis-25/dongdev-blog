@@ -10,6 +10,8 @@ export async function GET() {
     link: `${SITE.url}/`,
     language: "ko",
     favicon: `${SITE.url}/favicon.ico`,
+    // atom:link rel="self" — 피드 검증기가 요구하는 자기 참조
+    feedLinks: { rss: `${SITE.url}/rss.xml` },
     copyright: `All rights reserved ${new Date().getFullYear()}`,
     author: {
       name: SITE.author,

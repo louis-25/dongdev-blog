@@ -13,21 +13,25 @@ interface TagPageProps {
 }
 
 import type { Metadata } from "next";
+import { pageMetadata } from "@/app/lib/metadata";
+
+// 초안(published:false)의 태그가 칩·카운트·정적 경로에 섞이지 않게 발행 글만 본다.
+const publishedPosts = allPosts.filter((post) => post.published);
 
 export async function generateMetadata({
   params,
 }: TagPageProps): Promise<Metadata> {
   const tag = decodeURIComponent((await params).tag);
-  return {
+  return pageMetadata({
     title: `#${tag}`,
     description: `${tag} 태그가 달린 글 모음입니다.`,
-    alternates: { canonical: `/tags/${encodeURIComponent(tag)}` },
-  };
+    path: `/tags/${encodeURIComponent(tag)}`,
+  });
 }
 
 export function generateStaticParams() {
   const tags = new Set<string>();
-  allPosts.forEach((post) => {
+  publishedPosts.forEach((post) => {
     post.tags?.forEach((tag) => tags.add(tag));
   });
   return Array.from(tags).map((tag) => ({ tag }));
@@ -37,28 +41,25 @@ export default async function TagPage({ params }: TagPageProps) {
   const { tag } = await params;
   const decodedTag = decodeURIComponent(tag) as TechKey;
 
-  const posts = allPosts
-    .filter((post) => post.published && post.tags?.includes(decodedTag))
+  const posts = publishedPosts
+    .filter((post) => post.tags?.includes(decodedTag))
     .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
   if (posts.length === 0) {
     notFound();
   }
 
-  const allTags = Array.from(
-    new Set(allPosts.flatMap((post) => post.tags || []))
-  ).sort() as TechKey[];
   const tagCounts: Record<string, number> = {};
-  for (const post of allPosts) {
+  for (const post of publishedPosts) {
     const tags = (post.tags as TechKey[] | undefined) ?? [];
     for (const tag of tags) {
       tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
     }
   }
+  const allTags = Object.keys(tagCounts).sort() as TechKey[];
   return (
     <div className="prose dark:prose-invert">
-      {/* <h1 className="mb-4">태그: {decodedTag}</h1> */}
-      <h1 className="text-3xl font-bold mb-4">Tags</h1>
+      <h1 className="text-3xl font-bold mb-4">#{decodedTag}</h1>
       {/* <TechTags tags={allTags} size="sm" selectedTag={decodedTag} /> */}
       <TagList
         tags={allTags}
@@ -79,13 +80,12 @@ export default async function TagPage({ params }: TagPageProps) {
               <p className="text-gray-600 dark:text-gray-400">
                 {post.description}
               </p>
-              <div className="mt-2 text-sm text-gray-500 dark:text-gray-500">
-                {new Date(post.date).toLocaleDateString("ko-KR", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </div>
+              <time
+                dateTime={post.date}
+                className="mt-2 block text-sm text-gray-500 dark:text-gray-500"
+              >
+                {post.formattedDate}
+              </time>
             </article>
           </InteractiveLink>
         ))}

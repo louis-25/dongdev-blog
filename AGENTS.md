@@ -40,22 +40,23 @@ dongdev-blog/
 ├─ app/                        # Next.js App Router 루트
 │  ├─ page.tsx                 # 홈
 │  ├─ layout.tsx               # 전역 레이아웃 (페이지 진입 애니메이션은 animations/PageTransition)
-│  ├─ not-found.tsx
+│  ├─ not-found.tsx / error.tsx
+│  ├─ opengraph-image.tsx      # 사이트 기본 OG 이미지 (빌드 때 정적 생성)
+│  ├─ apple-icon.png / manifest.ts  # 아이콘·웹 앱 manifest (파일 컨벤션)
 │  ├─ about/                   # 이력·경력 페이지
 │  ├─ blog/                    # 글 목록
-│  │  └─ [slug]/               # 글 상세 (동적)
+│  │  └─ [slug]/               # 글 상세 (동적) + opengraph-image.tsx(글별 OG) + JSON-LD
 │  ├─ category/[category]/     # 카테고리별 목록
 │  ├─ tags/ + tags/[tag]/      # 태그 인덱스 / 태그별 목록
 │  ├─ rss.xml/route.ts        # RSS 피드 (feed 라이브러리)
 │  ├─ sitemap.ts / robots.ts   # 사이트맵 · robots
-│  ├─ api/og/route.tsx         # 동적 OG 이미지
 │  ├─ components/
 │  │  ├─ ui/                   # Radix 기반 프리미티브 (button, dialog, tabs ...)
 │  │  ├─ animations/           # framer-motion 래퍼 + 훅
 │  │  ├─ mdx/                  # MDX 전용 (CodeBlock, Alert, MdxImage)
 │  │  └─ *.tsx                 # Navigation, SearchBar, Toc, ThemeSwitch 등
 │  ├─ data/                    # 경력/프로젝트 정적 데이터 (career, projects, useAbout)
-│  ├─ lib/                     # posts.ts(서버 데이터), utils.ts
+│  ├─ lib/                     # posts.ts(서버 데이터), metadata.ts(pageMetadata), og-image.tsx(OG 템플릿), utils.ts
 │  └─ utils/                   # IconPicker, SkillPicker, scrollToTop
 ├─ posts/                      # MDX 글 원본 (YYYY-MM/ 폴더 구조)
 ├─ config/post.ts             # 카테고리 상수 (CATEGORY_LIST)
@@ -144,15 +145,27 @@ content-collections    → ./.content-collections/generated
    `next lint`는 Next 16에서 제거되어 `eslint .` 를 직접 호출한다.
 6. 다수 AI 도구 룰 공존(`.cursor`, `.roo`, `.clinerules`, `.trae`, `.windsurfrules`, `.github/instructions`).
    에이전트 작업 규칙은 **이 AGENTS.md / CLAUDE.md 를 우선**한다.
-7. **태그 대소문자 혼용**: 발행글에 `React`(9편)와 `react`(1편)가 섞여 있다. Linux에서는 태그
-   페이지가 둘로 갈라지고, Windows에서는 `React.html`/`react.html` 파일명이 충돌해 한쪽이 덮어써진다.
-   `posts/2025-06/pnpm도입기.mdx`의 `tags: ["react"]`를 `["React"]`로 고치면 해소된다.
+7. ✅ **(해결됨, seo-perf)** 태그 대소문자 혼용 → `posts/2025-06/pnpm도입기.mdx`의 `tags: ["react"]`를
+   `["React"]`로 통일. 새 글도 기존 표기를 따를 것(섞이면 Linux에선 태그 페이지가 갈라지고
+   Windows에선 `React.html`/`react.html`이 충돌한다).
 8. **lint 경고 4건**: `react-hooks/set-state-in-effect`(ThemeSelector, BlogToolbar),
    `react-hooks/static-components`(MDXComponents). 전부 의도된 패턴이라 `eslint.config.mjs`에서
    warn으로 낮췄다. 고치려면 동작이 바뀌므로 별도 사이클로 다룰 것.
 9. **`app/template.tsx`를 만들지 말 것**: Next 16.3.5 개발 모드에서는 template 파일이 존재하기만 해도
    (내용이 `<>{children}</>`여도) 초기 로드마다 `OuterLayoutRouter` key 경고가 난다. 페이지 전환 효과는
    `app/components/animations/PageTransition.tsx`(최상위 세그먼트를 key로 리마운트)에서 처리한다.
+10. **첫 화면 진입 애니메이션에 framer-motion을 쓰지 말 것**: motion의 `initial`은 SSR HTML에
+   `opacity:0`으로 박혀 하이드레이션 전까지 본문이 안 보인다(LCP 지연). `PageTransition`·`Hero`는
+   `tailwindcss-animate` CSS(`animate-in fade-in ... motion-reduce:animate-none`)로 처리한다.
+11. **메타데이터는 `pageMetadata()`(`app/lib/metadata.ts`)로**: openGraph는 얕은 병합이라 페이지가
+   직접 쓰면 루트의 siteName·locale이 사라지고, 안 쓰면 og:url·og:title이 홈 값으로 남는다.
+   이미지는 `opengraph-image.tsx` 파일 컨벤션이 빌드 때 만들지만, 페이지가 openGraph를 쓰면 파일
+   이미지가 사라지고 명시한 `images`가 파일보다 우선한다(16.3.5 빌드로 확인). 그래서 `pageMetadata`가
+   경로를 명시한다(기본 `/opengraph-image`, 글 상세는 `image: \`${post.url}/opengraph-image\``).
+   동적 세그먼트의 `opengraph-image.tsx`는 page의 `generateStaticParams`를 물려받지 않으므로 따로 내보낸다.
+12. **카드 전체를 `<Link>`로 감싸지 말 것**: 태그(`ui/Tag.tsx`)가 `<a>`라 링크가 중첩된다.
+   제목 링크에 `after:absolute after:inset-0`, 카드에 `relative`, 태그 영역에 `relative z-10`
+   (stretched link — `PostListRow`, 카테고리 페이지 참고).
 
 ## 10. Git / PR
 

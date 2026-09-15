@@ -28,7 +28,7 @@ export function CodeBlock({ children, language, filename }: CodeBlockProps) {
           </motion.div>
         </div>
       )}
-      <pre className="p-4 overflow-x-auto">
+      <pre tabIndex={0} className="p-4 overflow-x-auto">
         <code className={language ? `language-${language}` : ""}>
           {children}
         </code>

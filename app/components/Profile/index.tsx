@@ -72,8 +72,6 @@ const Profile = () => {
               .map(({ category, tags, tagCounts }) => (
                 <AccordionItem key={`${category}-menu`} value={`${category}-menu`}>
                   <AccordionTrigger
-                    type="button"
-                    aria-expanded={true}
                     className="cursor-pointer w-full flex items-center hover:no-underline justify-between px-3 py-2 text-left hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   >
                     <span className="text-sm font-semibold capitalize">

@@ -9,11 +9,9 @@ import LatestPosts, {
 import QuickNav from "./components/home/QuickNav";
 import UsefulSites from "./components/home/UsefulSites";
 
-import type { Metadata } from "next";
+import { pageMetadata } from "@/app/lib/metadata";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export const metadata = pageMetadata({ path: "/" });
 
 export default function Home() {
   // Plan SC: FR-06 — 최신 글 6개(설명 포함). Plan SC: FR-09 — any 캐스팅 제거(정렬은 숫자 타임스탬프)

@@ -7,6 +7,7 @@ import { MdxImage } from "@/app/components/mdx/MdxImage";
 import CommentWidget from "@/app/components/CommentWidget";
 import { TechKey } from "@/app/utils/SkillPicker";
 import { SITE } from "@/config/site";
+import { pageMetadata } from "@/app/lib/metadata";
 
 interface PostProps {
   // Next 16부터 params는 Promise다 (동기 접근 제거됨)
@@ -27,33 +28,21 @@ export async function generateMetadata({
     return {};
   }
 
-  const ogUrl = new URL("/api/og", SITE.url);
-  ogUrl.searchParams.set("title", post.title);
-  ogUrl.searchParams.set("description", post.description);
-
-  return {
+  const base = pageMetadata({
     title: post.title,
     description: post.description,
-    alternates: { canonical: `/blog/${slug}` },
+    path: post.url,
+    // 같은 폴더의 opengraph-image.tsx가 빌드 때 만든 글별 이미지
+    image: `${post.url}/opengraph-image`,
+  });
+  return {
+    ...base,
     openGraph: {
-      title: post.title,
-      description: post.description,
+      ...base.openGraph,
       type: "article",
-      url: `${SITE.url}/blog/${slug}`,
-      images: [
-        {
-          url: ogUrl.toString(),
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.description,
-      images: [ogUrl.toString()],
+      publishedTime: post.date,
+      authors: [`${SITE.url}/about`],
+      tags: post.tags,
     },
   };
 }
@@ -77,20 +66,38 @@ export default async function PostPage({ params }: PostProps) {
     notFound();
   }
 
+  // new URL로 한글 slug를 퍼센트 인코딩 (canonical과 같은 표기)
+  const url = new URL(post.url, SITE.url).href;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    inLanguage: "ko-KR",
+    author: { "@type": "Person", name: SITE.author, url: `${SITE.url}/about` },
+    image: `${url}/opengraph-image`,
+    mainEntityOfPage: url,
+    keywords: post.tags,
+  };
+
   return (
     // <article className="py-8 mx-auto max-w-4xl px-4">
     <article className="w-full m-auto">
+      <script
+        type="application/ld+json"
+        // `<` 이스케이프: 제목·설명에 </script>가 들어가도 태그를 닫지 못하게 (Next JSON-LD 가이드)
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
         <div className="text-muted-foreground mb-4">{post.description}</div>
         <div className="flex items-center justify-between">
           <TagList tags={(post.tags as TechKey[]) || []} />
           <time className="text-muted-foreground" dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString("ko-KR", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {post.formattedDate}
           </time>
         </div>
       </div>
@@ -100,6 +107,8 @@ export default async function PostPage({ params }: PostProps) {
           alt={post.title}
           width={576}
           height={300}
+          // 본문 첫 화면의 LCP 후보 (Next 16: priority 대신 fetchPriority 권장)
+          fetchPriority="high"
         />
       ) : null}
       <MDXContent code={post.mdx} />

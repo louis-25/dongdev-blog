@@ -164,7 +164,8 @@ const posts = defineCollection({
       mdx,
       url: `/blog/${slug}`,
       slugAsParams: slug,
-      formattedDate: format(parseISO(doc.date), "MMMM dd, yyyy"),
+      // 한국어 UI 전역 날짜 표기 (예: 2022년 4월 5일)
+      formattedDate: format(parseISO(doc.date), "yyyy년 M월 d일"),
     };
   },
 });
