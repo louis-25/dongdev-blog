@@ -241,9 +241,9 @@ code {
 }
 
 /* Copy button */
-/* 한 줄짜리 코드블록(높이 약 39px) 안에 들어가도록 28px */
+/* 한 줄짜리 코드블록(높이 약 39px) 안에 들어가도록 28px. 복사 후에는 문구가 붙어 가로로 늘어난다 */
 .copy-button {
-  @apply absolute top-1.5 right-1.5 p-1.5 rounded-md bg-gray-700/50 text-gray-300 hover:bg-gray-700/75;
+  @apply absolute top-1.5 right-1.5 inline-flex items-center gap-1 p-1.5 rounded-md bg-gray-700/50 text-gray-300 hover:bg-gray-700/75;
 }
 
 .copy-button[data-copied="true"] {

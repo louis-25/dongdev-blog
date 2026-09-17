@@ -47,8 +47,12 @@ published: true # false 면 초안: 컬렉션에서 빠져 목록·RSS·사이�
 
 [`/admin`](https://dongdev-blog.vercel.app/admin) 에서 Sveltia CMS로 글을 쓰고 이미지를 올리면 `develop` 에 커밋됩니다.
 
-- 로그인: **Sign In with Token** → GitHub personal access token 붙여넣기 (이 저장소 쓰기 권한 필요).
-  토큰은 브라우저에만 저장되고 서버가 없습니다.
+- 로그인: **액세스 토큰으로 로그인** → GitHub [classic 토큰](https://github.com/settings/tokens)을 붙여넣습니다.
+  스코프는 **`repo` + `read:org`** 두 개가 필요합니다. 토큰은 브라우저에만 저장되고 서버가 없습니다.
+- ⚠️ **fine-grained 토큰은 쓸 수 없습니다.** CMS가 로그인 마지막에 협업자 여부를 확인하는데
+  (`GET /repos/{owner}/{repo}/collaborators/{user}`), fine-grained 토큰은 이 엔드포인트에서 403을 받아
+  "저장소에 접근할 권한이 없습니다"로 실패합니다. 저장소 읽기·쓰기 권한이 있어도 마찬가지입니다.
+  CMS 화면의 토큰 생성 링크가 fine-grained 페이지로 연결되니 주의하세요.
 - 카테고리·태그는 목록에서 고르고, 제목의 공백·슬래시는 파일명에서 `-` 로 바뀝니다.
 - 새 태그를 쓰려면 [public/admin/config.yml](public/admin/config.yml) 의 `options` 에 먼저 추가하세요.
   (표기가 갈리면 빌드가 실패합니다.)

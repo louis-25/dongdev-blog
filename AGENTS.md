@@ -194,6 +194,11 @@ content-collections    → ./.content-collections/generated
   - `category` options ↔ `config/post.ts`의 `CATEGORY_LIST`
   - `tags` options ↔ 기존 글의 태그 표기(대소문자 불일치는 빌드 실패)
   - `date`는 `widget: datetime` + `type: date` → `YYYY-MM-DD` (스키마 `z.iso.date()`)
+- **로그인은 classic 토큰(`repo` + `read:org`)만 된다.** Sveltia는 로그인 마지막에
+  `GET /repos/{owner}/{repo}/collaborators/{user}`로 협업자 여부를 확인하는데, fine-grained 토큰은
+  이 엔드포인트에서 403(`Resource not accessible by personal access token`)을 받아 실패한다.
+  (콘텐츠 읽기·쓰기·GraphQL은 fine-grained로도 200이라 원인을 찾기 어렵다. 이 검사를 끄는 설정은 없다.)
+  OAuth 로그인은 인증 서버(sveltia-cms-auth 등)를 따로 띄워야 하므로 `auth_methods: [token]`으로 막아 뒀다.
 - `backend.branch: develop`을 지우지 말 것. 지우면 기본 브랜치(main)에 커밋되는데 `vercel.json`이
   main 배포를 꺼놔서 아무 일도 일어나지 않는다.
 - `index.html`에 **CSS `<link>`나 `type="module"`을 넣지 말 것** — 공식 문서가 명시한 오작동 원인이다.
