@@ -7,6 +7,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // public/admin/index.html은 /admin/index.html로만 서빙된다. /admin으로도 열리게 연결.
+  async rewrites() {
+    return [{ source: "/admin", destination: "/admin/index.html" }];
+  },
 };
 
 export default nextConfig;

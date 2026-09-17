@@ -111,6 +111,9 @@ const prettyCodeOptions: Partial<Options> = {
   },
 };
 
+// package.json: dev -> "content-collections watch", build -> "content-collections build"
+const IS_WATCH = process.argv.includes("watch");
+
 const posts = defineCollection({
   name: "posts",
   directory: "posts",
@@ -130,13 +133,19 @@ const posts = defineCollection({
   }),
   transform: async (doc, context) => {
     // 초안은 컬렉션에서 아예 뺀다 — 라우트마다 published 필터를 기억할 필요가 없게.
-    if (!doc.published) return context.skip("draft");
+    // 단, pnpm dev(= content-collections watch)에서는 포함해 초안을 로컬에서 미리 볼 수 있게 한다.
+    // published를 true로 바꿔 확인하다가 그대로 커밋해 실수로 발행되는 걸 막는 장치다.
+    // build(= CI/Vercel)에서는 argv에 watch가 없으므로 프로덕션 동작은 그대로다.
+    if (!doc.published && !IS_WATCH) return context.skip("draft");
 
     if (
       doc.thumbnail &&
       !existsSync(join(process.cwd(), "public", doc.thumbnail))
     ) {
-      throw new Error(`썸네일 파일 없음: public${doc.thumbnail}`);
+      throw new Error(
+        `썸네일 파일 없음: public/${doc.thumbnail.replace(/^\//, "")} ` +
+          `(thumbnail은 /posts/images/... 형태여야 한다)`
+      );
     }
 
     const mdx = await compileMDX(context, doc, {
