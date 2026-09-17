@@ -41,6 +41,19 @@ published: true # false 면 초안: 컬렉션에서 빠져 목록·RSS·사이�
 
 파일명이 URL이 되므로(`/blog/<파일명>`) 폴더가 달라도 파일명이 겹치면 빌드가 실패합니다.
 
+`published: false` 인 초안은 `pnpm dev` 에서만 보입니다. 확인하려고 `published` 를 바꿀 필요가 없습니다.
+
+## 브라우저에서 글쓰기 (폰 포함)
+
+[`/admin`](https://dongdev-blog.vercel.app/admin) 에서 Sveltia CMS로 글을 쓰고 이미지를 올리면 `develop` 에 커밋됩니다.
+
+- 로그인: **Sign In with Token** → GitHub personal access token 붙여넣기 (이 저장소 쓰기 권한 필요).
+  토큰은 브라우저에만 저장되고 서버가 없습니다.
+- 카테고리·태그는 목록에서 고르고, 제목의 공백·슬래시는 파일명에서 `-` 로 바뀝니다.
+- 새 태그를 쓰려면 [public/admin/config.yml](public/admin/config.yml) 의 `options` 에 먼저 추가하세요.
+  (표기가 갈리면 빌드가 실패합니다.)
+- 커밋 후에는 평소와 같이 Vercel 프리뷰를 확인하고 대시보드에서 프로덕션으로 승격합니다.
+
 ## 배포
 
 `develop` 푸시 → Vercel 프리뷰 배포 → Vercel 대시보드에서 프로덕션 승격.

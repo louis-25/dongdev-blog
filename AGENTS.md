@@ -66,6 +66,7 @@ dongdev-blog/
 ├─ config/site.ts             # 도메인·사이트명·설명 단일 진실원
 ├─ content-collections.ts     # 콘텐츠 스키마(Zod) + remark/rehype 파이프라인
 ├─ public/                     # 정적 자산 (icons, posts/images, favicon)
+│  └─ admin/                   # Sveltia CMS (index.html + config.yml). 앱 번들과 무관한 정적 파일
 ├─ eslint.config.mjs          # ESLint flat config
 └─ next.config.mjs            # 플러그인 래핑 없음 (Turbopack)
 ```
@@ -80,6 +81,8 @@ dongdev-blog/
 - `category`는 `config/post.ts`의 `CATEGORY_LIST`를 `z.enum`으로 재사용 — 단일 진실원.
 - **초안(`published: false`)은 transform에서 `context.skip`으로 컬렉션에서 뺀다.** 따라서 `allPosts`에는
   발행 글만 있고, 라우트에서 `published` 필터를 다시 걸 필요가 없다(과거 필터 누락으로 초안 태그가 새던 문제의 근본 해결).
+  단 `pnpm dev`(= `content-collections watch`)에서는 초안도 포함한다(`IS_WATCH`, argv 기반). 초안을 보려고
+  `published`를 true로 바꿨다가 그대로 커밋하는 실수를 막기 위한 것이고, `build`(CI·Vercel)는 그대로 제외한다.
 - **빌드 게이트(`onSuccess`)**: 슬러그(파일명) 중복, 대소문자만 다른 태그(`React`/`react`)가 있으면 throw →
   CLI exit 1 → Vercel 빌드 실패. `onSuccess`는 반드시 `transform` **뒤에** 둘 것(앞에 두면 TS가 docs 타입을
   스키마로 고정해 transform 산출 필드가 전부 타입에서 사라진다).
@@ -181,6 +184,22 @@ content-collections    → ./.content-collections/generated
    (stretched link — `PostListRow`, 카테고리 페이지 참고).
 13. **스크롤 복원은 Next에 맡길 것**: 예전 `utils/scrollToTop`은 searchParams가 바뀔 때마다 맨 위로 튀어
    블로그 검색 입력마다 화면이 튀고 뒤로가기 스크롤 복원도 깨뜨려서 삭제했다. App Router가 push 시 스크롤을 처리한다.
+
+## 9-1. 브라우저 CMS (public/admin)
+
+- Sveltia CMS를 CDN 스크립트로 띄우는 정적 파일 2개(`public/admin/index.html`, `config.yml`)가 전부다.
+  **npm 의존성·앱 라우트·번들에 영향이 없다.** 인증 서버도 없다(GitHub PAT를 브라우저에 직접 저장).
+- `config.yml`의 필드는 `content-collections.ts`의 Zod 스키마와 **1:1로 유지할 것.** 스키마를 바꾸면
+  이 파일도 같이 바꿔야 한다(CMS는 커밋만 할 뿐 빌드 게이트를 대신하지 못한다).
+  - `category` options ↔ `config/post.ts`의 `CATEGORY_LIST`
+  - `tags` options ↔ 기존 글의 태그 표기(대소문자 불일치는 빌드 실패)
+  - `date`는 `widget: datetime` + `type: date` → `YYYY-MM-DD` (스키마 `z.iso.date()`)
+- `backend.branch: develop`을 지우지 말 것. 지우면 기본 브랜치(main)에 커밋되는데 `vercel.json`이
+  main 배포를 꺼놔서 아무 일도 일어나지 않는다.
+- `index.html`에 **CSS `<link>`나 `type="module"`을 넣지 말 것** — 공식 문서가 명시한 오작동 원인이다.
+  1.0 이전이라 unpkg URL의 버전은 고정한다.
+- 본문 필드는 `modes: [raw]`. 리치텍스트 왕복에 기존 글의 원시 `<img>`·`<Alert>` 마크업이 재작성되는 걸 막는다.
+- `/admin`은 `next.config.mjs`의 rewrite로 `/admin/index.html`에 연결돼 있고, `app/robots.ts`에서 색인 제외한다.
 
 ## 10. Git / PR
 
