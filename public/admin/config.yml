@@ -8,9 +8,12 @@ backend:
   repo: louis-25/dongdev-blog
   # 생략하면 기본 브랜치(main)에 커밋되는데, vercel.json이 main 배포를 꺼놔서 아무 일도 일어나지 않는다.
   branch: develop
-  # 토큰 로그인만 남긴다. OAuth 버튼은 인증 서버(기본값: Netlify)가 있어야 동작하는데
-  # 우리는 서버를 두지 않았고, 그대로 누르면 Netlify가 Not Found를 돌려준다.
-  auth_methods: [token]
+  # OAuth 인증 서버(sveltia-cms-auth, Cloudflare Workers). 이게 없으면 기본값이 Netlify라
+  # "GitHub으로 로그인"이 Not Found로 끝난다. 워커의 ALLOWED_DOMAINS에 등록된 도메인에서만 동작한다.
+  base_url: https://sveltia-cms-auth.2848048ehgu.workers.dev
+  # OAuth를 기본으로 쓰되 토큰 로그인도 남긴다(워커에 문제가 생겨도 들어갈 수 있게).
+  # 토큰은 반드시 classic + repo/read:org — fine-grained는 협업자 확인 API에서 403이 난다.
+  auth_methods: [oauth, token]
 
 # 파일명이 곧 URL(/blog/<파일명>)이다 — content-collections.ts의 slugAsParams
 slug:
