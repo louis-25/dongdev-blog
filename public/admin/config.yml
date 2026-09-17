@@ -33,6 +33,10 @@ collections:
     extension: mdx
     format: yaml-frontmatter
     create: true
+    # 컬렉션에 절대 경로를 명시한다. 최상위 설정만 두면 업로드가 글 파일 옆
+    # (posts/YYYY-MM/<슬러그>/)로 들어가 public/에 없으므로 빌드가 실패한다(실제로 발생).
+    media_folder: /public/posts/images
+    public_folder: /posts/images
     fields:
       - { name: title, label: 제목, widget: string, required: true }
       # type: date → YYYY-MM-DD로 저장된다 (스키마의 z.iso.date())
@@ -68,3 +72,15 @@ collections:
         widget: markdown
         # raw 전용: 리치텍스트 왕복에 기존 글의 <img>·<Alert> 같은 원시 마크업이 재작성되지 않게
         modes: [raw]
+
+# 폰에서 올린 원본 사진이 그대로 저장소에 들어가지 않도록 업로드 시점에 변환한다.
+# (실제로 6.1MB JPEG이 커밋된 적 있음 — webp 변환 + 장변 2048 제한이면 보통 수백 KB)
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2048
+          height: 2048

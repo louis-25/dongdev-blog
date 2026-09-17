@@ -142,7 +142,10 @@ const posts = defineCollection({
       doc.thumbnail &&
       !existsSync(join(process.cwd(), "public", doc.thumbnail))
     ) {
-      throw new Error(`썸네일 파일 없음: public${doc.thumbnail}`);
+      throw new Error(
+        `썸네일 파일 없음: public/${doc.thumbnail.replace(/^\//, "")} ` +
+          `(thumbnail은 /posts/images/... 형태여야 한다)`
+      );
     }
 
     const mdx = await compileMDX(context, doc, {
