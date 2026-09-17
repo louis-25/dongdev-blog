@@ -9,9 +9,7 @@ export const size = ogSize;
 export const contentType = "image/png";
 
 export function generateStaticParams() {
-  return allPosts
-    .filter((post) => post.published)
-    .map((post) => ({ slug: post.slugAsParams }));
+  return allPosts.map((post) => ({ slug: post.slugAsParams }));
 }
 
 export default async function Image({
@@ -20,6 +18,6 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const slug = decodeURIComponent((await params).slug);
-  const post = allPosts.find((p) => p.slugAsParams === slug && p.published);
+  const post = allPosts.find((p) => p.slugAsParams === slug);
   return renderOgImage(post?.title ?? SITE.name, post?.description);
 }

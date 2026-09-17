@@ -2,6 +2,8 @@ import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
 import { z } from "zod";
 import { format, parseISO } from "date-fns";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
@@ -116,21 +118,32 @@ const posts = defineCollection({
   schema: z.object({
     // content(본문 원문)는 명시 선언한다. 암묵 추가는 deprecated.
     content: z.string(),
-    title: z.string(),
-    date: z.string(),
-    description: z.string(),
+    title: z.string().min(1),
+    // YYYY-MM-DD. 형식이 틀리면 parseISO의 필드 정보 없는 RangeError 대신 여기서 필드명과 함께 실패한다.
+    date: z.iso.date(),
+    // 비면 meta description이 빠지고 OG 카드가 밋밋해진다
+    description: z.string().min(1),
     thumbnail: z.string().optional(),
     category: z.enum(CATEGORY_LIST as [string, ...string[]]),
     tags: z.array(z.string()).optional(),
     published: z.boolean(),
   }),
   transform: async (doc, context) => {
+    // 초안은 컬렉션에서 아예 뺀다 — 라우트마다 published 필터를 기억할 필요가 없게.
+    if (!doc.published) return context.skip("draft");
+
+    if (
+      doc.thumbnail &&
+      !existsSync(join(process.cwd(), "public", doc.thumbnail))
+    ) {
+      throw new Error(`썸네일 파일 없음: public${doc.thumbnail}`);
+    }
+
     const mdx = await compileMDX(context, doc, {
       remarkPlugins: [remarkGemoji],
-      // @content-collections/mdx는 mdx-bundler(unified@10) 위에 올라가 있고
-      // rehype-pretty-code 등 최신 플러그인은 unified@11(vfile@6)을 쓴다.
-      // Plugin 타입 트리가 둘이라 tsc가 거부하지만 런타임은 동일하게 동작한다.
-      // (mdx-bundler가 unified@11로 올라가면 이 캐스팅은 제거)
+      // @content-collections/mdx(mdx-bundler 10 → @mdx-js/esbuild 3)는 unified@11인데
+      // rehype-pretty-code 0.10은 unified@10을 쓴다. Plugin 타입 트리가 둘이라 tsc가
+      // 거부하지만 런타임은 동일하게 동작한다. (rehype-pretty-code를 올리면 이 캐스팅은 제거)
       rehypePlugins: [
         [rehypePrettyCode, prettyCodeOptions] as never,
         rehypeSlug,
@@ -166,7 +179,30 @@ const posts = defineCollection({
       slugAsParams: slug,
       // 한국어 UI 전역 날짜 표기 (예: 2022년 4월 5일)
       formattedDate: format(parseISO(doc.date), "yyyy년 M월 d일"),
+      // 한국어 기준 분당 약 500자(코드 포함 근사치)
+      readingMinutes: Math.max(1, Math.round(doc.content.length / 500)),
     };
+  },
+  // 스키마 검증·transform·onSuccess 예외는 CLI가 exit 1로 끝나므로 Vercel 빌드도 여기서 멈춘다.
+  // 주의: transform보다 뒤에 둘 것 — 앞에 두면 TS가 docs 타입을 transform 결과가 아닌 스키마로 고정한다.
+  onSuccess: (docs) => {
+    const slugs = new Set<string>();
+    const tagCase = new Map<string, string>();
+    for (const doc of docs) {
+      // URL은 파일명만 쓰므로 폴더가 달라도 같은 파일명이면 두 번째 글이 조용히 접근 불가가 된다
+      if (slugs.has(doc.slugAsParams)) {
+        throw new Error(`중복 슬러그: ${doc.slugAsParams}`);
+      }
+      slugs.add(doc.slugAsParams);
+      // React/react가 섞이면 태그 페이지가 갈라진다(Windows에선 파일 충돌) — AGENTS §4
+      for (const tag of doc.tags ?? []) {
+        const prev = tagCase.get(tag.toLowerCase());
+        if (prev && prev !== tag) {
+          throw new Error(`태그 대소문자 불일치: "${prev}" / "${tag}"`);
+        }
+        tagCase.set(tag.toLowerCase(), tag);
+      }
+    }
   },
 });
 

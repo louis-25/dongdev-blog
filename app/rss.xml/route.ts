@@ -19,8 +19,8 @@ export async function GET() {
     },
   });
 
-  allPosts
-    .filter((post) => post.published)
+  // 복사 후 정렬 — allPosts는 모듈 공유 배열이라 제자리 sort하면 다른 라우트 순서가 바뀐다
+  [...allPosts]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .forEach((post) => {
       const link = `${SITE.url}${post.url}`;

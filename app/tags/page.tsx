@@ -12,7 +12,6 @@ export const metadata = pageMetadata({
 
 export default function TagsPage() {
   const tagCounts = allPosts
-    .filter((post) => post.published)
     .flatMap((post) => post.tags || [])
     .reduce((acc, tag) => {
       acc[tag] = (acc[tag] || 0) + 1;

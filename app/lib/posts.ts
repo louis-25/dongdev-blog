@@ -28,7 +28,6 @@ export function getCategoryTagsWithCounts(): { categoryData: CategoryData[] } {
   }
 
   for (const post of allPosts) {
-    if (!post.published) continue;
     const category = post.category as string;
     if (!CATEGORY_LIST.includes(category)) continue;
     const tags = (post.tags as TechKey[] | undefined) ?? [];
@@ -57,12 +56,46 @@ export function getCategoryTagsWithCounts(): { categoryData: CategoryData[] } {
 
 // 검색에 필요한 최소 필드만 추린 경량 인덱스 (본문 제외)
 export function getSearchIndex(): PostSearchItem[] {
-  return allPosts
-    .filter((post) => post.published)
-    .map((post) => ({
-      title: post.title,
-      description: post.description,
-      url: post.url,
-      tags: post.tags,
-    }));
+  return allPosts.map((post) => ({
+    title: post.title,
+    description: post.description,
+    url: post.url,
+    tags: post.tags,
+  }));
+}
+
+export type PostLink = Pick<PostSearchItem, "title" | "description" | "url">;
+
+const toLink = ({ title, description, url }: PostLink): PostLink => ({
+  title,
+  description,
+  url,
+});
+
+// 글 하단 동선: 날짜순 이전(더 오래된)/다음(더 최신) 글 + 태그·카테고리가 겹치는 관련 글
+export function getPostNeighbors(slug: string) {
+  const sorted = [...allPosts].sort((a, b) => a.date.localeCompare(b.date));
+  const i = sorted.findIndex((p) => p.slugAsParams === slug);
+  const post = sorted[i];
+  const tags = new Set(post?.tags ?? []);
+
+  const related = sorted
+    .filter((p) => p !== post)
+    .map((p) => ({
+      p,
+      // 공유 태그 1개당 2점, 같은 카테고리 1점
+      score:
+        (p.tags ?? []).filter((t) => tags.has(t)).length * 2 +
+        (p.category === post?.category ? 1 : 0),
+    }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || b.p.date.localeCompare(a.p.date))
+    .slice(0, 3)
+    .map(({ p }) => toLink(p));
+
+  return {
+    prev: i > 0 ? toLink(sorted[i - 1]) : null,
+    next: i >= 0 && i < sorted.length - 1 ? toLink(sorted[i + 1]) : null,
+    related,
+  };
 }

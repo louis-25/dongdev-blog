@@ -9,18 +9,17 @@ type TocHeading = {
   text: string;
   level: number; // 2 | 3
 };
-// TODO - 스크롤 위치에 맞게 메뉴 매핑하기!
 function useHeadings() {
   const [headings, setHeadings] = useState<TocHeading[]>([]);
   const pathname = usePathname();
 
   useEffect(() => {
     const scan = () => {
-      const container = document.querySelector(".mdx") as HTMLElement | null;
-      const scope: Document | HTMLElement = container ?? document;
+      // 글 본문(.mdx)만 본다 — 없는 페이지(홈·소개)에서 document 전체를 훑으면 섹션 제목이 목차로 뜬다
+      const container = document.querySelector(".mdx");
       const nodes = Array.from(
-        scope.querySelectorAll("h1, h2, h3")
-      ) as HTMLHeadingElement[];
+        container?.querySelectorAll<HTMLHeadingElement>("h1, h2, h3") ?? []
+      );
       const mapped = nodes
         .filter((el) => !!el.id)
         .map((el) => ({

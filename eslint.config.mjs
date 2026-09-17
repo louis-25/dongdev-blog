@@ -18,13 +18,13 @@ const config = [
   },
   ...coreWebVitals,
   {
-    // React Compiler 시대의 신규 규칙들. 기존 코드 4곳이 걸리는데 전부
+    // React Compiler 시대의 신규 규칙들. 기존 코드 3곳이 걸리는데 전부
     // 의도된 패턴이고(하이드레이션 가드, MDX 동적 컴포넌트, URL↔입력 동기화),
     // 고치려면 동작이 바뀐다. Next 16 업그레이드(동작 변화 0이 목표)에 섞지 않고
     // warn으로 낮춰 가시성만 유지한다.
     //
     // 후속 과제:
-    //   - app/components/ThemeSelector.tsx    setState in effect (테마 복원)
+    //   - app/components/ThemeSwitch.tsx      setState in effect (하이드레이션 가드)
     //   - app/components/blog/BlogToolbar.tsx setState in effect (URL q 동기화)
     //   - app/components/MDXComponents.tsx    static-components (Phase 2 렌더러 교체 시 재검토)
     rules: {

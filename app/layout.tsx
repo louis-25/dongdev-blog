@@ -3,11 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Navigation } from "./components/Navigation";
-import classNames from "classnames";
+import { cn } from "./lib/utils";
 import Profile from "./components/Profile";
 import Toc from "./components/Toc";
-import ScrollToTop from "./utils/scrollToTop";
-import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getSearchIndex } from "./lib/posts";
@@ -56,11 +54,8 @@ export default function RootLayout({
           href="/rss.xml"
         />
       </head>
-      <body className={classNames(inter.className, "antialiased")}>
+      <body className={cn(inter.className, "antialiased")}>
         <div className="max-w-5xl mt-8 mb-8 mx-auto">
-          <Suspense fallback={null}>
-            <ScrollToTop />
-          </Suspense>
           <Analytics />
           <SpeedInsights />
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -69,11 +64,13 @@ export default function RootLayout({
               <Navigation posts={searchIndex} />
               <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
                 <div className="lg:col-span-3 order-2 lg:order-1 hidden lg:block">
-                  <div className="flex flex-col gap-4 caret-none">
+                  {/* h-full: sticky는 부모 높이 안에서만 붙어 있으므로 사이드바를 본문 높이까지 늘린다 */}
+                  <div className="flex h-full flex-col gap-4 caret-none">
                     <Profile />
-                    {/* <div className="lg:sticky lg:top-0">
-                    <Toc />
-                  </div> */}
+                    {/* 글 상세에서만 렌더(.mdx가 없으면 null). 좁은 화면은 본문 인라인 목차를 쓴다 */}
+                    <div className="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto">
+                      <Toc />
+                    </div>
                   </div>
                 </div>
                 <div className="lg:col-span-7 order-1 lg:order-2 caret-none">

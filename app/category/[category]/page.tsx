@@ -42,7 +42,7 @@ export default async function CategoryPage({
   const sp = await searchParams;
 
   const categoryPosts = allPosts.filter(
-    (post) => post.published && (post.category as string) === category
+    (post) => (post.category as string) === category
   );
 
   // 발행 글이 없는 카테고리는 빈 페이지 대신 404 (sitemap도 같은 기준)

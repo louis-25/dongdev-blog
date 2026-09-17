@@ -16,7 +16,6 @@ export const metadata = pageMetadata({ path: "/" });
 export default function Home() {
   // Plan SC: FR-06 — 최신 글 6개(설명 포함). Plan SC: FR-09 — any 캐스팅 제거(정렬은 숫자 타임스탬프)
   const latestPosts: LatestPostItem[] = allPosts
-    .filter((post) => post.published)
     .slice()
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 6)

@@ -1,6 +1,6 @@
 # dongdev-blog
 
-웹개발 기록을 남기는 개인 블로그. Next.js App Router + Contentlayer(MDX) 기반.
+웹개발 기록을 남기는 개인 블로그. Next.js App Router + content-collections(MDX) 기반.
 
 ## 개발
 
@@ -16,12 +16,12 @@ pnpm dev
 | 명령 | 설명 |
 | --- | --- |
 | `pnpm dev` | 개발 서버 |
-| `pnpm build` | Contentlayer 생성 후 Next 빌드 |
+| `pnpm build` | content-collections 생성 후 Next 빌드 |
 | `pnpm start` | 프로덕션 서버 |
 | `pnpm lint` | ESLint |
-| `pnpm typecheck` | `tsc --noEmit` |
+| `pnpm typecheck` | `tsc --noEmit` (생성물 `.content-collections/generated` 필요 — `pnpm dev`/`pnpm build`를 한 번 먼저 실행) |
 
-커밋/PR 전 `pnpm typecheck` 와 `pnpm lint` 를 통과시킬 것.
+커밋/PR 전 `pnpm typecheck` 와 `pnpm lint` 를 통과시킬 것. GitHub Actions `CI`(`.github/workflows/ci.yml`)가 push/PR마다 같은 검사를 한다.
 
 ## 글 작성
 
@@ -30,13 +30,16 @@ pnpm dev
 ```yaml
 ---
 title: 제목
-date: 2026-01-01
-description: 한 줄 요약
+date: "2026-01-01" # YYYY-MM-DD
+description: 한 줄 요약 # 비우면 빌드 실패
 category: library # config/post.ts 의 CATEGORY_LIST 중 하나
-tags: [react, nextjs]
-published: true # false 면 목록·RSS·사이트맵·직접 URL 모두에서 제외
+tags: ["React", "nextjs"] # 기존 표기(대소문자)를 따를 것 — 섞이면 빌드 실패
+thumbnail: "/posts/images/cover.png" # 선택. public/ 에 없으면 빌드 실패
+published: true # false 면 초안: 컬렉션에서 빠져 목록·RSS·사이트맵·직접 URL 모두 404
 ---
 ```
+
+파일명이 URL이 되므로(`/blog/<파일명>`) 폴더가 달라도 파일명이 겹치면 빌드가 실패합니다.
 
 ## 배포
 

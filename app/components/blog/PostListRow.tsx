@@ -10,6 +10,7 @@ export interface BlogRowItem {
   url: string;
   date: string; // ISO
   formattedDate: string;
+  readingMinutes: number;
   tags?: string[];
   thumbnail?: string;
 }
@@ -36,12 +37,11 @@ export default function PostListRow({ post }: { post: BlogRowItem }) {
             <TagList tags={post.tags as TechKey[]} />
           </div>
         ) : null}
-        <time
-          dateTime={post.date}
-          className="mt-3 block text-xs text-muted-foreground"
-        >
-          {post.formattedDate}
-        </time>
+        <div className="mt-3 text-xs text-muted-foreground">
+          <time dateTime={post.date}>{post.formattedDate}</time>
+          <span aria-hidden> · </span>
+          <span>약 {post.readingMinutes}분</span>
+        </div>
       </div>
       {post.thumbnail ? (
         <Image

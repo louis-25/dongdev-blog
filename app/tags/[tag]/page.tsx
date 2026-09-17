@@ -15,9 +15,6 @@ interface TagPageProps {
 import type { Metadata } from "next";
 import { pageMetadata } from "@/app/lib/metadata";
 
-// 초안(published:false)의 태그가 칩·카운트·정적 경로에 섞이지 않게 발행 글만 본다.
-const publishedPosts = allPosts.filter((post) => post.published);
-
 export async function generateMetadata({
   params,
 }: TagPageProps): Promise<Metadata> {
@@ -31,7 +28,7 @@ export async function generateMetadata({
 
 export function generateStaticParams() {
   const tags = new Set<string>();
-  publishedPosts.forEach((post) => {
+  allPosts.forEach((post) => {
     post.tags?.forEach((tag) => tags.add(tag));
   });
   return Array.from(tags).map((tag) => ({ tag }));
@@ -41,7 +38,7 @@ export default async function TagPage({ params }: TagPageProps) {
   const { tag } = await params;
   const decodedTag = decodeURIComponent(tag) as TechKey;
 
-  const posts = publishedPosts
+  const posts = allPosts
     .filter((post) => post.tags?.includes(decodedTag))
     .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
@@ -50,7 +47,7 @@ export default async function TagPage({ params }: TagPageProps) {
   }
 
   const tagCounts: Record<string, number> = {};
-  for (const post of publishedPosts) {
+  for (const post of allPosts) {
     const tags = (post.tags as TechKey[] | undefined) ?? [];
     for (const tag of tags) {
       tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;

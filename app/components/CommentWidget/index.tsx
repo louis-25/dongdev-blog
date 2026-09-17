@@ -1,6 +1,5 @@
 "use client";
 import React, { FunctionComponent, useEffect, useRef } from "react";
-import styled from "@emotion/styled";
 import { useTheme } from "next-themes";
 
 const src = "https://utteranc.es/client.js";
@@ -15,12 +14,6 @@ type UtterancesAttributesType = {
   crossorigin: string;
   async: string;
 };
-
-const UtterancesWrapper = styled.div`
-  @media (max-width: 768px) {
-    padding: 0 20px;
-  }
-`;
 
 const CommentWidget: FunctionComponent = function () {
   const element = useRef<HTMLDivElement>(null);

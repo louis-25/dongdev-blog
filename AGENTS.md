@@ -11,7 +11,7 @@
 | 프레임워크 | Next.js 16.3.5 (App Router, **Turbopack 기본**) |
 | 언어 | TypeScript 5 / React 19.3 |
 | 콘텐츠 | **content-collections** (`@content-collections/*`) + MDX + Zod |
-| 스타일 | Tailwind CSS v4 + Emotion + Radix UI (shadcn 스타일) |
+| 스타일 | Tailwind CSS v4 + Radix UI (shadcn 스타일) |
 | 애니메이션 | framer-motion 13 |
 | 린트 | ESLint 9 (**flat config** `eslint.config.mjs`) |
 | 패키지 매니저 | **pnpm 10.17** (npm/yarn 사용 금지) |
@@ -20,11 +20,11 @@
 ## 2. 필수 명령어
 
 ```bash
-pnpm install          # 의존성 설치 (postinstall로 patch-package 실행)
+pnpm install          # 의존성 설치
 pnpm dev              # content-collections watch + next dev 동시 실행 (concurrently)
 pnpm build            # content-collections build && next build
 pnpm lint             # eslint .  (next lint는 Next 16에서 제거됨)
-pnpm typecheck        # tsc --noEmit
+pnpm typecheck        # tsc --noEmit (생성물 필요 — 새 clone이면 content-collections build 먼저)
 ```
 
 > Next 16은 Turbopack이 기본이고 Turbopack은 webpack 플러그인을 지원하지 않는다.
@@ -32,6 +32,8 @@ pnpm typecheck        # tsc --noEmit
 > `next.config.mjs`에 webpack 설정을 주입하는 플러그인을 추가하면 빌드가 실패한다.
 
 > **커밋/PR 전 반드시** `pnpm typecheck` 와 `pnpm lint` 를 통과시킬 것.
+> `.github/workflows/ci.yml`이 develop push·PR마다 ubuntu에서 콘텐츠 빌드 → typecheck → lint를 돌린다
+> (Next 16의 `next build`는 lint를 하지 않으므로 이 CI가 유일한 lint 게이트다).
 
 ## 3. 디렉터리 구조
 
@@ -53,11 +55,12 @@ dongdev-blog/
 │  ├─ components/
 │  │  ├─ ui/                   # Radix 기반 프리미티브 (button, dialog, tabs ...)
 │  │  ├─ animations/           # framer-motion 래퍼 + 훅
-│  │  ├─ mdx/                  # MDX 전용 (CodeBlock, Alert, MdxImage)
-│  │  └─ *.tsx                 # Navigation, SearchBar, Toc, ThemeSwitch 등
+│  │  ├─ mdx/                  # MDX 전용 (Alert, MdxImage). 코드블록 복사는 MDXComponents의 Pre + CopyButton
+│  │  ├─ blog/                 # 목록 행·툴바·필터 + 글 하단(PostNeighbors, ShareButton)
+│  │  └─ *.tsx                 # Navigation, SearchBar, Toc(사이드 스티키 목차), ThemeSwitch 등
 │  ├─ data/                    # 경력/프로젝트 정적 데이터 (career, projects, useAbout)
 │  ├─ lib/                     # posts.ts(서버 데이터), metadata.ts(pageMetadata), og-image.tsx(OG 템플릿), utils.ts
-│  └─ utils/                   # IconPicker, SkillPicker, scrollToTop
+│  └─ utils/                   # IconPicker, SkillPicker
 ├─ posts/                      # MDX 글 원본 (YYYY-MM/ 폴더 구조)
 ├─ config/post.ts             # 카테고리 상수 (CATEGORY_LIST)
 ├─ config/site.ts             # 도메인·사이트명·설명 단일 진실원
@@ -72,10 +75,16 @@ dongdev-blog/
 - 정의: `content-collections.ts` — `defineCollection` + **Zod 스키마**.
 - 원본: `posts/**/*.mdx` → `content-collections`(= `.content-collections/generated`)로 변환.
   소비는 `import { allPosts } from "content-collections"`.
-- **필수 frontmatter**: `title`, `date`, `description`, `category`, `published`.
-  선택: `thumbnail`, `tags`. `content`(본문)는 스키마에 **명시 선언**해야 한다(암묵 추가는 deprecated).
+- **필수 frontmatter**: `title`, `date`(YYYY-MM-DD), `description`(빈 문자열 불가), `category`, `published`.
+  선택: `thumbnail`(`public/`에 실제 파일이 있어야 함), `tags`. `content`(본문)는 스키마에 **명시 선언**해야 한다(암묵 추가는 deprecated).
 - `category`는 `config/post.ts`의 `CATEGORY_LIST`를 `z.enum`으로 재사용 — 단일 진실원.
-- **transform 산출 필드**: `mdx`(컴파일된 코드), `url`(`/blog/{파일명}`), `slugAsParams`, `formattedDate`.
+- **초안(`published: false`)은 transform에서 `context.skip`으로 컬렉션에서 뺀다.** 따라서 `allPosts`에는
+  발행 글만 있고, 라우트에서 `published` 필터를 다시 걸 필요가 없다(과거 필터 누락으로 초안 태그가 새던 문제의 근본 해결).
+- **빌드 게이트(`onSuccess`)**: 슬러그(파일명) 중복, 대소문자만 다른 태그(`React`/`react`)가 있으면 throw →
+  CLI exit 1 → Vercel 빌드 실패. `onSuccess`는 반드시 `transform` **뒤에** 둘 것(앞에 두면 TS가 docs 타입을
+  스키마로 고정해 transform 산출 필드가 전부 타입에서 사라진다).
+- `allPosts`는 모듈 공유 배열이다. 정렬은 `[...allPosts].sort()`처럼 **복사 후** 할 것(제자리 sort는 다른 라우트 순서를 바꾼다).
+- **transform 산출 필드**: `mdx`(컴파일된 코드), `url`(`/blog/{파일명}`), `slugAsParams`, `formattedDate`, `readingMinutes`(분당 약 500자).
   - URL/슬러그는 **파일명만** 사용한다(폴더 경로 제외). 따라서 파일명은 전역에서 유일해야 한다.
   - 슬러그 추출은 반드시 `doc._meta.path.split(/[\\/]/).pop()` — `_meta.path`가 **Windows에서는
     역슬래시**를 쓰므로 `"/"`로만 split하면 폴더명이 URL에 섞이고, Linux(Vercel)에서는 통과해
@@ -83,8 +92,11 @@ dongdev-blog/
 - 렌더러: `useMDXComponent` from `@content-collections/mdx/react` (`app/components/MDXComponents.tsx`).
 - rehype/remark 체인: `remark-gemoji`, `rehype-pretty-code`(shiki, `dark-plus` 테마), `rehype-slug`,
   `rehype-autolink-headings`, `rehype-toc` → **커스텀 플러그인 `rehypeWrapTocWithDetails`** 로 TOC를 `<details>` 토글로 감쌈.
-- `rehypePrettyCode` 항목에 `as never` 캐스팅이 붙어 있다. mdx-bundler(unified@10)와
-  rehype-pretty-code(unified@11)의 `Plugin` 타입 트리가 달라서이며 런타임 영향은 없다.
+- `rehypePrettyCode` 항목에 `as never` 캐스팅이 붙어 있다. mdx-bundler 10(→ @mdx-js/esbuild 3, unified@11)과
+  rehype-pretty-code 0.10(unified@10)의 `Plugin` 타입 트리가 달라서이며 런타임 영향은 없다.
+  캐스팅을 없애려면 rehype-pretty-code를 올려야 한다(mdx-bundler 쪽은 이미 최신).
+- rehype-pretty-code 0.10은 줄마다 `[data-line]` **속성**을 출력한다(`.line` class 아님). 줄번호는
+  ```` ```ts showLineNumbers ```` 로 켠 블록(`code[data-line-numbers]`)에만 표시된다.
 - `package.json`의 `pnpm.packageExtensions`는 **지우지 말 것.** `@jsdevtools/rehype-toc`가
   `unified` 타입을 import하면서 의존성으로 선언하지 않아(phantom dependency), pnpm이 어느 버전을
   호이스팅하느냐에 따라 타입이 unified@10/@11로 갈린다. 로컬은 통과하고 Vercel에서만
@@ -113,6 +125,7 @@ content-collections    → ./.content-collections/generated
 - 클라이언트로는 `app/lib/posts.ts` 의 경량 함수만 전달한다:
   - `getSearchIndex()` → 검색용 최소 필드(`title, description, url, tags`)
   - `getCategoryTagsWithCounts()` → 카테고리/태그 집계
+  - `getPostNeighbors(slug)` → 글 하단 이전/다음·관련 글(`title, description, url`만)
 - 클라이언트 컴포넌트(`"use client"`)에서 `content-collections` 를 직접 import하지 말 것.
   본문이 번들에 실려 번들 크기가 급증한다. (최근 perf 커밋들이 이 경계를 정리함.)
 
@@ -120,8 +133,8 @@ content-collections    → ./.content-collections/generated
 
 - 기본은 **Tailwind CSS v4** 유틸리티. `cn()`(`app/lib/utils.ts`, clsx + tailwind-merge)으로 클래스 병합.
 - `ui/` 컴포넌트는 `class-variance-authority(cva)` 패턴을 따른다 — 새 변형은 기존 cva 구조를 재사용.
-- Emotion은 일부 영역에서만 사용 중. **새 컴포넌트는 Tailwind를 우선**하고 Emotion 신규 도입은 지양.
-- 테마는 `next-themes`(`ThemeSwitch`/`ThemeSelector`)로 관리.
+- Emotion은 제거됐다. CSS-in-JS를 다시 들이지 말고 Tailwind로 작성한다.
+- 테마는 `next-themes`(`ThemeSwitch`)로 관리.
 
 ## 8. 코딩 컨벤션
 
@@ -148,7 +161,7 @@ content-collections    → ./.content-collections/generated
 7. ✅ **(해결됨, seo-perf)** 태그 대소문자 혼용 → `posts/2025-06/pnpm도입기.mdx`의 `tags: ["react"]`를
    `["React"]`로 통일. 새 글도 기존 표기를 따를 것(섞이면 Linux에선 태그 페이지가 갈라지고
    Windows에선 `React.html`/`react.html`이 충돌한다).
-8. **lint 경고 4건**: `react-hooks/set-state-in-effect`(ThemeSelector, BlogToolbar),
+8. **lint 경고 3건**: `react-hooks/set-state-in-effect`(ThemeSwitch, BlogToolbar),
    `react-hooks/static-components`(MDXComponents). 전부 의도된 패턴이라 `eslint.config.mjs`에서
    warn으로 낮췄다. 고치려면 동작이 바뀌므로 별도 사이클로 다룰 것.
 9. **`app/template.tsx`를 만들지 말 것**: Next 16.3.5 개발 모드에서는 template 파일이 존재하기만 해도
@@ -166,6 +179,8 @@ content-collections    → ./.content-collections/generated
 12. **카드 전체를 `<Link>`로 감싸지 말 것**: 태그(`ui/Tag.tsx`)가 `<a>`라 링크가 중첩된다.
    제목 링크에 `after:absolute after:inset-0`, 카드에 `relative`, 태그 영역에 `relative z-10`
    (stretched link — `PostListRow`, 카테고리 페이지 참고).
+13. **스크롤 복원은 Next에 맡길 것**: 예전 `utils/scrollToTop`은 searchParams가 바뀔 때마다 맨 위로 튀어
+   블로그 검색 입력마다 화면이 튀고 뒤로가기 스크롤 복원도 깨뜨려서 삭제했다. App Router가 push 시 스크롤을 처리한다.
 
 ## 10. Git / PR
 

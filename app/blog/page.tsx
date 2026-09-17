@@ -37,10 +37,9 @@ export default async function BlogPage({
   const tag = first(sp.tag);
   const sort: BlogSort = first(sp.sort) === "oldest" ? "oldest" : "newest";
 
-  // Plan SC: FR-02/FR-01 — published + category + tag + q 필터 (서버)
+  // Plan SC: FR-02/FR-01 — category + tag + q 필터 (서버). 초안은 content-collections에서 이미 빠져 있다.
   const lowerQ = q?.toLowerCase();
   const filtered = allPosts.filter((post) => {
-    if (!post.published) return false;
     if (category && post.category !== category) return false;
     if (tag && !(post.tags ?? []).includes(tag)) return false;
     if (lowerQ) {
@@ -78,6 +77,7 @@ export default async function BlogPage({
       url: post.url,
       date: post.date,
       formattedDate: post.formattedDate,
+      readingMinutes: post.readingMinutes,
       tags: post.tags,
       thumbnail: post.thumbnail,
     }));

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, Tag, Search } from "lucide-react";
+import { Home, FileText, Tag, Search, Rss } from "lucide-react";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { SearchBar } from "./SearchBar";
 import type { PostSearchItem } from "../lib/posts";
@@ -170,7 +170,18 @@ export function Navigation({ posts }: { posts: PostSearchItem[] }) {
             <div className="max-w-[400px] w-full">
               <SearchBar posts={posts} />
             </div>
-            <ThemeSwitch />
+            <div className="flex items-center gap-1">
+              {/* 라우트 핸들러(XML)라 next/link가 아닌 일반 <a> */}
+              <a
+                href="/rss.xml"
+                aria-label="RSS 피드 구독"
+                title="RSS 피드 구독"
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <Rss className="h-5 w-5" />
+              </a>
+              <ThemeSwitch />
+            </div>
           </div>
         </nav>
       </div>

@@ -1,40 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Copy, Check } from "lucide-react";
 
 export interface CopyButtonProps {
-  value: string;
+  // 클릭 시점에 읽는다 — 하이라이트된 <pre>의 textContent처럼 렌더 후에야 정해지는 값
+  getValue: () => string;
 }
 
-export function CopyButton({ value }: CopyButtonProps) {
+export function CopyButton({ getValue }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(value);
+    await navigator.clipboard.writeText(getValue());
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+    <button
+      type="button"
       onClick={copy}
-      className="flex items-center gap-2 px-2 py-1 text-sm rounded hover:bg-muted-foreground/10"
+      aria-label={copied ? "복사됨" : "코드 복사"}
+      data-copied={copied}
+      className="copy-button"
     >
-      {copied ? (
-        <>
-          <Check className="w-4 h-4" />
-          Copied!
-        </>
-      ) : (
-        <>
-          <Copy className="w-4 h-4" />
-          Copy
-        </>
-      )}
-    </motion.button>
+      {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+    </button>
   );
 }

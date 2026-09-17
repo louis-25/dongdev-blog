@@ -1,0 +1,32 @@
+name: CI
+
+# Next 16의 next build는 lint를 돌리지 않고, Vercel 빌드는 Linux라 Windows 로컬과 결과가 갈릴 수 있다.
+# 배포 전에 ubuntu에서 콘텐츠 검증·타입·린트를 한 번에 막는다.
+on:
+  push:
+    branches: [develop]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # version 생략 → package.json의 packageManager(pnpm@10.17.1)를 따른다
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # frontmatter 스키마·슬러그 중복·태그 대소문자 검증. 생성물은 typecheck의 선행 조건이기도 하다
+      # (tsconfig paths의 content-collections → gitignore된 .content-collections/generated)
+      - run: pnpm exec content-collections build
+
+      - run: pnpm typecheck
+
+      - run: pnpm lint
