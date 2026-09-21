@@ -14,6 +14,13 @@ backend:
   # OAuth를 기본으로 쓰되 토큰 로그인도 남긴다(워커에 문제가 생겨도 들어갈 수 있게).
   # 토큰은 반드시 classic + repo/read:org — fine-grained는 협업자 확인 API에서 403이 난다.
   auth_methods: [oauth, token]
+  # 기본값(Create 글 “…” +1)은 저장소 커밋 컨벤션과 안 맞고 어떤 파일인지도 안 보인다
+  commit_messages:
+    create: "post: {{slug}} 작성"
+    update: "post: {{slug}} 수정"
+    delete: "post: {{slug}} 삭제"
+    uploadMedia: "post(media): {{path}} 업로드"
+    deleteMedia: "post(media): {{path}} 삭제"
 
 # 파일명이 곧 URL(/blog/<파일명>)이다 — content-collections.ts의 slugAsParams
 slug:
@@ -37,10 +44,17 @@ collections:
     # (posts/YYYY-MM/<슬러그>/)로 들어가 public/에 없으므로 빌드가 실패한다(실제로 발생).
     media_folder: /public/posts/images
     public_folder: /posts/images
+    summary: "{{title}} — {{date}}{{published | ternary('', ' · 초안')}}"
+    view_filters:
+      - { label: 초안, field: published, pattern: false }
+      - { label: 발행, field: published, pattern: true }
+    # 미리보기 패널은 <Alert> 등 MDX 컴포넌트를 못 그려 폰 화면만 차지한다. 최종 확인은 Vercel preview에서.
+    editor:
+      preview: false
     fields:
       - { name: title, label: 제목, widget: string, required: true }
       # type: date → YYYY-MM-DD로 저장된다 (스키마의 z.iso.date())
-      - { name: date, label: 날짜, widget: datetime, type: date, required: true }
+      - { name: date, label: 날짜, widget: datetime, type: date, required: true, default: "{{now}}" }
       - { name: description, label: 한 줄 요약, widget: string, required: true }
       - name: category
         label: 카테고리
@@ -49,29 +63,20 @@ collections:
         options: [library, style, devops, framework, language, ai] # config/post.ts의 CATEGORY_LIST
       - name: tags
         label: 태그
-        widget: select
-        multiple: true
+        widget: list
         required: false
-        # 대소문자가 갈리면 빌드가 실패하므로(onSuccess 가드) 기존 표기를 목록으로 고정한다.
-        # 새 태그를 쓰려면 이 목록에 먼저 추가할 것.
-        options:
-          [
-            React,
-            Javascript,
-            typescript,
-            nextjs,
-            styled-components,
-            Docker,
-            GitLab,
-            MCP,
-          ]
-      - { name: thumbnail, label: 썸네일, widget: image, required: false }
+        # 자유 입력: 고정 목록이면 폰에서 새 태그를 쓸 수 없다(이 파일은 CMS 안에서 못 고친다).
+        # 대소문자 충돌(React/react)은 content-collections.ts의 onSuccess 가드가 빌드에서 막는다.
+        hint: "기존 표기를 그대로 쓸 것: React, Javascript, typescript, nextjs, styled-components, Docker, GitLab, MCP, blog"
+      # choose_url: false → 외부 URL은 어차피 썸네일 존재 검사에서 빌드가 실패한다
+      - { name: thumbnail, label: 썸네일, widget: image, required: false, choose_url: false }
       - { name: published, label: 발행, widget: boolean, default: false }
       - name: body
         label: 본문
         widget: markdown
         # raw 전용: 리치텍스트 왕복에 기존 글의 <img>·<Alert> 같은 원시 마크업이 재작성되지 않게
         modes: [raw]
+        hint: '콜아웃: <Alert type="warning">내용</Alert> (type: info | warning | error | success) · 이미지: ![설명](/posts/images/파일명.webp)'
 
 # 폰에서 올린 원본 사진이 그대로 저장소에 들어가지 않도록 업로드 시점에 변환한다.
 # (실제로 6.1MB JPEG이 커밋된 적 있음 — webp 변환 + 장변 2048 제한이면 보통 수백 KB)

@@ -2,8 +2,8 @@ import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
 import { z } from "zod";
 import { format, parseISO } from "date-fns";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readdirSync } from "node:fs";
+import { basename, join } from "node:path";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
@@ -114,6 +114,19 @@ const prettyCodeOptions: Partial<Options> = {
 // package.json: dev -> "content-collections watch", build -> "content-collections build"
 const IS_WATCH = process.argv.includes("watch");
 
+// URL은 파일명만 쓰므로(/blog/<파일명>) 폴더가 달라도 같은 파일명이면 두 번째 글이 조용히 접근 불가가 된다.
+// onSuccess는 skip된 초안을 못 보므로 파일을 직접 훑는다 — 초안끼리/초안·발행 글 충돌도 발행 전에 잡힌다.
+// 대소문자만 다른 경우(Foo/foo)도 막는다: Windows에선 정적 출력 파일이 충돌한다.
+// ponytail: 설정 로드 때 1회만 검사한다. watch 도중 추가된 중복은 다음 build(CI/Vercel)에서 잡힌다.
+const seenSlugs = new Map<string, string>();
+for (const file of readdirSync("posts", { recursive: true, encoding: "utf8" })) {
+  if (!file.endsWith(".mdx")) continue;
+  const key = basename(file, ".mdx").toLowerCase();
+  const prev = seenSlugs.get(key);
+  if (prev) throw new Error(`중복 슬러그: posts/${prev} ↔ posts/${file}`);
+  seenSlugs.set(key, file);
+}
+
 const posts = defineCollection({
   name: "posts",
   directory: "posts",
@@ -132,12 +145,7 @@ const posts = defineCollection({
     published: z.boolean(),
   }),
   transform: async (doc, context) => {
-    // 초안은 컬렉션에서 아예 뺀다 — 라우트마다 published 필터를 기억할 필요가 없게.
-    // 단, pnpm dev(= content-collections watch)에서는 포함해 초안을 로컬에서 미리 볼 수 있게 한다.
-    // published를 true로 바꿔 확인하다가 그대로 커밋해 실수로 발행되는 걸 막는 장치다.
-    // build(= CI/Vercel)에서는 argv에 watch가 없으므로 프로덕션 동작은 그대로다.
-    if (!doc.published && !IS_WATCH) return context.skip("draft");
-
+    // 썸네일 검사는 skip보다 먼저 — 초안도 검사해야 published를 켜는 순간에야 빌드가 깨지는 일이 없다.
     if (
       doc.thumbnail &&
       !existsSync(join(process.cwd(), "public", doc.thumbnail))
@@ -147,6 +155,12 @@ const posts = defineCollection({
           `(thumbnail은 /posts/images/... 형태여야 한다)`
       );
     }
+
+    // 초안은 컬렉션에서 아예 뺀다 — 라우트마다 published 필터를 기억할 필요가 없게.
+    // 단, pnpm dev(= content-collections watch)에서는 포함해 초안을 로컬에서 미리 볼 수 있게 한다.
+    // published를 true로 바꿔 확인하다가 그대로 커밋해 실수로 발행되는 걸 막는 장치다.
+    // build(= CI/Vercel)에서는 argv에 watch가 없으므로 프로덕션 동작은 그대로다.
+    if (!doc.published && !IS_WATCH) return context.skip("draft");
 
     const mdx = await compileMDX(context, doc, {
       remarkPlugins: [remarkGemoji],
@@ -195,14 +209,9 @@ const posts = defineCollection({
   // 스키마 검증·transform·onSuccess 예외는 CLI가 exit 1로 끝나므로 Vercel 빌드도 여기서 멈춘다.
   // 주의: transform보다 뒤에 둘 것 — 앞에 두면 TS가 docs 타입을 transform 결과가 아닌 스키마로 고정한다.
   onSuccess: (docs) => {
-    const slugs = new Set<string>();
+    // 슬러그 중복은 파일 상단의 파일 스캔이 초안까지 포함해 검사한다.
     const tagCase = new Map<string, string>();
     for (const doc of docs) {
-      // URL은 파일명만 쓰므로 폴더가 달라도 같은 파일명이면 두 번째 글이 조용히 접근 불가가 된다
-      if (slugs.has(doc.slugAsParams)) {
-        throw new Error(`중복 슬러그: ${doc.slugAsParams}`);
-      }
-      slugs.add(doc.slugAsParams);
       // React/react가 섞이면 태그 페이지가 갈라진다(Windows에선 파일 충돌) — AGENTS §4
       for (const tag of doc.tags ?? []) {
         const prev = tagCase.get(tag.toLowerCase());

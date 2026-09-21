@@ -83,7 +83,9 @@ dongdev-blog/
   발행 글만 있고, 라우트에서 `published` 필터를 다시 걸 필요가 없다(과거 필터 누락으로 초안 태그가 새던 문제의 근본 해결).
   단 `pnpm dev`(= `content-collections watch`)에서는 초안도 포함한다(`IS_WATCH`, argv 기반). 초안을 보려고
   `published`를 true로 바꿨다가 그대로 커밋하는 실수를 막기 위한 것이고, `build`(CI·Vercel)는 그대로 제외한다.
-- **빌드 게이트(`onSuccess`)**: 슬러그(파일명) 중복, 대소문자만 다른 태그(`React`/`react`)가 있으면 throw →
+- **빌드 게이트**: 슬러그(파일명) 중복은 `content-collections.ts` 상단의 파일 스캔이 **초안 포함**으로 검사하고
+  (대소문자만 달라도 실패), 썸네일 파일 존재도 초안 skip **전에** 검사한다 — `published`를 켜는 순간에야 깨지는 일을 막는다.
+  대소문자만 다른 태그(`React`/`react`)는 `onSuccess`가 발행 글 기준으로 throw한다. 어느 쪽이든
   CLI exit 1 → Vercel 빌드 실패. `onSuccess`는 반드시 `transform` **뒤에** 둘 것(앞에 두면 TS가 docs 타입을
   스키마로 고정해 transform 산출 필드가 전부 타입에서 사라진다).
 - `allPosts`는 모듈 공유 배열이다. 정렬은 `[...allPosts].sort()`처럼 **복사 후** 할 것(제자리 sort는 다른 라우트 순서를 바꾼다).
@@ -188,21 +190,29 @@ content-collections    → ./.content-collections/generated
 ## 9-1. 브라우저 CMS (public/admin)
 
 - Sveltia CMS를 CDN 스크립트로 띄우는 정적 파일 2개(`public/admin/index.html`, `config.yml`)가 전부다.
-  **npm 의존성·앱 라우트·번들에 영향이 없다.** 인증 서버도 없다(GitHub PAT를 브라우저에 직접 저장).
+  **npm 의존성·앱 라우트·번들에 영향이 없다.**
 - `config.yml`의 필드는 `content-collections.ts`의 Zod 스키마와 **1:1로 유지할 것.** 스키마를 바꾸면
   이 파일도 같이 바꿔야 한다(CMS는 커밋만 할 뿐 빌드 게이트를 대신하지 못한다).
-  - `category` options ↔ `config/post.ts`의 `CATEGORY_LIST`
-  - `tags` options ↔ 기존 글의 태그 표기(대소문자 불일치는 빌드 실패)
+  - `category` options ↔ `config/post.ts`의 `CATEGORY_LIST` (어긋나면 Zod enum이 빌드에서 실패한다)
+  - `tags`는 자유 입력(`widget: list`). 고정 목록이면 폰에서 새 태그를 쓸 수 없어서다. 대소문자 불일치는
+    `onSuccess`가 빌드에서 막는다. 단 초안은 `onSuccess`에 안 보이므로 발행 시점에 잡힌다.
   - `date`는 `widget: datetime` + `type: date` → `YYYY-MM-DD` (스키마 `z.iso.date()`)
-- **로그인은 classic 토큰(`repo` + `read:org`)만 된다.** Sveltia는 로그인 마지막에
-  `GET /repos/{owner}/{repo}/collaborators/{user}`로 협업자 여부를 확인하는데, fine-grained 토큰은
-  이 엔드포인트에서 403(`Resource not accessible by personal access token`)을 받아 실패한다.
-  (콘텐츠 읽기·쓰기·GraphQL은 fine-grained로도 200이라 원인을 찾기 어렵다. 이 검사를 끄는 설정은 없다.)
-  OAuth 로그인은 인증 서버(sveltia-cms-auth 등)를 따로 띄워야 하므로 `auth_methods: [token]`으로 막아 뒀다.
+- **로그인은 GitHub OAuth가 기본, 토큰은 비상용**(`auth_methods: [oauth, token]`).
+  - OAuth는 Cloudflare Workers의 sveltia-cms-auth(`backend.base_url`)를 거친다. 워커의 `ALLOWED_DOMAINS`에
+    등록된 도메인에서만 동작하므로, 도메인이 바뀌거나 프리뷰 URL에서 로그인하려면 워커 설정부터 고친다.
+    `base_url`을 지우면 기본값이 Netlify라 로그인이 Not Found로 끝난다.
+  - 워커가 죽었을 때만 토큰 로그인을 쓴다. **classic 토큰(`repo` + `read:org`)만 된다.** Sveltia는 로그인
+    마지막에 `GET /repos/{owner}/{repo}/collaborators/{user}`로 협업자 여부를 확인하는데, fine-grained 토큰은
+    이 엔드포인트에서 403(`Resource not accessible by personal access token`)을 받아 실패한다.
+    (콘텐츠 읽기·쓰기·GraphQL은 fine-grained로도 200이라 원인을 찾기 어렵다. 이 검사를 끄는 설정은 없다.)
+  - 토큰은 브라우저 저장소에 남는다. 공용 기기에서는 쓰지 말고, 분실 시 GitHub Settings → Developer settings에서
+    해당 토큰을 revoke한다(OAuth는 Settings → Applications에서 앱 권한 revoke).
 - `backend.branch: develop`을 지우지 말 것. 지우면 기본 브랜치(main)에 커밋되는데 `vercel.json`이
   main 배포를 꺼놔서 아무 일도 일어나지 않는다.
 - `index.html`에 **CSS `<link>`나 `type="module"`을 넣지 말 것** — 공식 문서가 명시한 오작동 원인이다.
-  1.0 이전이라 unpkg URL의 버전은 고정한다.
+  1.0 이전이라 unpkg URL의 버전은 고정하고 SRI(`integrity`)를 건다. **버전을 올리면 해시도 같이 갱신할 것**
+  (안 하면 브라우저가 스크립트를 차단해 빈 화면이 된다. 계산 명령은 `index.html` 주석 참고).
+- 미리보기 패널은 꺼 뒀다(`editor.preview: false`) — MDX 컴포넌트를 못 그린다. 렌더링 확인은 Vercel preview에서.
 - 본문 필드는 `modes: [raw]`. 리치텍스트 왕복에 기존 글의 원시 `<img>`·`<Alert>` 마크업이 재작성되는 걸 막는다.
 - `/admin`은 `next.config.mjs`의 rewrite로 `/admin/index.html`에 연결돼 있고, `app/robots.ts`에서 색인 제외한다.
 
