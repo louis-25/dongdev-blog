@@ -32,6 +32,8 @@ export interface TimelineItemProps {
   description: string;
   icon?: TimelineIconType;
   skills?: TechKey[];
+  /** 대표 프로젝트 표시 (분량을 집중할 2~3개) */
+  featured?: boolean;
   /** 우측에 렌더될 세부 항목(아코디언). 없으면 표시하지 않음 */
   details?: React.ReactNode;
 }
@@ -95,6 +97,7 @@ function TimelineItem({
   description,
   icon = "info",
   skills,
+  featured,
   isFirst,
   isLast,
   cutLineAtEnd,
@@ -124,6 +127,11 @@ function TimelineItem({
           ].join(" ")}
         >
           {title}
+          {featured && (
+            <span className="ml-2 inline-block rounded-full bg-violet-100 px-2 py-0.5 align-middle text-xs font-medium text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">
+              대표 프로젝트
+            </span>
+          )}
         </h3>
         <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-400 break-keep">
           {description}
