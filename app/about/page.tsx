@@ -85,9 +85,9 @@ export default function AboutPage() {
                       얹혔습니다.
                     </li>
                     <li>
-                      <b>문제 정의</b> — 번역 한 줄에도 개발자 배포가 필요하던
-                      구조를 직접 문제로 잡고, Google Sheets를 원본으로 바꿔
-                      개발자를 반영 경로에서 뺐습니다.
+                      <b>운영 구조 개선</b> — 개발자가 고치던 번역 리소스를
+                      Google Sheets로 옮겨, 관리자가 시트에서 직접 수정·추가하는
+                      구조로 바꿨습니다.
                     </li>
                     <li>
                       <b>렌더링 성능</b> — 이 블로그에서 클라이언트 번들 경계를
@@ -120,9 +120,7 @@ export default function AboutPage() {
                       "framer-motion의 initial이 SSR HTML에 opacity:0으로 박혀 하이드레이션 전까지 본문이 안 보이던 문제를 CSS 애니메이션으로 교체",
                     ]}
                     result="같은 글 기준 컴파일 코드 32,053B → 8,884B (약 3.6배 감소), 클라이언트 번들에서 글 본문 제거, 홈 First Load JS 100kB"
-                    impact="sitemap 35개 URL, RSS 17건, 대표 글 3편의 DOM 구조를 이관 전후로 대조해 사용자가 볼 수 있는 변화 0을 확인했습니다. typecheck·lint CI 게이트를 붙였습니다."
-                    learning="[예) 단계를 나누는 계획이 스파이크 한 번으로 뒤집혔던 경험에서 배운 것]"
-                  />
+                    impact="sitemap 35개 URL, RSS 17건, 대표 글 3편의 DOM 구조를 이관 전후로 대조해 사용자가 볼 수 있는 변화 0을 확인했습니다. typecheck·lint CI 게이트를 붙였습니다."                  />
                 </CardContent>
               </Card>
               <Card>

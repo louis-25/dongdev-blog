@@ -4,12 +4,12 @@ import { TimelineItemProps } from "@/app/components/Timeline";
 import { Separator } from "@/ui/separator";
 import Image from "next/image";
 
-// [N], [...] 표시는 실제 수치·사실로 채워야 하는 자리 (기밀이면 증감률·배수·기간 같은 상대값으로)
+// 확인된 사실만 적는다. 실제 수치가 생기면 성과 칸에 전→후로 추가할 것
 const Fasoo2021 = (): TimelineItemProps[] => [
   {
     date: "2021.11 ~ 2021.12",
     title: "Fireside 랜딩페이지 개발",
-    description: "PC·태블릿·모바일 반응형 랜딩페이지를 [N]주 만에 출시",
+    description: "PC·태블릿·모바일 반응형 랜딩페이지 개발",
     icon: "milestone",
     skills: ["react", "javascript"],
     details: (
@@ -45,7 +45,7 @@ const Fasoo2021 = (): TimelineItemProps[] => [
     date: "2021.07 ~ 2021.08",
     title: "사내 메신저 연동 Chrome Extension",
     description:
-      "직원 정보 확인·1:1 채팅 시작을 이름 더블클릭 한 번으로 줄여, 사내 [N]명이 설치",
+      "직원 이름 더블클릭 한 번으로 직원 정보 확인과 1:1 채팅을 시작하는 확장 프로그램을 만들어 사내 배포",
     icon: "milestone",
     skills: ["javascript", "html", "css"],
     details: (
@@ -59,14 +59,14 @@ const Fasoo2021 = (): TimelineItemProps[] => [
           height={20}
         />
         <CaseStudy
-          role="[단독] — 입사 첫 프로젝트"
-          problem="사내 메신저(Fireside)로 동료에게 말을 걸려면 [메신저 열기 → 검색 → 프로필 확인 → 채팅 시작] [N]단계를 거쳐야 했습니다."
+          role="개발 — 입사 첫 프로젝트"
+          problem="사내 메신저(Fireside)로 동료의 정보를 확인하고 1:1 채팅을 시작하려면 메신저를 따로 열어 찾아야 했습니다."
           actions={[
             "직원정보 API를 연동해 웹 페이지의 직원 이름을 더블클릭하면 정보 표시",
             "같은 자리에서 1:1 채팅 바로 시작",
             "Chrome Web Store에 배포해 직원이 직접 설치하도록 함",
           ]}
-          result="채팅 시작 [N]단계 → 1단계, 사내 설치 [N]명"
+          result="Chrome Web Store 배포, 직원들이 업무에 사용"
         />
       </div>
     ),
