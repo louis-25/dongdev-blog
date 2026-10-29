@@ -33,6 +33,7 @@ const useAbout = () => {
         "TypeScript",
         "react-query",
         "recoil",
+        "jotai",
         "Emotion",
         "socket",
         "storybook",
