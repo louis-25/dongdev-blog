@@ -65,6 +65,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
       "yup",
       "react-hook-form",
       "emotion",
+      "recoil",
     ],
     featured: true,
     details: (
@@ -79,7 +80,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
             "Role 기반 메뉴 접근 제어 + API 호출 제한 구현",
             "API 호출을 도메인별 service 계층으로 분리하고, 토큰 만료 시 재발급 후 원래 요청을 다시 보내는 Axios 인터셉터로 인증 처리를 한 곳에",
             "페이지네이션·필터·행 선택을 맡는 공통 테이블을 만들고, 화면은 컬럼과 도메인 규칙만 넘기도록 구성",
-            "서버 데이터는 React Query, 화면 상태는 Jotai로 나눠 관리",
+            "서버 데이터는 React Query, 화면 상태는 Recoil·Jotai로 나눠 관리",
             "결제 금액 수정 이력 화면 추가 — 현재 값만 보고는 알 수 없던 '왜 바뀌었나'를 같은 흐름에서 확인",
             "GitLab Runner로 CI/CD 파이프라인 구축",
           ]}
