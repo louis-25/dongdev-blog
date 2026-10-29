@@ -72,35 +72,14 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent className="space-y-2 text-base">
                   <p className="break-keep">
-                    5년차 React 프론트엔드 개발자입니다. &quot;이 화면을 쓰는
-                    사람이 어디서 막히는가&quot;에서 출발해, 반복되는 불편을
-                    구조와 도구로 없애는 일을 해왔습니다.
+                    개발자를 부르지 않아도 되는 화면을 만드는 5년차 React
+                    프론트엔드 개발자입니다.
                   </p>
-                  <ul className="list-disc space-y-1 pl-5 break-keep">
-                    <li>
-                      <b>운영자가 쓰는 도구</b> — 담당자마다 볼 수 있는 범위가
-                      다른 백오피스 Lumos를 기획부터 맡았습니다. 권한을 메뉴와
-                      API 양쪽에서 막고 통신·인증·표 동작을 공통 계층으로 빼
-                      둔 덕에, 이후 메일·패치 일정·테스트 자동화 기능이 같은
-                      구조 위에 계속 얹혔습니다.
-                    </li>
-                    <li>
-                      <b>개발자 없이도 돌아가게</b> — 번역 문구 하나 고치려면
-                      개발자를 불러야 했던 구조를 Google Sheets로 옮겨 관리자가
-                      직접 고치게 했고, 테스트 자동화도 기획·운영 담당자가
-                      자연어로 시나리오를 만들 수 있게 했습니다.
-                    </li>
-                    <li>
-                      <b>고객이 헤매지 않게</b> — 클라우드포탈 결제에서 &quot;누른
-                      순간의 값&quot;을 다시 확인하고, 확인이 안 되면 결제창을
-                      열지 않도록 막았습니다.
-                    </li>
-                    <li>
-                      <b>레거시를 멈추지 않고 바꾸기</b> — Angular → React,
-                      클래스형 React → React 18 + TypeScript + Vite 전환을
-                      기능을 유지한 채 진행했습니다.
-                    </li>
-                  </ul>
+                  <p className="break-keep">
+                    운영 백오피스 Lumos를 기획부터 맡아 3년째 같은 구조 위에
+                    기능을 확장하고 있고, 반복되던 운영 작업을 도구로 바꾸는
+                    일을 좋아합니다.
+                  </p>
                 </CardContent>
               </Card>
               <Card>
