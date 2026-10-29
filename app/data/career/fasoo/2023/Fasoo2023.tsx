@@ -13,7 +13,16 @@ const Fasoo2023 = (): TimelineItemProps[] => [
     description:
       "클래스형 React + JavaScript + Webpack 레거시를 React 18 + TypeScript + Vite로 전환하고, 로직과 UI를 분리한 구조로 재정리",
     icon: "milestone",
-    skills: ["react", "typescript", "vite", "react-query", "scss"],
+    skills: [
+      "react",
+      "typescript",
+      "vite",
+      "react-query",
+      "recoil",
+      "react-hook-form",
+      "yup",
+      "scss",
+    ],
     featured: true,
     details: (
       <div className="flex flex-col gap-4">
@@ -25,7 +34,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
           height={0}
         />
         <CaseStudy
-          role="프론트엔드 리팩토링"
+          role="프론트엔드 단독 — 전환 범위 결정부터 구현까지"
           problem="구버전 React 클래스형 컴포넌트와 JavaScript로 작성된 레거시라 타입 안정성이 없었고, 비즈니스 로직과 UI가 섞여 있었으며 중복 코드가 많았습니다."
           decision="로직과 UI가 섞인 구조를 수정 비용의 원인으로 보고, 전환하면서 Container / Presentational로 나눴습니다. 화면마다 제각각이던 폼 검증은 React Hook Form + Yup 스키마 한 가지 방식으로 통일했습니다."
           actions={[
@@ -62,7 +71,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
       <div className="flex flex-col gap-4">
         <LumosLogo />
         <CaseStudy
-          role="프론트엔드 개발 주도 — 초기 기획 참여, UI 구조 설계"
+          role="프론트엔드 개발 주도 — 2명(프론트엔드·백엔드) 중 프론트엔드 전담, 초기 기획 참여·UI 구조 설계"
           problem="운영 담당자는 사용자·사이트·결제·상품 데이터를 표로 조회하고 필터·상세 확인을 반복하는데, 담당자 권한(Role)마다 볼 수 있는 메뉴와 데이터가 달라야 했습니다."
           decision="권한은 메뉴를 숨기는 것만으로는 부족하다고 보고 API 호출 단계에서도 함께 막았습니다. 화면이 계속 늘어날 것이라 '화면은 업무 흐름만, 통신·인증·표 동작은 공통 계층이' 맡도록 나눴습니다."
           actions={[
@@ -72,6 +81,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
             "페이지네이션·필터·행 선택을 맡는 공통 테이블을 만들고, 화면은 컬럼과 도메인 규칙만 넘기도록 구성",
             "서버 데이터는 React Query, 화면 상태는 Jotai로 나눠 관리",
             "결제 금액 수정 이력 화면 추가 — 현재 값만 보고는 알 수 없던 '왜 바뀌었나'를 같은 흐름에서 확인",
+            "GitLab Runner로 CI/CD 파이프라인 구축",
           ]}
           result="클라우드 제품 관리 백오피스 Lumos 출시"
           impact="이후 메일 템플릿(2024), 패치 일정 관리 루틴잡(2025), E2E 테스트 시나리오 화면(2026)이 같은 구조 위에 추가되며 사내 운영 도구로 자리 잡았습니다."
@@ -83,7 +93,7 @@ const Fasoo2023 = (): TimelineItemProps[] => [
     date: "2023.01 ~ ",
     title: "WordPress 제품 마이크로사이트 4종 개발·운영",
     description:
-      "Wrapsody·Wrapsody eCo·Mind-SAT·DSPM 사이트 개발·운영, Mind-SAT 모의훈련 문의 창구 신설",
+      "Wrapsody·Wrapsody eCo·Mind-SAT·DSPM 사이트 개발·운영, SEO 최적화로 월 방문자 수 20% 증가",
     icon: "milestone",
     skills: ["wordpress", "html", "css", "javascript"],
     details: (
@@ -109,14 +119,15 @@ const Fasoo2023 = (): TimelineItemProps[] => [
           </g>
         </svg>
         <CaseStudy
-          role="개발과 운영"
+          role="개발과 운영 — 2명(프론트엔드·기획) 중 개발 담당"
           problem="제품별 마이크로사이트 4종의 콘텐츠를 효율적으로 관리할 구조가 필요했고, Mind-SAT은 모의훈련 도입 문의를 받을 창구가 없었습니다."
           actions={[
+            "DSPM 사이트 신규 개발·배포",
             "Mind-SAT ‘모의훈련 테스트 문의하기’ 기능 신규 개발",
-            "Custom Post Type·템플릿·Loop 구조를 설계해 제품별 콘텐츠를 같은 방식으로 관리",
-            "SEO 메타태그 구성과 성능 개선",
+            "Custom Post Type·템플릿·Loop·Grid 구조를 설계해 제품별 콘텐츠를 같은 방식으로 관리",
+            "사이트별 SEO 메타태그 구성과 성능 개선",
           ]}
-          result="사이트 4종을 같은 콘텐츠 구조로 운영, Mind-SAT 모의훈련 문의 창구 신설"
+          result="월 방문자 수 20% 증가(SEO 최적화), 사이트 4종을 같은 콘텐츠 구조로 운영"
         />
         <Separator />
         <div className="flex h-5 items-center space-x-4 text-sm">

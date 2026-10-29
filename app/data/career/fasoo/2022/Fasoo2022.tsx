@@ -12,7 +12,7 @@ const Fasoo2022 = (): TimelineItemProps[] => [
     description:
       "기능 호환을 유지하며 Wrapsody UI를 React로 전환하고, 실시간 통계 차트와 Storybook 기반 공통 컴포넌트를 구축",
     icon: "milestone",
-    skills: ["react", "typescript", "redux", "storybook"],
+    skills: ["react", "redux", "storybook", "scss"],
     details: (
       <div className="flex flex-col gap-4">
         <Image
@@ -24,7 +24,7 @@ const Fasoo2022 = (): TimelineItemProps[] => [
           height={150}
         />
         <CaseStudy
-          role="React 전환 개발, 공통 컴포넌트 구현"
+          role="10명(프론트엔드 5·백엔드 3·디자인 1·기획 1) 중 프론트엔드 — 홈 화면·즐겨찾기·애널리틱스·스마트 클리너 등 주요 메뉴 담당"
           problem="Angular 기반 UI를 기능 호환성과 성능을 유지하면서 React로 옮겨야 했고, 화면마다 비슷한 UI가 따로 구현돼 있었습니다."
           actions={[
             "Angular 화면을 React로 전환하며 기존 기능 동작·성능 유지",
@@ -56,7 +56,7 @@ const Fasoo2022 = (): TimelineItemProps[] => [
     description:
       "투표 라운드별 WebSocket(Socket.io) 실시간 채팅을 서버부터 클라이언트까지 풀스택으로 구축",
     icon: "milestone",
-    skills: ["react", "typescript", "express", "socket"],
+    skills: ["express", "socket"],
     details: (
       <div className="flex flex-col gap-4">
         <Image
@@ -68,7 +68,7 @@ const Fasoo2022 = (): TimelineItemProps[] => [
           height={100}
         />
         <CaseStudy
-          role="풀스택 개발 — 채팅 서버·클라이언트·서버 연동 구성"
+          role="풀스택 단독 — 채팅 서버·클라이언트·서버 연동 구성"
           problem="투표 라운드 중 사용자끼리 소통할 실시간 채팅이 필요했고, 기존 서비스는 Apache(PHP) 웹 서버로 운영되고 있었습니다."
           decision="기존 PHP 서버와 별도로 Node 채팅 서버를 두고, Apache Reverse Proxy로 두 서버를 연동했습니다."
           actions={[
@@ -99,7 +99,7 @@ const Fasoo2022 = (): TimelineItemProps[] => [
     description:
       "기존 PHP 시스템을 다시 만들지 않고, React로 만든 관리자 페이지를 특정 경로에 통합",
     icon: "milestone",
-    skills: ["react", "vite"],
+    skills: ["react", "typescript", "vite", "antd"],
     details: (
       <div className="flex flex-col gap-4">
         <Image
@@ -111,7 +111,7 @@ const Fasoo2022 = (): TimelineItemProps[] => [
           height={100}
         />
         <CaseStudy
-          role="화면 기획부터 개발·통합까지"
+          role="2명(프론트엔드·백엔드) 중 프론트엔드 — 화면 기획부터 개발·통합까지"
           problem="TTJA 앱을 운영할 관리 기능이 필요했지만, 기존 서비스는 PHP 기반 시스템이었습니다."
           decision="기존 PHP 시스템을 갈아엎지 않고, 특정 경로에서만 React 빌드 결과를 PHP 템플릿에 붙이는 방식으로 통합했습니다."
           actions={[

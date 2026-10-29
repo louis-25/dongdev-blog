@@ -11,7 +11,7 @@ const Fasoo2024 = (): TimelineItemProps[] => [
     description:
       "코드 안에 있던 번역 리소스를 Google Sheets로 옮겨, 관리자가 시트에서 직접 번역을 수정·추가하도록 i18n 구조 개편",
     icon: "milestone",
-    skills: ["googlesheets"],
+    skills: ["googlesheets", "nextjs", "antd", "react-query", "recoil", "emotion"],
     featured: true,
     details: (
       <div className="flex flex-col gap-4">
@@ -24,7 +24,7 @@ const Fasoo2024 = (): TimelineItemProps[] => [
           height={0}
         />
         <CaseStudy
-          role="설계·구현"
+          role="프론트엔드 단독 — 설계부터 구현까지"
           problem="번역 문구를 수정·추가하려면 개발자가 리소스를 직접 고쳐야 했습니다."
           decision="Google Sheets를 번역의 원본 저장소로 두고 서버에서 읽어오도록 바꾸면, 번역 관리를 개발 작업에서 떼어낼 수 있다고 봤습니다."
           actions={[
@@ -56,7 +56,7 @@ const Fasoo2024 = (): TimelineItemProps[] => [
           />
         </div>
         <CaseStudy
-          role="발송 서버와 템플릿 개발"
+          role="발송 서버와 템플릿 개발 — 2명(프론트엔드·기획) 중 개발 담당"
           problem="Lumos·CloudPortal에서 발송되는 메일이 정적 디자인이라 제품 간 일관성이 없었고, 메일 클라이언트마다 표시가 달라질 수 있었습니다."
           actions={[
             "Nodemailer + Google API로 Express 기반 메일 발송 서버 구축",
@@ -64,6 +64,36 @@ const Fasoo2024 = (): TimelineItemProps[] => [
             "두 제품의 메일을 일관된 브랜드 디자인으로 통일",
           ]}
           result="Outlook·Gmail·Naver 3개 환경에서 검증한 메일 템플릿으로 교체"
+        />
+      </div>
+    ),
+  },
+  {
+    date: "2024.01 ~ 2024.02",
+    title: "1회용 로그인 & 권한별 레이아웃",
+    description:
+      "특정 제품 접근용 1회용 로그인 링크와, 사용자 권한(Role)에 따라 레이아웃·메뉴가 바뀌는 구조를 클라우드포탈에 적용",
+    icon: "milestone",
+    skills: ["react", "vite", "react-query", "recoil", "react-hook-form", "yup", "scss"],
+    details: (
+      <div className="flex flex-col gap-4">
+        <Image
+          src="/about/career/CloudPortalLogo.svg"
+          alt="CloudPortal"
+          priority
+          width={250}
+          height={0}
+        />
+        <CaseStudy
+          role="프론트엔드 개발 — 2명(프론트엔드·백엔드) 중 프론트엔드 담당"
+          problem="특정 제품에만 접근하려는 사용자도 일반 로그인 절차를 거쳐야 했고, 사용자 권한(Role)마다 보여야 할 레이아웃과 메뉴가 달랐습니다."
+          decision="화면마다 권한을 따로 분기하지 않고, Role에 따라 레이아웃과 접근 가능한 메뉴가 동적으로 바뀌는 구조로 설계했습니다."
+          actions={[
+            "특정 제품에 대한 1회용 로그인 링크 기능 구현",
+            "Role에 따라 레이아웃과 접근 가능한 메뉴를 동적으로 바꾸는 구조 설계·적용",
+            "권한 없는 메뉴로 들어가지 않도록 Role 기반 접근 제어 UX 정리",
+          ]}
+          result="1회용 링크로 특정 제품에 바로 접근, 권한별 레이아웃·메뉴를 한 구조에서 관리"
         />
       </div>
     ),

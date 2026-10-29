@@ -13,7 +13,7 @@ const Fasoo2025 = (): TimelineItemProps[] => [
     description:
       "Figma 시안을 코드로 옮기는 반복 작업을 AI 도구(Cursor + Figma MCP)에 맡기고, 디자이너·기획자 피드백 반영에 집중해 UI 전면 개편",
     icon: "milestone",
-    skills: ["react", "typescript", "vite", "scss"],
+    skills: ["nextjs", "react-query", "emotion"],
     details: (
       <div className="flex flex-col gap-4">
         <Image
@@ -24,7 +24,7 @@ const Fasoo2025 = (): TimelineItemProps[] => [
           height={0}
         />
         <CaseStudy
-          role="프론트엔드 개발 — 디자이너·기획자와 협업"
+          role="프론트엔드 개발 — 3명(프론트엔드·기획·디자인) 중 프론트엔드 담당"
           problem="클라우드포탈 UI 전면 개편으로 많은 화면의 Figma 시안을 코드로 옮겨야 했습니다."
           decision="시안을 코드로 옮기는 반복 작업은 AI 도구에 맡기고, 사람은 피드백 반영과 검수에 시간을 쓰기로 했습니다."
           actions={[
@@ -54,17 +54,18 @@ const Fasoo2025 = (): TimelineItemProps[] => [
     date: "2025.06 ~ 2025.08",
     title: "루틴잡: 제품 패치 일정 관리 기능",
     description:
-      "제품별 패치 일정·고객 안내 메일·문자·설치셋 관리를 운영 백오피스 Lumos 한 곳으로 통합",
+      "패치 때마다 반복되던 일정·안내 메일·문자 작업을 사전 정의된 패치 프로세스로 묶어, 한 번 등록하면 캘린더·메일·문자가 자동 등록되도록 Lumos에 구현",
     icon: "milestone",
     skills: ["nextjs"],
     details: (
       <div className="flex flex-col gap-4">
         <LumosLogo />
         <CaseStudy
-          role="프론트엔드 개발"
-          problem="클라우드 제품 패치 작업의 일정과 고객 안내(메일·문자)를 Lumos에서 함께 관리할 수 없었습니다."
-          decision="운영자가 이미 쓰는 Lumos 안에 일정·안내문·설치셋을 묶어, 패치 작업을 한 도구에서 처리하도록 했습니다."
+          role="프론트엔드 개발 — 3명(프론트엔드·백엔드·기획) 중 프론트엔드 담당"
+          problem="클라우드 제품에 패치가 생길 때마다 일정 등록, 고객 안내 메일, 문자 발송을 매번 따로 챙겨야 했고, Lumos에서 이 작업들을 함께 관리·추적할 수 없었습니다."
+          decision="패치마다 거치는 작업 순서가 정해져 있다는 점에 주목해, 그 순서를 사전 정의된 패치 프로세스로 만들고 등록 한 번으로 캘린더·메일·문자가 따라 생기도록 했습니다."
           actions={[
+            "사전 정의된 패치 프로세스 기반 캘린더·이메일·문자 자동 등록 구현",
             "제품별 패치 일정 캘린더 개발",
             <>
               안내 메일 뷰어·에디터 개발 (
@@ -80,7 +81,7 @@ const Fasoo2025 = (): TimelineItemProps[] => [
             </>,
             "제품별 설치셋 관리 기능 개발",
           ]}
-          result="패치 일정·안내 메일·문자·설치셋 관리를 Lumos 한 곳에서 처리"
+          result="패치 등록 한 번으로 일정·안내 메일·문자가 함께 생성되고, Lumos 한 곳에서 추적"
         />
       </div>
     ),

@@ -23,7 +23,7 @@ const Fasoo2021 = (): TimelineItemProps[] => [
           height={150}
         />
         <ul className="list-disc space-y-1 pl-4 text-sm sm:text-base">
-          <li>프론트엔드 담당, 백엔드 API 연동</li>
+          <li>3명(프론트엔드·백엔드·디자인) 중 프론트엔드 담당, 백엔드 API 연동</li>
           <li>Figma로 디자이너와 협업, PC·Tablet·Mobile 반응형 적용</li>
         </ul>
         <Separator />
@@ -59,7 +59,7 @@ const Fasoo2021 = (): TimelineItemProps[] => [
           height={20}
         />
         <CaseStudy
-          role="개발 — 입사 첫 프로젝트"
+          role="3명(프론트엔드·백엔드·디자인) 중 프론트엔드 개발·배포 — 입사 첫 프로젝트"
           problem="사내 메신저(Fireside)로 동료의 정보를 확인하고 1:1 채팅을 시작하려면 메신저를 따로 열어 찾아야 했습니다."
           actions={[
             "직원정보 API를 연동해 웹 페이지의 직원 이름을 더블클릭하면 정보 표시",
