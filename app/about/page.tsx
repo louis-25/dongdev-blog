@@ -19,7 +19,6 @@ import { TagList } from "../components/TagList";
 import { TechKey } from "../utils/SkillPicker";
 import { Separator } from "../components/ui/separator";
 import IconTooltip from "../components/IconTooltip";
-import { CaseStudy } from "../components/CaseStudy";
 
 export default function AboutPage() {
   const about = useAbout();
@@ -102,29 +101,6 @@ export default function AboutPage() {
                       기능을 유지한 채 진행했습니다.
                     </li>
                   </ul>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Side Project · dongdev-blog</CardTitle>
-                  <CardDescription>
-                    이 블로그의 Next 16 이관과 번들·렌더링 최적화
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <CaseStudy
-                    role="개인 프로젝트 — 설계·구현·운영 단독 (Claude Code와 페어 프로그래밍)"
-                    problem="글을 쓰는 데 쓰던 도구(Contentlayer)는 관리가 끊겼고 Next도 두 버전 뒤처져 있었습니다. 더 큰 문제는 방문자가 글 하나를 열어도 검색용으로 모든 글의 본문을 같이 내려받고 있었고, 짧은 글조차 React 런타임 코드를 통째로 끌고 다녔다는 점입니다."
-                    decision="처음엔 Next 업그레이드와 도구 교체를 나눠서 하려 했지만, 미리 시험해 보니 옛 도구가 React 19에서 페이지 생성을 깨뜨려 나눌 수 없다는 걸 알고 한 번에 옮기기로 바꿨습니다. 번들은 '브라우저에는 검색에 필요한 제목·태그 같은 필드만 보낸다'는 기준부터 정했습니다."
-                    actions={[
-                      "Next 14.1.3 → 16.3.5, React 18.2 → 19.3, Contentlayer → content-collections 이관",
-                      "서버 전용 모듈에서 경량 검색 인덱스를 만들고 사이드바를 서버 컴포넌트로 전환해 글 본문을 클라이언트에서 제거",
-                      "검색에 useDeferredValue + 소문자 인덱스 캐싱 적용, 파티클 배너는 dynamic import로 초기 번들에서 분리",
-                      "framer-motion의 initial이 SSR HTML에 opacity:0으로 박혀 하이드레이션 전까지 본문이 안 보이던 문제를 CSS 애니메이션으로 교체",
-                    ]}
-                    result="방문자는 이제 읽는 글만 내려받고, 같은 글을 그리는 코드는 약 4분의 1로 줄었습니다."
-                    impact="큰 이관이라 '방문자 눈에는 아무것도 바뀌지 않아야 한다'를 기준으로, 사이트맵·RSS·대표 글 화면 구조를 이관 전후로 대조해 확인했습니다. 이후 실수를 막도록 typecheck·lint CI를 붙였습니다."
-                  />
                 </CardContent>
               </Card>
               <Card>
