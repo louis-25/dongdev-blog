@@ -46,7 +46,7 @@ const useAbout = () => {
         "framerMotion",
         "Docker",
         "Express",
-        "MongoDB",
+        "NestJS",
         "MySQL",
       ],
     },

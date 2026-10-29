@@ -30,6 +30,9 @@ const navItems = [
 
 export function Navigation({ posts }: { posts: PostSearchItem[] }) {
   const pathname = usePathname();
+  // 하위 경로(/about/career 등)에서도 상위 메뉴를 활성으로 표시
+  const isActive = (href: string) =>
+    pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -103,7 +106,7 @@ export function Navigation({ posts }: { posts: PostSearchItem[] }) {
                         <Link
                           href={href}
                           className={`transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-2 px-1 my-1 break-keep ${
-                            pathname === href
+                            isActive(href)
                               ? "text-neutral-800 dark:text-neutral-200 font-bold"
                               : "text-neutral-500 dark:text-neutral-400"
                           }`}
@@ -155,7 +158,7 @@ export function Navigation({ posts }: { posts: PostSearchItem[] }) {
                   key={href}
                   href={href}
                   className={`transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1 break-keep ${
-                    pathname === href
+                    isActive(href)
                       ? "text-neutral-800 dark:text-neutral-200 font-bold"
                       : "text-neutral-500 dark:text-neutral-400"
                   }`}
