@@ -54,6 +54,9 @@ export default function AboutPage() {
             운영 백오피스를 기획부터 맡아 같은 구조 위에 기능을 계속 확장해
             왔고, 반복되던 운영 작업을 도구로 바꾸는 일을 좋아합니다.
           </p>
+          <p className="break-keep">
+            반복되는 일은 자동화하고, AI는 결과를 검증할 수 있는 곳에 씁니다.
+          </p>
         </CardContent>
       </Card>
       <Card>
