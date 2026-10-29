@@ -51,9 +51,12 @@ export default function AboutPage() {
             개발자입니다.
           </p>
           <p className="break-keep">
-            백오피스를 기획부터 맡아 같은 구조 위에 기능을 계속 확장해
-            왔습니다. 반복되는 일은 자동화하고, AI는 결과를 검증할 수 있는 곳에
-            씁니다.
+            AI가 추측하지 않도록 근거와 검증 장치를 함께 설계해, 테스트
+            자동화와 업무 알림에 적용해 왔습니다.
+          </p>
+          <p className="break-keep">
+            백오피스를 기획부터 맡아 같은 구조 위에 기능을 계속 확장했고,
+            반복되는 일은 자동화합니다.
           </p>
         </CardContent>
       </Card>
