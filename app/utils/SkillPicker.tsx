@@ -946,6 +946,18 @@ export const TECHS = {
     Icon: Code2,
     href: "https://playwright.dev",
   },
+  nestjs: {
+    label: "NestJS",
+    className: "bg-[#FFF1F3] text-[#E0234E] border border-[#FAD4DC]",
+    Icon: Code2,
+    href: "https://nestjs.com",
+  },
+  springboot: {
+    label: "Spring Boot",
+    className: "bg-[#F1FAEC] text-[#4E9A2B] border border-[#D9EFCD]",
+    Icon: Code2,
+    href: "https://spring.io/projects/spring-boot",
+  },
 } as const;
 
 export type TechKey = keyof typeof TECHS;
