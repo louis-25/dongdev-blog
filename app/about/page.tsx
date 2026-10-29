@@ -47,12 +47,12 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent className="space-y-2 text-base">
           <p className="break-keep">
-            개발자를 부르지 않아도 되는 화면을 만드는 5년차 React 프론트엔드
+            개발자를 부르지 않아도 되는 화면을 만드는 React 프론트엔드
             개발자입니다.
           </p>
           <p className="break-keep">
-            운영 백오피스 Lumos를 기획부터 맡아 3년째 같은 구조 위에 기능을
-            확장하고 있고, 반복되던 운영 작업을 도구로 바꾸는 일을 좋아합니다.
+            운영 백오피스를 기획부터 맡아 같은 구조 위에 기능을 계속 확장해
+            왔고, 반복되던 운영 작업을 도구로 바꾸는 일을 좋아합니다.
           </p>
         </CardContent>
       </Card>
