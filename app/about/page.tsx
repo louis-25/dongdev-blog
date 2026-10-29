@@ -47,16 +47,14 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent className="space-y-2 text-base">
           <p className="break-keep">
-            안녕하세요, React로 화면을 만드는 프론트엔드 개발자 동현입니다.
+            안녕하세요, React로 화면을 만드는 프론트엔드 개발자입니다.
           </p>
           <p className="break-keep">
-            누군가 같은 일을 세 번 반복하고 있으면 그걸 도구로 만드는 게
-            제 일이라고 생각해요. 운영 백오피스를 처음부터 만들어 지금까지
-            키워 왔고, 요즘은 AI가 그럴듯한 답 대신 검증 가능한 결과를 내게
-            하는 데 관심이 많습니다.
-          </p>
-          <p className="break-keep">
-            만들다가 배운 것들을 이 블로그에 정리하고 있어요.
+            누군가 같은 일을 세 번 이상 반복하고 있으면 그걸 도구로 만드는 게 제
+            일이라고 생각해요.
+            <br />
+            운영 백오피스를 처음부터 만들어 지금까지 키워 왔고, 요즘은 AI가
+            그럴듯한 답 대신 검증 가능한 결과를 내게 하는 데 관심이 많습니다.
           </p>
         </CardContent>
       </Card>
